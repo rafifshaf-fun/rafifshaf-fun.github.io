@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rafif Shafwan — AI/ML Engineer · Data Scientist · Fullstack Developer</title>
+  <link rel="icon" type="image/png" href="assets/images/Logo no bg.png">
+  <meta name="description" content="AI/ML Engineer & Data Scientist based in Garut, Indonesia. I build production systems — computer vision, MLOps pipelines, RAG chatbots, and full-stack platforms.">
+  <meta name="keywords" content="AI/ML Engineer, Data Scientist, Fullstack Developer, Machine Learning, Python, PyTorch, Computer Vision, RAG, LLM, Indonesia">
+  <meta name="author" content="Rafif Shafwan">
+  <meta property="og:title" content="Rafif Shafwan — AI/ML Engineer · Data Scientist">
+  <meta property="og:description" content="I build systems that actually ship. Based in Garut, Indonesia — remote-first.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rafifshaf-fun.github.io/">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks" role="menubar">
+      <li role="none"><a href="/" class="active" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge" data-i18n="hero-badge">
+        <span class="dot" aria-hidden="true"></span>
+        Open to AI/ML Engineer / Data Scientist roles — remote or hybrid
+      </div>
+      <h1>
+        I build a system<br>
+        <span class="highlight" id="typedText"></span><span class="cursor-blink" aria-hidden="true">|</span>
+      </h1>
+      <p>
+        From computer vision pipelines to RAG chatbots and MLOps infrastructure —
+        engineered for production, not just notebooks.
+      </p>
+      <div class="hero-cta">
+        <a href="projects/" class="btn btn-primary" id="heroProjectsBtn" data-i18n="hero-cta-work">See My Work →</a>
+        <a href="about.html" class="btn btn-secondary" id="heroAboutBtn" data-i18n="hero-cta-about">About Me</a>
+        <a href="assets/file/cv-rafif-shafwan-general-en-2026-06-12.pdf" class="btn btn-ghost" target="_blank" id="heroCvBtn" data-i18n="hero-cta-cv">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
+          Download CV
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Stats Bar -->
+<section class="stats-bar" aria-label="Career statistics">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number" data-target="6" id="stat0">0</div>
+        <div class="stat-label" data-i18n="stat-exp">Years Experience</div>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="15" id="stat1">0</div>
+        <div class="stat-label" data-i18n="stat-enterprise">Enterprise Projects</div>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="6" id="stat2">0</div>
+        <div class="stat-label" data-i18n="stat-studies">Public Case Studies</div>
+      </div>
+      <div class="stat-divider" aria-hidden="true"></div>
+      <div class="stat-item">
+        <div class="stat-number" id="stat3">🌏</div>
+        <div class="stat-label" data-i18n="stat-remote">Remote-First</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stack -->
+<section class="section fade-in" aria-label="Tech stack">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label" data-i18n="stack-label">Stack</span>
+      <h2 data-i18n="stack-title">What I Build With</h2>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-group">
+        <div class="stack-group-label" data-i18n="stack-ml">ML / AI</div>
+        <div class="stack-pills">
+          <span class="pill">PyTorch</span>
+          <span class="pill">TensorFlow</span>
+          <span class="pill">Scikit-learn</span>
+          <span class="pill">YOLO</span>
+          <span class="pill">LangChain</span>
+          <span class="pill">FAISS</span>
+          <span class="pill">ONNX</span>
+          <span class="pill">Groq</span>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-label" data-i18n="stack-mlops">MLOps</div>
+        <div class="stack-pills">
+          <span class="pill">MLflow</span>
+          <span class="pill">Grafana</span>
+          <span class="pill">Docker</span>
+          <span class="pill">Airflow</span>
+          <span class="pill">GitHub Actions</span>
+        </div>
+      </div>
+      <div class="stack-group">
+        <div class="stack-group-label" data-i18n="stack-backend">Backend / Data</div>
+        <div class="stack-pills">
+          <span class="pill">Python</span>
+          <span class="pill">FastAPI</span>
+          <span class="pill">Laravel</span>
+          <span class="pill">PostgreSQL</span>
+          <span class="pill">Pandas</span>
+          <span class="pill">Streamlit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Work -->
+<section class="section section-alt fade-in" aria-label="Featured projects">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label" data-i18n="featured-label">Featured Work</span>
+      <h2 data-i18n="featured-title">Architecture Case Studies</h2>
+      <p data-i18n="featured-desc">Problems, architectures, and production thinking — not just code.</p>
+    </div>
+
+    <div class="card-grid">
+      <!-- Sovereign Ledger -->
+      <article class="case-study" id="project-sovereign-ledger">
+        <div class="case-study-body">
+          <div class="case-study-header">
+            <h3><a href="projects/sovereign-ledger.html">Sovereign Ledger</a></h3>
+            <span class="nda-badge">🔒 NDA · KPRI Warga Kesehatan</span>
+          </div>
+          <div class="meta">Full-Stack · Financial · Laravel · 2024</div>
+          <p data-i18n="project-sovereign-desc">Production financial system for a health-worker cooperative. Double-entry accounting, automated batch processing, five user roles, and legacy Excel migration — deployed on-premise via Docker.</p>
+          <div class="tag-row">
+            <span class="tag">Laravel 13</span><span class="tag">Livewire 4</span>
+            <span class="tag">Alpine.js</span><span class="tag">PostgreSQL</span>
+            <span class="tag">Docker</span>
+          </div>
+          <a href="projects/sovereign-ledger.html" class="case-study-link" aria-label="Read Sovereign Ledger case study" data-i18n="read-case-study">Read case study →</a>
+        </div>
+      </article>
+
+      <!-- Indonesian Stock MLOps -->
+      <article class="case-study" id="project-stock-mlops">
+        <div class="case-study-body">
+          <div class="case-study-header">
+            <h3><a href="projects/indonesian-stock-mlops.html">Indonesian Stock MLOps</a></h3>
+          </div>
+          <div class="meta">MLOps · Time Series · Finance · 2023–2024</div>
+          <p data-i18n="project-stock-desc">End-to-end ML pipeline for BUY/SELL signals on 45 IDXBLUE stocks — MLflow tracking, Grafana monitoring, Docker deployment, automated retraining.</p>
+          <div class="tag-row">
+            <span class="tag">MLflow</span><span class="tag">Grafana</span>
+            <span class="tag">Docker</span><span class="tag">Scikit-learn</span>
+            <span class="tag">Pandas</span>
+          </div>
+          <a href="projects/indonesian-stock-mlops.html" class="case-study-link" aria-label="Read Stock MLOps case study" data-i18n="read-case-study">Read case study →</a>
+        </div>
+      </article>
+
+      <!-- Multi-Stage CV -->
+      <article class="case-study" id="project-cv-pipeline">
+        <div class="case-study-body">
+          <div class="case-study-header">
+            <h3><a href="projects/multi-stage-cv.html">Multi-Stage CV Pipeline</a></h3>
+          </div>
+          <div class="meta">Computer Vision · YOLO · PyTorch · 2023–2024</div>
+          <p data-i18n="project-cv-desc">Detect-then-classify architecture for high-accuracy object recognition. YOLO/SSD detection + custom PyTorch classifiers — optimized for edge deployment.</p>
+          <div class="tag-row">
+            <span class="tag">YOLO</span><span class="tag">SSD</span>
+            <span class="tag">PyTorch</span><span class="tag">TensorFlow</span>
+            <span class="tag">OpenCV</span><span class="tag">ONNX</span>
+          </div>
+          <a href="projects/multi-stage-cv.html" class="case-study-link" aria-label="Read CV Pipeline case study" data-i18n="read-case-study">Read case study →</a>
+        </div>
+      </article>
+
+      <!-- CV RAG Chatbot -->
+      <article class="case-study" id="project-rag-chatbot">
+        <div class="case-study-body">
+          <div class="case-study-header">
+            <h3><a href="projects/cv-rag-chatbot.html">CV RAG Chatbot</a></h3>
+          </div>
+          <div class="meta">LLM · RAG · Streamlit · 2024</div>
+          <p data-i18n="project-rag-desc">Retrieval-Augmented Generation chatbot answering questions about my CV. LangChain LCEL + FAISS + FastEmbed (ONNX) + Groq Llama 3.3, evaluated with RAGAS metrics.</p>
+          <div class="tag-row">
+            <span class="tag">LangChain LCEL</span><span class="tag">FAISS</span>
+            <span class="tag">FastEmbed</span><span class="tag">Groq</span>
+            <span class="tag">RAGAS</span>
+          </div>
+          <a href="projects/cv-rag-chatbot.html" class="case-study-link" aria-label="Read RAG Chatbot case study" data-i18n="read-case-study">Read case study →</a>
+        </div>
+      </article>
+
+      <!-- Makmur Grosir -->
+      <article class="case-study" id="project-makmur">
+        <div class="case-study-body">
+          <div class="case-study-header">
+            <h3><a href="projects/makmur-grosir.html">Makmur Grosir</a></h3>
+          </div>
+          <div class="meta">Web Scraping · Automation · Node.js · 2025</div>
+          <p data-i18n="project-makmur-desc">Playwright-based scraper that automatically searches for 2,500+ product images across 4 Indonesian e-commerce platforms — with anti-bot evasion, scheduled runs, and resume support.</p>
+          <div class="tag-row">
+            <span class="tag">Playwright</span><span class="tag">Node.js</span>
+            <span class="tag">GitHub Actions</span><span class="tag">Anti-Bot</span>
+          </div>
+          <a href="projects/makmur-grosir.html" class="case-study-link" aria-label="Read Makmur Grosir case study" data-i18n="read-case-study">Read case study →</a>
+        </div>
+      </article>
+
+      <!-- Magic Chess -->
+      <article class="case-study" id="project-magic-chess">
+        <div class="case-study-body">
+          <div class="case-study-header">
+            <h3><a href="projects/magic-chess.html">Magic Chess AI</a></h3>
+          </div>
+          <div class="meta">Game AI · Decision Systems · 2024</div>
+          <p data-i18n="project-magic-desc">AI-driven chess variant exploring state-space search, evaluation heuristics, and interactive game design patterns — Minimax with Alpha-Beta pruning.</p>
+          <div class="tag-row">
+            <span class="tag">Python</span><span class="tag">Minimax</span>
+            <span class="tag">Alpha-Beta</span><span class="tag">Game AI</span>
+          </div>
+          <a href="projects/magic-chess.html" class="case-study-link" aria-label="Read Magic Chess case study" data-i18n="read-case-study">Read case study →</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Philosophy -->
+<section class="section fade-in" aria-label="Work philosophy">
+  <div class="container">
+    <div class="philosophy-layout">
+      <div class="philosophy-text">
+        <span class="section-label" data-i18n="philosophy-label">Philosophy</span>
+        <h2 data-i18n="philosophy-title">Production ML,<br>Not Notebooks</h2>
+        <p data-i18n="philosophy-p1">
+          The gap between a Jupyter notebook and a production system is where most
+          ML projects fail. I build systems with monitoring, evaluation pipelines,
+          and clean architecture from day one.
+        </p>
+        <p data-i18n="philosophy-p2">
+          Whether it's a cooperative's accounting software or a stock prediction
+          pipeline — the standard is the same: <strong>ship it, measure it, improve it.</strong>
+        </p>
+        <a href="about.html" class="btn btn-secondary" id="philosophyAboutBtn" data-i18n="philosophy-cta">Read my full approach →</a>
+      </div>
+      <div class="philosophy-principles">
+        <div class="principle-card" id="principle0">
+          <div class="principle-icon" aria-hidden="true">⚡</div>
+          <div>
+            <strong data-i18n="phil-principle-1">Ship early, measure everything</strong>
+            <span data-i18n="phil-principle-1-sub">Models without metrics are opinions.</span>
+          </div>
+        </div>
+        <div class="principle-card" id="principle1">
+          <div class="principle-icon" aria-hidden="true">🏗️</div>
+          <div>
+            <strong data-i18n="phil-principle-2">Clean architecture over clever models</strong>
+            <span data-i18n="phil-principle-2-sub">A simple model with a solid pipeline wins.</span>
+          </div>
+        </div>
+        <div class="principle-card" id="principle2">
+          <div class="principle-icon" aria-hidden="true">📖</div>
+          <div>
+            <strong data-i18n="phil-principle-3">Document the "why"</strong>
+            <span data-i18n="phil-principle-3-sub">Decisions and tradeoffs are as valuable as code.</span>
+          </div>
+        </div>
+        <div class="principle-card" id="principle3">
+          <div class="principle-icon" aria-hidden="true">🔭</div>
+          <div>
+            <strong data-i18n="phil-principle-4">Build for the person after you</strong>
+            <span data-i18n="phil-principle-4-sub">Often that's you, six months later.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Live Demo -->
+<section class="section section-alt fade-in" aria-label="Live demo">
+  <div class="container">
+    <div class="demo-card" id="demoChatbotCard">
+      <div class="demo-card-content">
+        <span class="section-label" data-i18n="demo-label">Live Demo</span>
+        <h2 data-i18n="demo-title">Ask My RAG Chatbot</h2>
+        <p data-i18n="demo-desc">A live demonstration of Retrieval-Augmented Generation — ask anything about my background, skills, and projects. Built with LangChain + FAISS + Streamlit.</p>
+        <div class="demo-actions">
+          <a href="https://ask-rafif.streamlit.app" target="_blank" rel="noopener" class="btn btn-primary" id="chatbotTryBtn" data-i18n="demo-cta">🤖 Try the Chatbot →</a>
+          <a href="projects/cv-rag-chatbot.html" class="btn btn-ghost" id="chatbotCaseBtn" data-i18n="demo-alt">Read the case study</a>
+        </div>
+      </div>
+      <div class="demo-card-visual" aria-hidden="true">
+        <div class="chat-preview">
+          <div class="chat-msg user">What ML frameworks do you use?</div>
+          <div class="chat-msg bot">PyTorch, TensorFlow, Scikit-learn — and LangChain for LLM pipelines. I choose based on production requirements...</div>
+          <div class="chat-msg user">Any production RAG experience?</div>
+          <div class="chat-msg bot typing"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Latest Blog Posts -->
+<section class="section fade-in" aria-label="Blog posts">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label" data-i18n="blog-label">Writing</span>
+      <h2 data-i18n="blog-title">From the Blog</h2>
+      <p data-i18n="blog-desc">Technical deep-dives on ML engineering, MLOps, and building in production.</p>
+    </div>
+    <div class="card-grid">
+      <article class="card" id="blog-rag">
+        <div class="blog-meta-row">
+          <span class="blog-tag" data-i18n="blog-rag-tag">RAG · LLM</span>
+          <span class="blog-read-time" data-i18n="blog-6min">6 min read</span>
+        </div>
+        <h3><a href="blog/why-i-measure-my-rag.html">Why I Measure My RAG (And You Should Too)</a></h3>
+        <p data-i18n="blog-rag-desc">RAGAS evaluation, retrieval metrics, and why "it works on my machine" isn't enough for production LLM systems.</p>
+        <span class="blog-date" data-i18n="blog-date-june">June 2024</span>
+      </article>
+      <article class="card" id="blog-cv">
+        <div class="blog-meta-row">
+          <span class="blog-tag" data-i18n="blog-cv-tag">Computer Vision</span>
+          <span class="blog-read-time" data-i18n="blog-8min">8 min read</span>
+        </div>
+        <h3><a href="blog/detect-then-classify.html">The Detect-Then-Classify Pattern</a></h3>
+        <p data-i18n="blog-cv-desc">Why splitting detection and classification into two stages gives you better accuracy, maintainability, and deployment flexibility.</p>
+        <span class="blog-date" data-i18n="blog-date-may">May 2024</span>
+      </article>
+      <article class="card" id="blog-mlops">
+        <div class="blog-meta-row">
+          <span class="blog-tag" data-i18n="blog-mlops-tag">MLOps</span>
+          <span class="blog-read-time" data-i18n="blog-7min">7 min read</span>
+        </div>
+        <h3><a href="blog/mlops-without-burnout.html">MLOps Without Burnout</a></h3>
+        <p data-i18n="blog-mlops-desc">Running MLflow, Grafana, and Docker on modest hardware. Pragmatic MLOps for solo engineers and small teams.</p>
+        <span class="blog-date" data-i18n="blog-date-april">April 2024</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="/" class="nav-logo footer-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+      <div class="footer-links">
+        <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener" id="footerGithub">GitHub</a>
+        <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener" id="footerLinkedin">LinkedIn</a>
+        <a href="mailto:rafifshaf@gmail.com" id="footerEmail">Email</a>
+      </div>
+      <p class="footer-copy" data-i18n="footer-copy">© 2026 Rafif Shafwan · Garut, Indonesia</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

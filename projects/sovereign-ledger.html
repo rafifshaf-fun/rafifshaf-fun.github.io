@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sovereign Ledger — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Cooperative accounting platform with integrated ML forecasting. Built solo with Laravel, Livewire, PostgreSQL, and predictive models.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/projects/sovereign-ledger.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Case Study</span>
+      <h1>Sovereign Ledger</h1>
+      <p>
+        A comprehensive financial management system built for a health-worker
+        cooperative in Garut, Indonesia — deployed on-premise and in active use.
+      </p>
+      <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
+        <span class="nda-badge">🔒 NDA · KPRI Warga Kesehatan</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:800px;">
+
+      <div class="blog-post" style="padding-top:0;">
+
+        <div class="tag-row" style="margin-bottom:2rem;">
+          <span class="tag">Laravel 13</span>
+          <span class="tag">Livewire 4</span>
+          <span class="tag">Alpine.js</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">Tailwind CSS</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Full-Stack</span>
+          <span class="tag">Solo Build</span>
+        </div>
+
+        <h2>The Problem</h2>
+        <p>
+          <strong>KPRI Warga Kesehatan Kabupaten Garut</strong> — a health-worker 
+          cooperative in Garut, Indonesia — needed a complete financial management 
+          system. They had been running on Excel spreadsheets for years, with their 
+          full transaction history locked in legacy files. Off-the-shelf solutions 
+          were either too expensive or couldn't handle the cooperative-specific 
+          business logic (compulsory savings, social funds, multi-type loans).
+        </p>
+        <p>
+          The core challenge: <strong>build and deploy a production-grade financial 
+          system as a solo developer</strong> — double-entry accounting, role-based 
+          access for five user roles, automated monthly batch processing, professional 
+          reporting, and a full data migration from their existing Excel records.
+        </p>
+
+        <h2>The Architecture</h2>
+        <div class="mermaid">
+graph TB
+    A[Docker: PHP-FPM + Nginx] --> B[Laravel 13 + Livewire 4]
+    B --> C[PostgreSQL]
+    B --> D[Alpine.js Frontend]
+    C --> E[Chart of Accounts]
+    C --> F[Transaction Ledger]
+    C --> G[Loan Management]
+    B --> H[Automated Batch Processing]
+    H --> I[Monthly Savings]
+    H --> J[Social Funds]
+    H --> K[Loan Installments]
+    B --> L[PDF/CSV Reporting]
+    style B fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style C fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+    style A fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+        </div>
+
+        <h2>Why It's Hard</h2>
+        <ul>
+          <li>
+            <strong>Double-entry accounting from scratch:</strong> Every transaction 
+            must balance. A full Chart of Accounts hierarchy, audit trails, and 
+            period locking. Getting this right as a solo developer — without an 
+            accounting background — required deep domain learning.
+          </li>
+          <li>
+            <strong>Legacy data migration:</strong> The cooperative's complete 
+            transaction history lived in Excel files spanning years. Importing, 
+            cleaning, and reconciling this into a normalized PostgreSQL schema 
+            was a data engineering challenge in itself.
+          </li>
+          <li>
+            <strong>Five distinct user roles:</strong> Admin, teller, member, 
+            auditor, and super-admin — each with different permissions, views, 
+            and workflows. Role-based access control had to be airtight for a 
+            financial system handling real money.
+          </li>
+          <li>
+            <strong>On-premise Docker deployment:</strong> The system runs on the 
+            cooperative's own hardware — PHP-FPM + Nginx + PostgreSQL in Docker 
+            containers, with Supervisor-managed scheduling for automated monthly 
+            batch jobs and persistent volume backups.
+          </li>
+        </ul>
+
+        <h2>Key Features Delivered</h2>
+        <ul>
+          <li><strong>Full Chart of Accounts</strong> — hierarchical account structure with double-entry enforcement</li>
+          <li><strong>Automated monthly batch processing</strong> — compulsory savings deductions, social fund contributions, and loan installment postings run on schedule</li>
+          <li><strong>Multi-type loan management</strong> — with automatic installment scheduling, interest calculation, and repayment tracking</li>
+          <li><strong>Role-based access control</strong> — five user roles with granular permissions</li>
+          <li><strong>Professional reporting</strong> — PDF reports with KOP letterhead branding, CSV exports, and printable ledgers via Laravel DOMPDF + PhpSpreadsheet</li>
+          <li><strong>Legacy data reconciliation</strong> — full import and reconciliation of years of cooperative transaction history from Excel</li>
+        </ul>
+
+        <h2>What I'd Do Differently</h2>
+        <ul>
+          <li>
+            <strong>Add automated testing earlier.</strong> Financial software without 
+            tests is terrifying. I added PHPUnit tests partway through, but having 
+            them from day one — especially for the double-entry balance checks and 
+            loan calculations — would have saved debugging time.
+          </li>
+          <li>
+            <strong>Use Laravel's built-in features more aggressively.</strong> I 
+            initially underused Laravel's queuing, notifications, and event system. 
+            Refactoring batch processing to use Laravel queues with Supervisor made 
+            the system significantly more robust.
+          </li>
+          <li>
+            <strong>Design the role-permission system with more granularity.</strong> 
+            Five roles worked for the initial deployment, but as the cooperative 
+            grows, finer-grained permissions would reduce the need for custom 
+            overrides per user.
+          </li>
+          <li>
+            <strong>Build a dedicated data import pipeline.</strong> The legacy Excel 
+            migration was done semi-manually. A repeatable ETL pipeline would have 
+            made the reconciliation process faster and more auditable.
+          </li>
+        </ul>
+
+        <h2>Key Takeaways</h2>
+        <blockquote>
+          Building a production financial system for a real institution — as a solo 
+          developer — teaches you more than any tutorial. Double-entry accounting 
+          isn't just a feature, it's a constraint that shapes every design decision. 
+          The system is deployed on-premise at the cooperative and used daily. That's 
+          a different level of accountability than a side project.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../projects/" class="btn btn-secondary">← Back to Projects</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2024 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

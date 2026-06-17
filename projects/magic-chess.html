@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magic Chess — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="AI-driven chess variant exploring decision systems and game theory. Built with Python, Minimax, and Alpha-Beta pruning.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/projects/magic-chess.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Case Study</span>
+      <h1>Magic Chess</h1>
+      <p>
+        An AI-driven chess variant exploring decision systems, game theory, 
+        and heuristic search algorithms.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:800px;">
+
+      <div class="blog-post" style="padding-top:0;">
+
+        <div class="tag-row" style="margin-bottom:2rem;">
+          <span class="tag">Python</span>
+          <span class="tag">Game AI</span>
+          <span class="tag">Minimax</span>
+          <span class="tag">Alpha-Beta Pruning</span>
+          <span class="tag">2024</span>
+        </div>
+
+        <h2>The Problem</h2>
+        <p>
+          Chess engines are well-studied, but <strong>chess variants with modified 
+          rules</strong> are underexplored. I wanted to build an AI for a custom 
+          chess variant — "Magic Chess" — where certain pieces have special abilities 
+          (teleportation, area attacks, temporary invincibility). The challenge: 
+          <strong>standard chess evaluation functions don't apply</strong>, and the 
+          branching factor explodes with ability choices.
+        </p>
+        <p>
+          This project was partly a passion project (I enjoy chess) and partly an 
+          exploration of <strong>decision systems under complex state spaces</strong> 
+          — skills directly applicable to reinforcement learning and game theory 
+          problems in ML.
+        </p>
+
+        <h2>The Architecture</h2>
+        <div class="mermaid">
+graph TB
+    A[Game State] --> B[Move Generator]
+    B --> C{Special Abilities?}
+    C -->|Yes| D[Ability Resolver]
+    C -->|No| E[Standard Moves]
+    D --> F[Minimax with Alpha-Beta]
+    E --> F
+    F --> G[Evaluation Heuristic]
+    G --> H[Best Move]
+    style F fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style G fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+        </div>
+
+        <h2>Why It's Hard</h2>
+        <ul>
+          <li>
+            <strong>Custom evaluation heuristics.</strong> In standard chess, piece 
+            values and positional tables are well-known. In Magic Chess, special 
+            abilities change piece value dynamically. A knight that can teleport is 
+            worth more than a standard knight — but how much more? This required 
+            designing novel heuristics.
+          </li>
+          <li>
+            <strong>Branching factor explosion.</strong> Each piece with an active 
+            ability adds a decision layer. The search tree grows combinatorially. 
+            Alpha-Beta pruning helps, but move ordering becomes critical — and 
+            standard ordering heuristics don't account for ability moves.
+          </li>
+          <li>
+            <strong>Iterative deepening with time constraints.</strong> The AI needs 
+            to make reasonable moves within a time budget. Implementing iterative 
+            deepening with the expanded move set required careful profiling.
+          </li>
+          <li>
+            <strong>Playtesting-driven tuning.</strong> The only way to know if the 
+            AI was "fun" was to play against it. I built a simple Pygame UI and 
+            iterated on heuristics based on actual gameplay — not just search depth.
+          </li>
+        </ul>
+
+        <h2>Technical Stack</h2>
+        <ul>
+          <li><strong>Python</strong> — core engine: board representation, move generation, search algorithms</li>
+          <li><strong>Minimax with Alpha-Beta pruning</strong> — decision engine with configurable search depth</li>
+          <li><strong>Custom evaluation heuristics</strong> — material + positional + ability-state scoring</li>
+          <li><strong>Pygame</strong> — simple interactive UI for playtesting</li>
+          <li><strong>Move ordering optimizations</strong> — ability-move-aware ordering for better pruning efficiency</li>
+        </ul>
+
+        <h2>What I'd Do Differently</h2>
+        <ul>
+          <li>
+            <strong>Explore MCTS (Monte Carlo Tree Search).</strong> For games with 
+            high branching factors and complex state evaluations, MCTS often 
+            outperforms Minimax. AlphaZero-style approaches are particularly 
+            interesting for variants.
+          </li>
+          <li>
+            <strong>Train evaluation weights with self-play.</strong> Instead of 
+            hand-tuning heuristics, use self-play + reinforcement learning to 
+            discover optimal piece valuations automatically.
+          </li>
+          <li>
+            <strong>Add a web-based UI.</strong> Pygame is fine for testing, but a 
+            web UI (React + WebSocket) would make it shareable and playable by others.
+          </li>
+          <li>
+            <strong>Implement difficulty levels.</strong> Limiting search depth and 
+            adding controlled randomness would make the AI accessible to casual players 
+            while keeping it challenging for experienced ones.
+          </li>
+        </ul>
+
+        <h2>Key Takeaways</h2>
+        <blockquote>
+          Building game AI teaches you about search under constraints, heuristic 
+          design, and the tradeoff between accuracy and compute — the same problems 
+          you face in production ML systems, just in a more playful domain.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../projects/" class="btn btn-secondary">← Back to Projects</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2024 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

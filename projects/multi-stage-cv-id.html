@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pipeline CV Multi-Tahap — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Arsitektur detect-then-classify untuk pengenalan objek dengan akurasi tinggi. Deteksi YOLO + classifier kustom yang dioptimalkan untuk edge deployment.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/projects/multi-stage-cv-id.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Studi Kasus</span>
+      <h1>Pipeline CV Multi-Tahap</h1>
+      <p>
+        Arsitektur detect-then-classify untuk pengenalan objek dengan akurasi tinggi 
+        — dioptimalkan untuk edge deployment.
+      </p>
+      <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
+        <span class="nda-badge">🔒 NDA · Demo Sederhana</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:800px;">
+
+      <div class="blog-post" style="padding-top:0;">
+
+        <div class="tag-row" style="margin-bottom:2rem;">
+          <span class="tag">YOLO</span>
+          <span class="tag">SSD</span>
+          <span class="tag">PyTorch</span>
+          <span class="tag">TensorFlow</span>
+          <span class="tag">OpenCV</span>
+          <span class="tag">ONNX</span>
+          <span class="tag">Edge Inference</span>
+          <span class="tag">2023–2024</span>
+        </div>
+
+        <h2>Masalah</h2>
+        <p>
+          Klien membutuhkan sistem pengenalan objek untuk inspeksi kualitas industri. Tantangannya: <strong>ratusan kategori produk spesifik (fine-grained)</strong> yang tidak bisa ditangani secara akurat oleh detektor tunggal. Produk terlihat mirip di tingkat kategori, tetapi memiliki perbedaan halus yang sangat penting untuk keputusan kualitas.
+        </p>
+        <p>
+          Selain itu, sistem harus berjalan di <strong>perangkat edge</strong> — latensi inferensi di bawah 100ms, tanpa dependensi cloud, dan model harus cukup kecil untuk muat di memori di bawah 200MB.
+        </p>
+
+        <h2>Arsitektur</h2>
+        <div class="mermaid">
+graph TB
+    A[Input Kamera] --> B[Deteksi YOLO]
+    B --> C{Potongan Objek}
+    C --> D[Tahap 1: Klasifikasi Kasar]
+    D --> E{Grup Kategori}
+    E -->|Grup A| F[Klasifikasi Halus A]
+    E -->|Grup B| G[Klasifikasi Halus B]
+    E -->|Grup C| H[Klasifikasi Halus C]
+    F --> I[Agregasi Hasil]
+    G --> I
+    H --> I
+    I --> J[Output JSON]
+    style B fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style D fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+    style F fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+    style G fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+    style H fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+        </div>
+
+        <h2>Mengapa Ini Sulit</h2>
+        <ul>
+          <li>
+            <strong>Pola detect-then-classify mengurangi kompleksitas kombinatorial.</strong> Daripada menggunakan satu model untuk menangani N kategori, detektor hanya mengurus lokalisasi dan masing-masing classifier menangani subset yang lebih kecil. Ini membuat proses training lebih cepat dan akurasi lebih tinggi.
+          </li>
+          <li>
+            <strong>Batasan edge deployment sangat nyata.</strong> Ekspor ONNX, kuantisasi model (INT8), dan manajemen memori yang hati-hati sangatlah esensial. Seluruh pipeline termasuk pre/post-processing harus muat dalam batasan latensi yang ketat.
+          </li>
+          <li>
+            <strong>Ketidakseimbangan data (data imbalance) antar kategori.</strong> Beberapa jenis produk muncul 100x lebih sering daripada yang lain. Pembobotan loss kustom, augmentasi data, dan pembuatan data sintetis (synthetic data generation) sering kali diperlukan.
+          </li>
+          <li>
+            <strong>Strategi update model.</strong> Saat produk baru ditambahkan, Anda tentu tidak ingin melatih ulang semuanya. Arsitektur bertahap ini memungkinkan penambahan classifier halus baru tanpa menyentuh detektor atau tahap classifier lainnya.
+          </li>
+        </ul>
+
+        <h2>Tech Stack</h2>
+        <ul>
+          <li><strong>YOLOv8 + SSD</strong> — deteksi objek, dilatih pada dataset kustom dengan augmentasi spesifik domain</li>
+          <li><strong>PyTorch + TensorFlow</strong> — pelatihan classifier kustom menggunakan backbone ResNet/EfficientNet di kedua framework</li>
+          <li><strong>ONNX Runtime</strong> — optimasi inferensi untuk edge deployment</li>
+          <li><strong>OpenCV</strong> — preprocessing gambar, ekstraksi crop, dan post-processing</li>
+          <li><strong>Kuantisasi model</strong> — kuantisasi INT8 yang mengurangi ukuran model hingga 4x lipat dengan penurunan akurasi yang minimal</li>
+          <li><strong>Sistem evaluasi kustom</strong> — metrik per tahap, confusion matrix, dan profiling latensi</li>
+        </ul>
+
+        <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
+        <ul>
+          <li>
+            <strong>Mengeksplorasi YOLO-NAS atau RT-DETR.</strong> Arsitektur yang lebih baru menawarkan keseimbangan akurasi-latensi yang lebih baik daripada YOLOv8 untuk edge deployment.
+          </li>
+          <li>
+            <strong>Menambahkan kelas penolakan (rejection class).</strong> Saat classifier merasa tidak yakin, arahkan prediksi ke peninjauan manusia daripada memaksakan hasil. Ini sangat penting dalam inspeksi kualitas.
+          </li>
+          <li>
+            <strong>Menerapkan active learning.</strong> Secara otomatis menandai prediksi dengan tingkat keyakinan rendah untuk dilabeli oleh manusia guna meningkatkan model seiring waktu.
+          </li>
+          <li>
+            <strong>Menggunakan Triton Inference Server.</strong> Untuk orkestrasi multi-model di edge, Triton akan menyederhanakan proses pemuatan model, pembuatan versi (versioning), dan batching.
+          </li>
+        </ul>
+
+        <h2>Pelajaran Utama</h2>
+        <blockquote>
+          Pola detect-then-classify sering diremehkan. Memecah masalah menjadi beberapa tahap memberi Anda akurasi yang lebih baik, perawatan yang lebih mudah, dan fleksibilitas untuk memperbarui satu tahap tanpa menyentuh tahap lainnya. Sekarang ini menjadi pendekatan bawaan (default) saya untuk berbagai masalah multi-class vision.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../projects/" class="btn btn-secondary">← Kembali ke Proyek</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2026 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

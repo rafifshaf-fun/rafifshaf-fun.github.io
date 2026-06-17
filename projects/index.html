@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Architecture case studies by Rafif Shafwan — production ML systems, computer vision pipelines, RAG chatbots, and more.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/projects/">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label" data-i18n="projects-label">Projects</span>
+      <h1 data-i18n="projects-page-title">Architecture Case Studies</h1>
+      <p data-i18n="projects-page-sub">
+        Not code dumps — narratives on the problems, architectures, and production 
+        thinking behind each system.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container">
+
+      <div class="card-grid">
+        <!-- Sovereign Ledger -->
+        <article class="case-study">
+          <div class="case-study-body">
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+              <h3 style="margin:0;"><a href="sovereign-ledger.html" data-i18n="project-sovereign-title">Sovereign Ledger</a></h3>
+              <span class="nda-badge">🔒 NDA · KPRI Warga Kesehatan</span>
+            </div>
+            <div class="meta">Full-Stack · Financial · Laravel · 2024</div>
+            <p data-i18n="project-sovereign-desc">
+              Production financial system for a health-worker cooperative — 
+              double-entry accounting, automated batch processing, five user
+              roles, and legacy Excel data migration.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Laravel 13</span><span class="tag">Livewire 4</span>
+              <span class="tag">Alpine.js</span><span class="tag">PostgreSQL</span>
+              <span class="tag">Docker</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Indonesian Stock MLOps -->
+        <article class="case-study">
+          <div class="case-study-body">
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+              <h3 style="margin:0;"><a href="indonesian-stock-mlops.html" data-i18n="project-stock-title">Indonesian Stock MLOps</a></h3>
+              <span class="nda-badge">🔒 NDA · Simplified Demo</span>
+            </div>
+            <div class="meta">MLOps · Time Series · Finance · 2023–2024</div>
+            <p data-i18n="project-stock-desc">
+              End-to-end ML pipeline for 45 IDXBLUE stocks — MLflow experiment
+              tracking, Grafana monitoring, Docker deployment, and automated retraining.
+              The public repo is a simplified version of the production system.
+            </p>
+            <div class="tag-row">
+              <span class="tag">MLflow</span><span class="tag">Grafana</span>
+              <span class="tag">Docker</span><span class="tag">Scikit-learn</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Multi-Stage CV -->
+        <article class="case-study">
+          <div class="case-study-body">
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+              <h3 style="margin:0;"><a href="multi-stage-cv.html" data-i18n="project-cv-title">Multi-Stage CV Pipeline</a></h3>
+              <span class="nda-badge">🔒 NDA · Simplified Demo</span>
+            </div>
+            <div class="meta">Computer Vision · YOLO · PyTorch · 2023–2024</div>
+            <p data-i18n="project-cv-desc">
+              Detect-then-classify architecture for high-accuracy object 
+              recognition, optimized for edge deployment with ONNX and INT8 quantization.
+              The public repo is a simplified version of the enterprise system.
+            </p>
+            <div class="tag-row">
+              <span class="tag">YOLO</span><span class="tag">SSD</span>
+              <span class="tag">PyTorch</span><span class="tag">TensorFlow</span>
+              <span class="tag">ONNX</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CV RAG Chatbot -->
+        <article class="case-study">
+          <div class="case-study-body">
+            <h3 style="margin:0;margin-bottom:0.5rem;"><a href="cv-rag-chatbot.html" data-i18n="project-rag-title">CV RAG Chatbot</a></h3>
+            <div class="meta">LLM · RAG · Streamlit · 2024</div>
+            <p data-i18n="project-rag-desc">
+              Interactive RAG chatbot answering questions about my CV. Built with 
+              LangChain LCEL, FAISS, FastEmbed (ONNX), Groq Llama 3.3, and RAGAS.
+            </p>
+            <div class="tag-row">
+              <span class="tag">LangChain LCEL</span><span class="tag">FAISS</span>
+              <span class="tag">FastEmbed</span><span class="tag">Groq</span>
+              <span class="tag">RAGAS</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Makmur Grosir -->
+        <article class="case-study">
+          <div class="case-study-body">
+            <h3 style="margin:0;margin-bottom:0.5rem;"><a href="makmur-grosir.html">Makmur Grosir</a></h3>
+            <div class="meta">Web Scraping · Automation · Node.js · 2025</div>
+            <p>
+              Playwright-based scraper that searches 2,500+ products across
+              4 Indonesian e-commerce platforms — with anti-bot evasion.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Playwright</span><span class="tag">Node.js</span>
+              <span class="tag">GitHub Actions</span><span class="tag">Anti-Bot</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Magic Chess -->
+        <article class="case-study">
+          <div class="case-study-body">
+            <h3 style="margin:0;margin-bottom:0.5rem;"><a href="magic-chess.html" data-i18n="project-magic-title">Magic Chess</a></h3>
+            <div class="meta">Game AI · Decision Systems · 2024</div>
+            <p data-i18n="project-magic-desc">
+              AI-driven chess variant exploring decision systems and heuristic 
+              search — Minimax with Alpha-Beta pruning for a custom rule set.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Python</span><span class="tag">Game AI</span>
+              <span class="tag">Minimax</span><span class="tag">Alpha-Beta</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2024 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

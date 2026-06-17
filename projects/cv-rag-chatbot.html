@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV RAG Chatbot — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Retrieval-Augmented Generation chatbot answering questions about my CV. Built with LangChain, FAISS, Streamlit, and evaluated with RAGAS.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/projects/cv-rag-chatbot.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Case Study</span>
+      <h1>CV RAG Chatbot</h1>
+      <p>
+        A live Retrieval-Augmented Generation chatbot — ask questions about my 
+        professional background, powered by LangChain + FAISS.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:800px;">
+
+      <div class="blog-post" style="padding-top:0;">
+
+        <div class="tag-row" style="margin-bottom:2rem;">
+          <span class="tag">LangChain LCEL</span>
+          <span class="tag">FAISS</span>
+          <span class="tag">FastEmbed (ONNX)</span>
+          <span class="tag">Groq Llama 3.3</span>
+          <span class="tag">Streamlit</span>
+          <span class="tag">RAGAS</span>
+          <span class="tag">2024</span>
+        </div>
+
+        <div style="text-align:center;margin:2rem 0;">
+          <a href="https://ask-rafif.streamlit.app" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:1.1rem;padding:0.85rem 2rem;">
+            🤖 Try the Live Chatbot →
+          </a>
+        </div>
+
+        <h2>The Problem</h2>
+        <p>
+          My GitHub profile doesn't tell the full story. Most of my best work is 
+          under NDA, and a static CV can't answer follow-up questions. I needed a 
+          way for recruiters and potential clients to <strong>interactively explore 
+          my background</strong> — ask specific questions and get context-aware answers.
+        </p>
+        <p>
+          This is also a <strong>live demonstration of RAG architecture</strong> — 
+          showing that I can build, evaluate, and deploy LLM applications, not just 
+          talk about them.
+        </p>
+
+        <h2>The Architecture</h2>
+        <div class="mermaid">
+graph TB
+    A[User Question] --> B[Streamlit UI]
+    B --> C[LangChain LCEL Orchestrator]
+    C --> D[FAISS Vector Store]
+    C --> E[Groq Llama 3.3]
+    D --> F[CV + Project Docs]
+    E --> G[Generated Answer]
+    G --> B
+    H[RAGAS Evaluation] --> I[Faithfulness]
+    H --> J[Answer Relevancy]
+    H --> K[Context Precision]
+    style C fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style D fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+    style H fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+        </div>
+
+        <h2>Why It's Hard</h2>
+        <ul>
+          <li>
+            <strong>Retrieval quality is everything.</strong> If the retriever pulls 
+            irrelevant chunks, the LLM hallucinates. I used RAGAS to measure 
+            faithfulness, answer relevancy, and context precision — iterating on 
+            chunking strategy and embedding models until metrics were solid.
+          </li>
+          <li>
+            <strong>Chunking strategy matters.</strong> CV data is structured 
+            (sections, bullet points). Naive chunking breaks semantic coherence. 
+            I implemented section-aware chunking that respects document structure.
+          </li>
+          <li>
+            <strong>Evaluation-driven development.</strong> Instead of guessing 
+            whether the chatbot was good, I built a RAGAS evaluation pipeline 
+            with synthetic test questions. Every change to chunking, prompting, 
+            or retrieval was measured.
+          </li>
+          <li>
+            <strong>Deployment on Streamlit Cloud.</strong> Free tier, no server 
+            management. But cold starts and memory limits required optimizing 
+            the FAISS index size and model loading.
+          </li>
+        </ul>
+
+        <h2>Technical Stack</h2>
+        <ul>
+          <li><strong>LangChain LCEL</strong> — declarative chain composition: document loading, splitting, retrieval, and prompt management</li>
+          <li><strong>FAISS</strong> — vector store for semantic search over CV and project documents</li>
+          <li><strong>FastEmbed (ONNX-based)</strong> — local embeddings, no API dependency, fast cold starts</li>
+          <li><strong>Groq + Llama 3.3</strong> — LLM for answer generation via Groq's high-throughput inference API</li>
+          <li><strong>Streamlit</strong> — UI framework, deployed on Streamlit Community Cloud</li>
+          <li><strong>RAGAS</strong> — evaluation framework measuring faithfulness, answer relevancy, and context precision</li>
+        </ul>
+
+        <h2>What I'd Do Differently</h2>
+        <ul>
+          <li>
+            <strong>Add hybrid search (BM25 + semantic).</strong> Pure semantic search 
+            sometimes misses exact keyword matches. A hybrid approach would improve 
+            recall for specific skill/technology queries.
+          </li>
+          <li>
+            <strong>Implement query rewriting.</strong> User questions are often vague. 
+            Rewriting them into more specific queries before retrieval would improve 
+            context precision.
+          </li>
+          <li>
+            <strong>Add source citations in the UI.</strong> Showing which CV section 
+            each answer came from builds trust. Users should be able to click through 
+            to the source.
+          </li>
+          <li>
+            <strong>Experiment with reranking.</strong> A cross-encoder reranker after 
+            initial retrieval could further improve context precision, especially for 
+            ambiguous queries.
+          </li>
+        </ul>
+
+        <h2>Key Takeaways</h2>
+        <blockquote>
+          Building a RAG chatbot is easy. Building one that's actually useful is hard. 
+          The difference is evaluation — measuring retrieval quality, iterating on 
+          chunking, and being honest about when the system doesn't know something. 
+          RAGAS made this measurable instead of subjective.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../projects/" class="btn btn-secondary">← Back to Projects</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2024 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

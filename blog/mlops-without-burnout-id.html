@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLOps Tanpa Burnout — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Menjalankan MLflow, Grafana, dan Docker di hardware terbatas. MLOps pragmatis untuk solo engineer dan tim kecil.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/blog/mlops-without-burnout-id.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Artikel Blog</span>
+      <h1>MLOps Tanpa Burnout</h1>
+      <div class="post-meta" style="margin-top:1rem;">
+        <span>📅 April 2024</span>
+        <span>⏱️ 7 menit baca</span>
+        <span>🏷️ MLOps · Docker · MLflow · Grafana</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container">
+      <div class="blog-post">
+
+        <p>
+          Setiap tutorial MLOps sepertinya berasumsi bahwa Anda memiliki cluster Kubernetes, tim berisi 5 engineer DevOps, dan budget cloud yang bisa membuat seorang founder startup menangis. Inilah realitas bagi kebanyakan dari kita: sebuah VPS dengan 4 vCPU dan RAM 8GB, Docker Compose, dan tekad untuk membuatnya berhasil.
+        </p>
+        <p>
+          Saya menjalankan stack MLOps saya dari <strong>Garut, Indonesia</strong> — bukan persisnya region AWS us-east-1. Berikut ini adalah apa yang saya pelajari tentang membangun infrastruktur ML yang andal tanpa harus merasa kelelahan ekstrim (burnout) atau membakar uang.
+        </p>
+
+        <h2>Stack MLOps Paling Minimal</h2>
+        <div class="mermaid">
+graph TB
+    A[Skrip Training] --> B[Tracking MLflow]
+    B --> C[Model Registry MLflow]
+    C --> D[Container Docker]
+    D --> E[API Prediksi]
+    E --> F[Monitoring Grafana]
+    F -->|Alert Drift| G[Pemicu Retrain]
+    G --> A
+    style B fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style F fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+        </div>
+
+        <p>Inilah yang benar-benar Anda butuhkan — dan apa yang bisa Anda lewati:</p>
+
+        <h3>✅ Wajib Punya</h3>
+        <ul>
+          <li>
+            <strong>Experiment tracking (MLflow).</strong> Anda PASTI akan lupa hyperparameter mana yang menghasilkan output mana. MLflow itu gratis, bisa berjalan di mana saja, dan hanya butuh 20 menit untuk disiapkan.
+          </li>
+          <li>
+            <strong>Containerisasi (Docker).</strong> Kalimat "tapi jalan kok di laptop saya" adalah musuh utama dari production ML. Docker Compose menangani seluruh stack Anda dalam satu file <code>docker-compose.yml</code>.
+          </li>
+          <li>
+            <strong>Monitoring (Grafana).</strong> Jika Anda tidak bisa melihat penyimpangan (drift) dari prediksi, Anda tidak tahu apakah model Anda sedang menurun performanya. Menyiapkan dashboard Grafana butuh waktu satu jam dan akan langsung memberikan keuntungan.
+          </li>
+          <li>
+            <strong>Versioning model.</strong> MLflow Model Registry bisa menangani ini. Setiap model yang ada di production harus punya versi, status (staging/production/archived), dan asal-usul yang jelas kembali ke proses pelatihannya.
+          </li>
+        </ul>
+
+        <h3>❌ Bisa Dilewati (Untuk Saat Ini)</h3>
+        <ul>
+          <li>Kubernetes — Docker Compose sudah cukup untuk deployment dalam satu server (single-node)</li>
+          <li>Feature store (Feast, Tecton) — sebuah tabel PostgreSQL dengan kumpulan fitur yang diberi versi sudah berfungsi dengan baik pada awalnya</li>
+          <li>Pipeline CI/CD untuk ML — retraining manual dengan MLflow API tidak masalah saat Anda satu-satunya engineer di sana</li>
+          <li>Versioning data (DVC) — Git LFS atau bahkan folder data yang dinamai dengan tanggal sudah bisa digunakan untuk dataset kecil hingga menengah</li>
+          <li>Framework serving model (TorchServe, Triton) — menggunakan FastAPI sebagai pembungkus model Anda jauh lebih sederhana dan lebih mudah di-debug</li>
+        </ul>
+
+        <h2>File docker-compose.yml Saya</h2>
+        <pre><code># Stack yang berjalan di atas VPS $20/bulan
+version: '3.8'
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.12.0
+    ports: ["5000:5000"]
+    command: mlflow server --host 0.0.0.0 --backend-store-uri postgresql://...
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:10.4.0
+    ports: ["3000:3000"]
+    volumes: ["./grafana/dashboards:/etc/grafana/provisioning/dashboards"]
+    restart: unless-stopped
+
+  prediction-api:
+    build: ./api
+    ports: ["8000:8000"]
+    depends_on: [mlflow]
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: mlops
+      POSTGRES_USER: mlflow
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    restart: unless-stopped
+
+volumes:
+  pgdata:</code></pre>
+
+        <h2>Prinsip MLOps untuk Solo Engineer</h2>
+
+        <h3>1. Pilih Teknologi yang Membosankan (Boring Technology)</h3>
+        <p>
+          Pilih PostgreSQL ketimbang database time-series khusus. FastAPI ketimbang TensorFlow Serving. Docker Compose ketimbang Kubernetes. Setiap pilihan teknologi harus bisa dipertahankan dengan alasan: "Saya bisa men-debug ini pada jam 2 pagi ketika semuanya rusak." Jika Anda tidak bisa, berarti itu terlalu rumit.
+        </p>
+
+        <h3>2. Monitoring Itu Harga Mati</h3>
+        <p>
+          Monitoring minimal yang harus ada:
+        </p>
+        <ul>
+          <li><strong>Distribusi prediksi seiring waktu</strong> — histogram yang diperbarui setiap hari. Jika bentuknya berubah, data Anda berubah.</li>
+          <li><strong>Penyimpangan fitur (Feature drift / PSI)</strong> — Population Stability Index untuk 10 fitur terpenting. Berikan peringatan jika PSI > 0.2.</li>
+          <li><strong>Latensi model p50/p95/p99</strong> — karena model yang lambat sama dengan model yang rusak.</li>
+          <li><strong>Tingkat error</strong> — kegagalan prediksi, timeout, output NaN.</li>
+        </ul>
+        <p>
+          Semua ini muat dalam satu dashboard Grafana. Siapkan sekali, dan cukup lihat sekilas setiap hari.
+        </p>
+
+        <h3>3. Otomatiskan Pemicu Retraining, Bukan Jadwalnya</h3>
+        <p>
+          Melatih ulang model pada jadwal tetap (setiap hari Senin!) adalah pemborosan dan sering kali melewatkan momen kapan retraining sebenarnya dibutuhkan. Alih-alih begitu, piculah retraining hanya saat metrik drift melewati batas aman (threshold). Ini berarti retraining terjadi saat benar-benar dibutuhkan — bukan karena kalender yang menyuruhnya.
+        </p>
+
+        <h3>4. Dokumentasikan Keputusan Arsitektur</h3>
+        <p>
+          Saat Anda adalah solo engineer, tidak ada orang yang bisa ditanya "kenapa kita memilih XGBoost dibanding LightGBM?" Enam bulan dari sekarang, Anda-lah orang yang akan menanyakan itu. Tulislah. File <code>DECISIONS.md</code> sederhana di repo Anda akan menyelamatkan Anda dari pekerjaan arkeologi yang menghabiskan waktu berjam-jam.
+        </p>
+
+        <h2>Apa yang Akan Saya Tambahkan Jika Ada Resource Lebih</h2>
+        <ul>
+          <li>Feature store yang proper ketika feature engineering mulai menjadi bottleneck</li>
+          <li>Shadow deployment untuk rilis model baru dengan risiko nol</li>
+          <li>Infrastruktur A/B testing untuk membandingkan performa model langsung di production</li>
+          <li>Hyperparameter tuning otomatis (Optuna) yang terintegrasi dengan MLflow</li>
+        </ul>
+        <p>
+          Tapi semua itu bukanlah pemblokir utama. Anda tetap bisa merilis sistem ML yang andal hari ini juga menggunakan stack yang dijelaskan di atas. Saya melakukannya setiap hari — dari Garut, menggunakan VPS yang biayanya lebih murah daripada makan malam di luar.
+        </p>
+
+        <h2>Kesimpulan</h2>
+        <blockquote>
+          MLOps tidak membutuhkan gelar PhD dalam infrastruktur komputer. Mulailah dengan experiment tracking dan monitoring. Tambahkan kompleksitas hanya ketika setup yang sekarang benar-benar mulai menyusahkan. Mayoritas proyek ML tidak gagal karena infrastruktur yang tidak memadai — mereka gagal karena tidak ada yang tahu apakah modelnya masih berfungsi dengan baik.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../blog/" class="btn btn-secondary">← Kembali ke Blog</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2026 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

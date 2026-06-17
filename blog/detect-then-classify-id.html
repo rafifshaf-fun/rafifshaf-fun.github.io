@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pola Detect-Then-Classify — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Mengapa memisahkan deteksi dan klasifikasi objek ke dalam tahapan yang berbeda memberikan akurasi, kemudahan perawatan, dan fleksibilitas deployment yang lebih baik.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/blog/detect-then-classify-id.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Artikel Blog</span>
+      <h1>Pola Detect-Then-Classify</h1>
+      <div class="post-meta" style="margin-top:1rem;">
+        <span>📅 Mei 2024</span>
+        <span>⏱️ 8 menit baca</span>
+        <span>🏷️ Computer Vision · Architecture · PyTorch</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container">
+      <div class="blog-post">
+
+        <p>
+          Sebagian besar tutorial computer vision mengajarkan Anda untuk membangun satu model yang melakukan segalanya: mendeteksi objek SEKALIGUS mengklasifikasikannya dalam satu forward pass. YOLO, SSD, Faster R-CNN — ini adalah detektor end-to-end yang menghasilkan bounding box beserta label kelasnya.
+        </p>
+        <p>
+          Di lingkungan production, pendekatan ini sering kali bukanlah pilihan yang tepat. Inilah alasannya — dan apa yang sebaiknya Anda lakukan.
+        </p>
+
+        <h2>Masalah dengan End-to-End</h2>
+        <p>
+          Ketika Anda memiliki <strong>ratusan kelas yang sangat spesifik (fine-grained)</strong>, kompleksitas kombinasinya meledak. Satu model YOLO yang mencoba membedakan 200 jenis produk (SKU) akan kesulitan karena:
+        </p>
+        <ul>
+          <li>Ketidakseimbangan kelas (Class imbalance): beberapa produk muncul 100x lebih sering daripada yang lain</li>
+          <li>Interferensi fitur: backbone detektor mempelajari fitur yang dioptimalkan untuk lokalisasi, bukan untuk diskriminasi kelas yang sangat spesifik</li>
+          <li>Hambatan update: menambahkan satu kategori produk baru berarti harus melatih ulang (retrain) seluruh model</li>
+          <li>Inflexibilitas deployment: Anda tidak bisa sekadar mengganti logika klasifikasi tanpa menyentuh detektornya</li>
+        </ul>
+
+        <h2>Solusinya: Pisahkan Deteksi dan Klasifikasi</h2>
+        <div class="mermaid">
+graph LR
+    A[Input Gambar] --> B[Tahap 1: Detektor]
+    B --> C[Potongan Objek]
+    C --> D[Tahap 2: Klasifikasi Kasar]
+    D --> E[Grup Kategori]
+    E --> F[Tahap 3: Klasifikasi Halus]
+    F --> G[Label Final]
+    style B fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style D fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+    style F fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+        </div>
+
+        <p>
+          Pola detect-then-classify memecah masalah menjadi tahapan-tahapan yang independen:
+        </p>
+        <ol>
+          <li>
+            <strong>Deteksi (YOLO / EfficientDet):</strong> Temukan semua objek, hasilkan bounding box. Model ini hanya perlu membedakan "objek vs latar belakang" — jauh lebih sederhana, dan jauh lebih kuat.
+          </li>
+          <li>
+            <strong>Klasifikasi Kasar (Coarse Classification):</strong> Masukkan setiap potongan gambar (crop) ke dalam grup kategori (misal: "elektronik," "pakaian," "makanan"). Menggunakan model ringan dengan recall tinggi.
+          </li>
+          <li>
+            <strong>Klasifikasi Halus (Fine Classification):</strong> Di dalam setiap grup, classifier khusus membedakan item-item spesifik. Setiap classifier hanya menangani 20–50 kelas — jauh lebih mudah dilatih dan di-maintain.
+          </li>
+        </ol>
+
+        <h2>Mengapa Ini Menang di Production</h2>
+
+        <h3>1. Akurasi Per Kelas yang Lebih Baik</h3>
+        <p>
+          Classifier yang menangani 30 kelas hampir selalu mengalahkan detektor yang menangani 200 kelas. Kapasitas model difokuskan pada diskriminasi objek, bukan lokalisasi. Dalam pipeline production saya, pendekatan bertahap ini meningkatkan F1-score per kelas sebesar 12–18% dibandingkan baseline YOLO end-to-end.
+        </p>
+
+        <h3>2. Maintainability yang Independen</h3>
+        <p>
+          Ketika klien menambahkan 5 SKU produk baru, saya hanya perlu melatih ulang classifier halus yang relevan — bukan detektornya, bukan classifier kasarnya, dan bukan classifier halus lainnya. Waktu training turun dari hitungan jam menjadi menit. Risiko deployment juga turun drastis karena hanya satu komponen yang berubah.
+        </p>
+
+        <h3>3. Deployment Fleksibel</h3>
+        <p>
+          Detektor dapat dijalankan di perangkat edge (ONNX, terkuantisasi) sementara classifier halus berjalan di server jika diperlukan. Atau Anda bisa menukar detektor dari YOLOv8 ke YOLO-NAS tanpa menyentuh logika klasifikasi. Setiap komponen berkembang secara independen.
+        </p>
+
+        <h3>4. Debugging yang Lebih Baik</h3>
+        <p>
+          Ketika sistem membuat kesalahan, Anda tahu persis di mana letaknya: apakah objek tidak terdeteksi? Apakah salah masuk ke grup kasar? Atau classifier halus yang kebingungan? Arsitektur bertahap memberi Anda metrik per-tahap yang membuat proses debugging menjadi sistematis, bukan sekadar tebak-tebakan.
+        </p>
+
+        <h2>Kompromi (Tradeoffs)</h2>
+        <ul>
+          <li>
+            <strong>Latensi:</strong> Banyak model berarti banyak proses forward pass. Namun dengan ONNX dan batching, overhead-nya sering kali di bawah 10ms — sangat dapat diterima untuk sebagian besar kasus penggunaan.
+          </li>
+          <li>
+            <strong>Kompleksitas:</strong> Lebih banyak komponen yang harus diorkestrasi. Namun pemisahan tanggung jawab ini biasanya justru mengurangi kompleksitas sistem secara keseluruhan dibandingkan dengan model monolitik yang memiliki ribuan edge-case.
+          </li>
+          <li>
+            <strong>Kebutuhan data:</strong> Setiap classifier halus membutuhkan data pelatihannya sendiri. Tapi biasanya ini sudah tersedia — Anda hanya perlu mengaturnya secara berbeda.
+          </li>
+        </ul>
+
+        <h2>Kapan TIDAK Menggunakan Pola Ini</h2>
+        <ul>
+          <li>Anda memiliki kurang dari 20 kelas — pendekatan end-to-end lebih sederhana dan mungkin sudah cukup</li>
+          <li>Latensi sangat ketat (< 5ms) — overhead dari banyak proses forward pass menjadi masalah</li>
+          <li>Kelas-kelas tersebut saling eksklusif dan terpisah dengan jelas — tidak diperlukan diskriminasi spesifik (fine-grained)</li>
+          <li>Anda masih di tahap awal prototyping — mulailah dengan yang sederhana, tambahkan tahapan saat dibutuhkan</li>
+        </ul>
+
+        <h2>Sketsa Kode</h2>
+        <pre><code># Pipeline detect-then-classify yang disederhanakan
+import torch
+from detector import YOLODetector
+from classifiers import CoarseClassifier, FineClassifier
+
+class StagedPipeline:
+    def __init__(self):
+        self.detector = YOLODetector("yolov8n.pt")
+        self.coarse = CoarseClassifier("efficientnet_b0_coarse.pt")
+        self.fine = {
+            "electronics": FineClassifier("resnet18_electronics.pt"),
+            "clothing": FineClassifier("resnet18_clothing.pt"),
+            "food": FineClassifier("resnet18_food.pt"),
+        }
+    
+    def __call__(self, image):
+        crops = self.detector.detect(image)
+        results = []
+        for crop, bbox in crops:
+            coarse_label = self.coarse.classify(crop)
+            fine_label = self.fine[coarse_label].classify(crop)
+            results.append({"bbox": bbox, "label": fine_label})
+        return results</code></pre>
+
+        <h2>Kesimpulan</h2>
+        <blockquote>
+          Pola detect-then-classify tidak terlihat mewah. Pola ini mungkin tidak akan memenangkan benchmark. Tapi di production, di mana maintainability dan akurasi pada data nyata lebih penting daripada keanggunan arsitektur, ini sering kali merupakan pilihan yang pragmatis. Pecah masalahnya, selesaikan setiap bagian dengan baik, dan pertahankan sistem agar tetap mudah dikembangkan.
+        </blockquote>
+
+        <p>
+          <em>Lihat <a href="../projects/multi-stage-cv.html">Studi Kasus Pipeline CV Multi-Tahap</a> 
+          untuk detail implementasi selengkapnya.</em>
+        </p>
+
+        <div style="margin-top:3rem;">
+          <a href="../blog/" class="btn btn-secondary">← Kembali ke Blog</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2026 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

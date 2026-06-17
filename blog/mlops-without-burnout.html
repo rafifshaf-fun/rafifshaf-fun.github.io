@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLOps Without Burnout — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Running MLflow, Grafana, and Docker on modest hardware. Pragmatic MLOps for solo engineers and small teams.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/blog/mlops-without-burnout.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Blog Post</span>
+      <h1>MLOps Without Burnout</h1>
+      <div class="post-meta" style="margin-top:1rem;">
+        <span>📅 April 2024</span>
+        <span>⏱️ 7 min read</span>
+        <span>🏷️ MLOps · Docker · MLflow · Grafana</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container">
+      <div class="blog-post">
+
+        <p>
+          Every MLOps tutorial seems to assume you have a Kubernetes cluster, a team 
+          of 5 DevOps engineers, and a cloud budget that would make a startup founder 
+          weep. Here's the reality for most of us: a VPS with 4 vCPUs and 8GB RAM, 
+          Docker Compose, and the determination to make it work.
+        </p>
+        <p>
+          I run my MLOps stack in <strong>Garut, Indonesia</strong> — not exactly 
+          AWS us-east-1. Here's what I've learned about building reliable ML 
+          infrastructure without burning out (or burning cash).
+        </p>
+
+        <h2>The Minimal Viable MLOps Stack</h2>
+        <div class="mermaid">
+graph TB
+    A[Training Scripts] --> B[MLflow Tracking]
+    B --> C[MLflow Model Registry]
+    C --> D[Docker Container]
+    D --> E[Prediction API]
+    E --> F[Grafana Monitoring]
+    F -->|Drift Alert| G[Retrain Trigger]
+    G --> A
+    style B fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style F fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+        </div>
+
+        <p>Here's what you actually need — and what you can skip:</p>
+
+        <h3>✅ Must-Have</h3>
+        <ul>
+          <li>
+            <strong>Experiment tracking (MLflow).</strong> You WILL forget which 
+            hyperparameters produced which results. MLflow is free, runs anywhere, 
+            and takes 20 minutes to set up.
+          </li>
+          <li>
+            <strong>Containerization (Docker).</strong> "It works on my machine" 
+            is the enemy of production ML. Docker Compose handles your entire stack 
+            in one <code>docker-compose.yml</code>.
+          </li>
+          <li>
+            <strong>Monitoring (Grafana).</strong> If you can't see prediction 
+            drift, you don't know your model is degrading. Grafana dashboards take 
+            an hour to set up and pay back immediately.
+          </li>
+          <li>
+            <strong>Model versioning.</strong> MLflow Model Registry handles this. 
+            Every model in production should have a version, a stage (staging/production/archived), 
+            and a clear lineage back to the training run.
+          </li>
+        </ul>
+
+        <h3>❌ Can Skip (For Now)</h3>
+        <ul>
+          <li>Kubernetes — Docker Compose is sufficient for single-node deployments</li>
+          <li>Feature stores (Feast, Tecton) — a PostgreSQL table with versioned feature sets works fine initially</li>
+          <li>CI/CD pipelines for ML — manual retraining with MLflow API is OK when you're the only engineer</li>
+          <li>Data versioning (DVC) — Git LFS or even dated data folders work for small-to-medium datasets</li>
+          <li>Model serving frameworks (TorchServe, Triton) — a FastAPI wrapper around your model is simpler and more debuggable</li>
+        </ul>
+
+        <h2>My docker-compose.yml</h2>
+        <pre><code># The stack that runs on a $20/month VPS
+version: '3.8'
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.12.0
+    ports: ["5000:5000"]
+    command: mlflow server --host 0.0.0.0 --backend-store-uri postgresql://...
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:10.4.0
+    ports: ["3000:3000"]
+    volumes: ["./grafana/dashboards:/etc/grafana/provisioning/dashboards"]
+    restart: unless-stopped
+
+  prediction-api:
+    build: ./api
+    ports: ["8000:8000"]
+    depends_on: [mlflow]
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: mlops
+      POSTGRES_USER: mlflow
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    restart: unless-stopped
+
+volumes:
+  pgdata:</code></pre>
+
+        <h2>Principles for Solo MLOps</h2>
+
+        <h3>1. Prefer Boring Technology</h3>
+        <p>
+          PostgreSQL over specialized time-series DBs. FastAPI over TensorFlow Serving. 
+          Docker Compose over Kubernetes. Every technology choice should be defensible 
+          with: "I can debug this at 2 AM when it breaks." If you can't, it's too complex.
+        </p>
+
+        <h3>2. Monitoring Is Non-Negotiable</h3>
+        <p>
+          The minimum viable monitoring:
+        </p>
+        <ul>
+          <li><strong>Prediction distribution over time</strong> — a histogram that updates daily. If the shape changes, your data changed.</li>
+          <li><strong>Feature drift (PSI)</strong> — Population Stability Index for top 10 features. Alert if PSI > 0.2.</li>
+          <li><strong>Model latency p50/p95/p99</strong> — because a slow model is a broken model.</li>
+          <li><strong>Error rate</strong> — prediction failures, timeouts, NaN outputs.</li>
+        </ul>
+        <p>
+          All of this fits in a single Grafana dashboard. Set it up once, glance at it daily.
+        </p>
+
+        <h3>3. Automate Retraining Triggers, Not Schedules</h3>
+        <p>
+          Retraining on a fixed schedule (every Monday!) is wasteful and often misses 
+          the moment when retraining is actually needed. Instead, trigger retraining 
+          when drift metrics cross thresholds. This means retraining happens when it 
+          matters — not when the calendar says so.
+        </p>
+
+        <h3>4. Document Architecture Decisions</h3>
+        <p>
+          When you're a solo engineer, there's no one to ask "why did we choose XGBoost 
+          over LightGBM?" Six months from now, you'll be that person. Write it down. 
+          A simple <code>DECISIONS.md</code> in your repo saves future-you hours of 
+          archaeology.
+        </p>
+
+        <h2>What I'd Add With More Resources</h2>
+        <ul>
+          <li>A proper feature store when feature engineering becomes the bottleneck</li>
+          <li>Shadow deployment for zero-risk model updates</li>
+          <li>A/B testing infrastructure for model comparison in production</li>
+          <li>Automated hyperparameter tuning (Optuna) integrated with MLflow</li>
+        </ul>
+        <p>
+          But none of these are blockers. You can ship reliable ML systems today with 
+          the stack described above. I do it every day — from Garut, on a VPS that 
+          costs less than a dinner out.
+        </p>
+
+        <h2>The Bottom Line</h2>
+        <blockquote>
+          MLOps doesn't require a PhD in infrastructure. Start with experiment tracking 
+          and monitoring. Add complexity only when the current setup actually hurts. 
+          Most ML projects don't fail because of inadequate infrastructure — they fail 
+          because nobody knows if the model is still working.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../blog/" class="btn btn-secondary">← Back to Blog</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2024 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

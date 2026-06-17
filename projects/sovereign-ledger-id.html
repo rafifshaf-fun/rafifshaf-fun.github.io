@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sovereign Ledger — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Platform akuntansi koperasi dengan model ML terintegrasi. Dibangun solo dengan Laravel, Livewire, dan PostgreSQL.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/projects/sovereign-ledger-id.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Studi Kasus</span>
+      <h1>Sovereign Ledger</h1>
+      <p>
+        Sistem manajemen keuangan komprehensif yang dibangun untuk koperasi pekerja kesehatan di Garut, Indonesia — di-deploy on-premise dan digunakan aktif setiap hari.
+      </p>
+      <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
+        <span class="nda-badge">🔒 NDA · KPRI Warga Kesehatan</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:800px;">
+
+      <div class="blog-post" style="padding-top:0;">
+
+        <div class="tag-row" style="margin-bottom:2rem;">
+          <span class="tag">Laravel 13</span>
+          <span class="tag">Livewire 4</span>
+          <span class="tag">Alpine.js</span>
+          <span class="tag">PostgreSQL</span>
+          <span class="tag">Tailwind CSS</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Full-Stack</span>
+          <span class="tag">Solo Build</span>
+        </div>
+
+        <h2>Masalah</h2>
+        <p>
+          <strong>KPRI Warga Kesehatan Kabupaten Garut</strong> — sebuah koperasi pekerja kesehatan — membutuhkan sistem manajemen keuangan yang lengkap. Selama bertahun-tahun mereka menggunakan Microsoft Excel, dengan seluruh riwayat transaksi terkunci di dalam file legacy tersebut. Solusi software yang ada di pasaran terlalu mahal atau tidak bisa menangani logika bisnis khusus koperasi (simpanan wajib, dana sosial, dan berbagai jenis pinjaman).
+        </p>
+        <p>
+          Tantangan utamanya: <strong>membangun dan men-deploy sistem keuangan level production sebagai solo developer</strong> — dengan sistem akuntansi double-entry, role-based access untuk lima jenis pengguna, pemrosesan batch bulanan otomatis, pelaporan profesional, dan migrasi data penuh dari catatan Excel lama mereka.
+        </p>
+
+        <h2>Arsitektur</h2>
+        <div class="mermaid">
+graph TB
+    A[Docker: PHP-FPM + Nginx] --> B[Laravel 13 + Livewire 4]
+    B --> C[PostgreSQL]
+    B --> D[Alpine.js Frontend]
+    C --> E[Chart of Accounts]
+    C --> F[Transaction Ledger]
+    C --> G[Loan Management]
+    B --> H[Automated Batch Processing]
+    H --> I[Monthly Savings]
+    H --> J[Social Funds]
+    H --> K[Loan Installments]
+    B --> L[PDF/CSV Reporting]
+    style B fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style C fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+    style A fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+        </div>
+
+        <h2>Mengapa Ini Sulit</h2>
+        <ul>
+          <li>
+            <strong>Akuntansi double-entry dari nol:</strong> Setiap transaksi harus seimbang (balance). Hierarki Chart of Accounts yang lengkap, jejak audit, dan penguncian periode (period locking). Membangun ini dengan benar sebagai solo developer — tanpa latar belakang akuntansi — membutuhkan pembelajaran mendalam di domain ini.
+          </li>
+          <li>
+            <strong>Migrasi data legacy:</strong> Seluruh riwayat transaksi koperasi tersimpan di file Excel selama bertahun-tahun. Mengimpor, membersihkan, dan merekonsiliasi data ini ke dalam skema PostgreSQL yang ternormalisasi adalah tantangan data engineering tersendiri.
+          </li>
+          <li>
+            <strong>Lima peran pengguna yang berbeda:</strong> Admin, teller, anggota, auditor, dan super-admin — masing-masing dengan izin, tampilan, dan alur kerja yang berbeda. Role-based access control harus sangat ketat untuk sistem keuangan yang menangani uang asli.
+          </li>
+          <li>
+            <strong>Deployment Docker on-premise:</strong> Sistem ini berjalan di server fisik milik koperasi — menggunakan PHP-FPM + Nginx + PostgreSQL di dalam container Docker, dengan penjadwalan berbasis Supervisor untuk batch job bulanan otomatis dan backup volume yang persisten.
+          </li>
+        </ul>
+
+        <h2>Fitur Utama yang Diselesaikan</h2>
+        <ul>
+          <li><strong>Full Chart of Accounts</strong> — struktur akun hierarkis dengan aturan ketat double-entry</li>
+          <li><strong>Pemrosesan batch bulanan otomatis</strong> — potongan simpanan wajib, kontribusi dana sosial, dan pencatatan cicilan pinjaman yang berjalan sesuai jadwal</li>
+          <li><strong>Manajemen multi-pinjaman</strong> — dengan penjadwalan cicilan otomatis, perhitungan bunga, dan pelacakan pembayaran</li>
+          <li><strong>Role-based access control</strong> — lima peran pengguna dengan hak akses granular</li>
+          <li><strong>Pelaporan profesional</strong> — laporan PDF dengan kop surat resmi, ekspor CSV, dan buku besar (ledger) cetak menggunakan Laravel DOMPDF + PhpSpreadsheet</li>
+          <li><strong>Rekonsiliasi data legacy</strong> — impor penuh dan rekonsiliasi riwayat transaksi koperasi selama bertahun-tahun dari Excel</li>
+        </ul>
+
+        <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
+        <ul>
+          <li>
+            <strong>Menambahkan automated testing lebih awal.</strong> Software keuangan tanpa testing itu menakutkan. Saya menambahkan pengujian PHPUnit di tengah jalan, tetapi memilikinya sejak hari pertama — terutama untuk pengecekan balance double-entry dan kalkulasi pinjaman — akan sangat menghemat waktu debugging.
+          </li>
+          <li>
+            <strong>Memaksimalkan fitur bawaan Laravel.</strong> Awalnya saya kurang memanfaatkan antrean (queues), notifikasi, dan sistem event Laravel. Merefaktor pemrosesan batch menggunakan Laravel queues dengan Supervisor membuat sistem jauh lebih tangguh.
+          </li>
+          <li>
+            <strong>Merancang sistem role-permission yang lebih granular.</strong> Lima peran berfungsi baik untuk rilis awal, tetapi seiring berkembangnya koperasi, izin yang lebih spesifik akan mengurangi kebutuhan custom override untuk setiap pengguna.
+          </li>
+          <li>
+            <strong>Membangun pipeline impor data khusus.</strong> Migrasi Excel legacy dilakukan secara semi-manual. Pipeline ETL yang dapat diulang akan membuat proses rekonsiliasi lebih cepat dan dapat diaudit.
+          </li>
+        </ul>
+
+        <h2>Pelajaran Utama</h2>
+        <blockquote>
+          Membangun sistem keuangan production untuk institusi nyata — sebagai solo developer — mengajarkan Anda lebih banyak daripada tutorial mana pun. Akuntansi double-entry bukan sekadar fitur, itu adalah aturan ketat yang memengaruhi setiap keputusan desain arsitektur. Sistem ini di-deploy on-premise di koperasi dan digunakan setiap hari. Itu adalah level tanggung jawab yang sangat berbeda dibandingkan side-project biasa.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../projects/" class="btn btn-secondary">← Kembali ke Proyek</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2026 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

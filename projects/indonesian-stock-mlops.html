@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indonesian Stock MLOps — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="End-to-end ML pipeline for Indonesian stock prediction — 45 IDXBLUE stocks, MLflow, Grafana, Docker, Scikit-learn with automated retraining.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/projects/indonesian-stock-mlops.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Case Study</span>
+      <h1>Indonesian Stock MLOps Pipeline</h1>
+      <p>
+        End-to-end ML pipeline with experiment tracking, monitoring, and 
+        automated retraining for Indonesian stock prediction.
+      </p>
+      <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
+        <span class="nda-badge">🔒 NDA · Simplified Demo</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:800px;">
+
+      <div class="blog-post" style="padding-top:0;">
+
+        <div class="tag-row" style="margin-bottom:2rem;">
+          <span class="tag">MLflow</span>
+          <span class="tag">Grafana</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Scikit-learn</span>
+          <span class="tag">Pandas</span>
+          <span class="tag">Time Series</span>
+          <span class="tag">Python</span>
+          <span class="tag">2023–2024</span>
+        </div>
+
+        <h2>The Problem</h2>
+        <p>
+          The Indonesia Stock Exchange (IDX) presents unique challenges for ML 
+          models: high volatility, market-microstructure effects, and regulatory 
+          calendar impacts that Western-trained models don't account for. A client 
+          needed a prediction pipeline generating BUY/SELL signals for <strong>45 
+          IDXBLUE blue-chip stocks</strong> — not just accurate but 
+          <strong>monitorable, retrainable, and auditable</strong>.
+        </p>
+        <p>
+          The key requirement: <strong>the pipeline had to run without manual 
+          intervention</strong> — automated data ingestion, training, evaluation, 
+          and deployment with full observability. The public repo is a simplified 
+          demonstration of the architecture; the production version served live 
+          trading decisions under NDA.
+        </p>
+
+        <h2>The Architecture</h2>
+        <div class="mermaid">
+graph LR
+    A[IDX Data Sources] --> B[Data Ingestion]
+    B --> C[Feature Engineering]
+    C --> D[MLflow Tracking]
+    D --> E{Model Registry}
+    E -->|Staging| F[Docker Deploy]
+    E -->|Production| G[Prediction API]
+    F --> H[Grafana Monitoring]
+    G --> H
+    H -->|Drift Detected| I[Automated Retrain]
+    I --> D
+    style D fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style H fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+    style E fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+        </div>
+
+        <h2>Why It's Hard</h2>
+        <ul>
+          <li>
+            <strong>Financial time series are non-stationary:</strong> Market regimes 
+            change. A model that worked last quarter may fail this quarter. The 
+            pipeline needed drift detection and automated retraining triggers.
+          </li>
+          <li>
+            <strong>MLOps on a budget:</strong> No AWS SageMaker, no Databricks. 
+            Everything runs on a modest VPS with Docker Compose — MLflow, Grafana, 
+            and the model serving infrastructure had to coexist efficiently.
+          </li>
+          <li>
+            <strong>Feature engineering at scale:</strong> Indonesian market data 
+            required custom features — sector rotation signals, foreign vs domestic 
+            flow ratios, and Islamic calendar adjustments (Ramadan effects on 
+            trading volume).
+          </li>
+          <li>
+            <strong>Auditability:</strong> Financial predictions need to be explainable. 
+            Every model version, every feature set, every prediction had to be traceable.
+          </li>
+        </ul>
+
+        <h2>Technical Stack</h2>
+        <ul>
+          <li><strong>Scikit-learn</strong> — primary ML framework for stock movement prediction models</li>
+          <li><strong>MLflow</strong> — experiment tracking, model registry, and deployment management</li>
+          <li><strong>Grafana</strong> — real-time dashboards for prediction accuracy, data drift, feature distributions, and system health</li>
+          <li><strong>Docker + Docker Compose</strong> — containerized pipeline with reproducible environments</li>
+          <li><strong>Pandas</strong> — data ingestion, feature engineering, and preprocessing</li>
+          <li><strong>Custom drift detection</strong> — statistical tests on feature distributions triggering automated retrain workflows</li>
+          <li><strong>FastAPI</strong> — lightweight prediction serving</li>
+        </ul>
+
+        <h2>What I'd Do Differently</h2>
+        <ul>
+          <li>
+            <strong>Add a feature store.</strong> Feast or a simple Redis-based store 
+            would have prevented feature inconsistencies between training and serving.
+          </li>
+          <li>
+            <strong>Use DVC for data versioning.</strong> Tracking which dataset 
+            produced which model is critical. Git alone isn't enough.
+          </li>
+          <li>
+            <strong>Implement shadow deployment.</strong> Running new models in 
+            shadow mode before promoting them would reduce deployment risk.
+          </li>
+          <li>
+            <strong>Explore gradient boosting.</strong> XGBoost or LightGBM could 
+            potentially capture non-linear patterns better than the Scikit-learn 
+            models — worth benchmarking in a future iteration.
+          </li>
+        </ul>
+
+        <h2>Key Takeaways</h2>
+        <blockquote>
+          MLOps isn't about fancy tools — it's about reproducibility and trust. 
+          When your predictions affect financial decisions, you need to know 
+          exactly which model version made which prediction, with which data, 
+          and why. That's the bar.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../projects/" class="btn btn-secondary">← Back to Projects</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2024 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Makmur Grosir — Rafif Shafwan</title>
+  <meta name="description" content="Playwright-based e-commerce image scraper for wholesale store with anti-bot evasion across 4 Indonesian platforms.">
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/projects/makmur-grosir.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Case Study</span>
+      <h1>Makmur Grosir — E-Commerce Image Scraper</h1>
+      <p>
+        A Playwright-based scraper that automatically finds product images across 
+        4 Indonesian e-commerce platforms — with sophisticated anti-bot evasion.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:800px;">
+
+      <div class="blog-post" style="padding-top:0;">
+
+        <div class="tag-row" style="margin-bottom:2rem;">
+          <span class="tag">Node.js</span>
+          <span class="tag">Playwright</span>
+          <span class="tag">GitHub Actions</span>
+          <span class="tag">Anti-Bot</span>
+          <span class="tag">Web Scraping</span>
+          <span class="tag">Automation</span>
+          <span class="tag">2025</span>
+        </div>
+
+        <div style="text-align:center;margin:2rem 0;">
+          <a href="https://rivanim03.github.io/muakmoor/" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:1.1rem;padding:0.85rem 2rem;">
+            🌐 Visit Makmur Grosir →
+          </a>
+        </div>
+
+        <h2>The Problem</h2>
+        <p>
+          <strong>Makmur Grosir</strong> — a wholesale store in Indonesia with 2,500+ 
+          products — needed to build an online storefront. The product catalog existed 
+          as an Excel file with names and prices, but images had to be sourced manually. 
+          Hiring someone to find and download 2,500 product images would take weeks 
+          and cost thousands.
+        </p>
+        <p>
+          The challenge: <strong>automatically search for and download product images 
+          from 4 Indonesian e-commerce platforms</strong> — Lazada, Blibli, Shopee, 
+          and Tokopedia — without getting blocked, rate-limited, or CAPTCHA'd.
+        </p>
+
+        <h2>The Architecture</h2>
+        <div class="mermaid">
+graph TB
+    A[Excel Product Catalog] --> B[Playwright Bot]
+    B --> C[Lazada Search]
+    B --> D[Blibli Search]
+    B --> E[Shopee Search]
+    B --> F[Tokopedia Search]
+    C --> G{Anti-Bot Layer}
+    D --> G
+    E --> G
+    F --> G
+    G --> H[Download Best Match]
+    H --> I[Organized Image Output]
+    B --> J[GitHub Actions Scheduler]
+    J -->|50 products / 3h| B
+    style B fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style G fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+    style J fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+        </div>
+
+        <h2>Why It's Hard</h2>
+        <ul>
+          <li>
+            <strong>Anti-bot evasion is an arms race.</strong> Indonesian e-commerce 
+            platforms actively detect and block automated browsers. I had to implement 
+            browser fingerprint spoofing, stealth page scripts, randomized delays, 
+            and headless detection circumvention — each platform has different 
+            detection vectors.
+          </li>
+          <li>
+            <strong>Rate limiting and CAPTCHAs.</strong> Searching 2,500 products 
+            means hitting the same platform hundreds of times. Distributed across 
+            4 platforms with 50 products per batch every 3 hours, the scraper stays 
+            under each platform's threshold.
+          </li>
+          <li>
+            <strong>Unreliable search results.</strong> A search for "Sabun Cuci Piring 
+            Ekonomi 500ml" might return the wrong product entirely. The scraper uses 
+            title similarity scoring to pick the best match, but edge cases require 
+            manual review flags.
+          </li>
+          <li>
+            <strong>Incremental progress and resume support.</strong> If the system 
+            crashes or a batch fails, it needs to resume from where it left off — 
+            not restart from zero. With 2,500 products over 50+ batches, this was 
+            essential.
+          </li>
+        </ul>
+
+        <h2>Technical Stack</h2>
+        <ul>
+          <li><strong>Node.js + Playwright</strong> — browser automation with stealth enhancements</li>
+          <li><strong>GitHub Actions</strong> — scheduled workflow runs (50 products per batch, every 3 hours)</li>
+          <li><strong>Anti-bot evasion</strong> — browser fingerprint spoofing, stealth scripts, randomized delays, headless detection circumvention</li>
+          <li><strong>Title similarity matching</strong> — fuzzy string comparison to pick the best image match</li>
+          <li><strong>Resume & checkpoint system</strong> — failed items logged and retried; progress saved between runs</li>
+          <li><strong>Excel parsing</strong> — reads product catalog from .xlsx, writes image-mapped results back</li>
+        </ul>
+
+        <h2>What I'd Do Differently</h2>
+        <ul>
+          <li>
+            <strong>Use a rotating proxy pool.</strong> Currently runs from a single 
+            IP via GitHub Actions. Rotating proxies would reduce detection risk and 
+            allow faster batch processing.
+          </li>
+          <li>
+            <strong>Add image quality filtering.</strong> Some downloaded images are 
+            low-resolution or watermarked. Automated quality scoring would reduce 
+            manual review time.
+          </li>
+          <li>
+            <strong>Explore LLM-based matching.</strong> Instead of fuzzy title matching, 
+            a small LLM could determine if an image result actually matches the product 
+            — especially useful for ambiguous product names.
+          </li>
+          <li>
+            <strong>Build a simple monitoring dashboard.</strong> A Grafana dashboard 
+            showing batch progress, success rates, and platform-specific error rates 
+            would make the system more observable.
+          </li>
+        </ul>
+
+        <h2>Key Takeaways</h2>
+        <blockquote>
+          Web scraping at scale isn't just about writing selectors — it's about 
+          building a system that adapts to each platform's anti-bot evolution, 
+          handles failures gracefully, and makes progress even in the face of 
+          CAPTCHAs and rate limits. The same principles apply to any system that 
+          interacts with external APIs beyond your control.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../projects/" class="btn btn-secondary">← Back to Projects</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2025 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

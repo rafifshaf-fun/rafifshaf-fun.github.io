@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Stage CV Pipeline — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Detect-then-classify architecture for high-accuracy object recognition. YOLO detection + custom classifiers optimized for edge deployment.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/projects/multi-stage-cv.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Case Study</span>
+      <h1>Multi-Stage CV Pipeline</h1>
+      <p>
+        A detect-then-classify architecture for high-accuracy object recognition 
+        — optimized for edge deployment.
+      </p>
+      <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
+        <span class="nda-badge">🔒 NDA · Simplified Demo</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:800px;">
+
+      <div class="blog-post" style="padding-top:0;">
+
+        <div class="tag-row" style="margin-bottom:2rem;">
+          <span class="tag">YOLO</span>
+          <span class="tag">SSD</span>
+          <span class="tag">PyTorch</span>
+          <span class="tag">TensorFlow</span>
+          <span class="tag">OpenCV</span>
+          <span class="tag">ONNX</span>
+          <span class="tag">Edge Inference</span>
+          <span class="tag">2023–2024</span>
+        </div>
+
+        <h2>The Problem</h2>
+        <p>
+          A client needed an object recognition system for industrial quality 
+          inspection. The challenge: <strong>hundreds of fine-grained product 
+          categories</strong> that a single detector couldn't handle accurately. 
+          Products looked similar at the category level but had subtle differences 
+          that mattered for quality decisions.
+        </p>
+        <p>
+          Additionally, the system had to run on <strong>edge devices</strong> — 
+          inference latency under 100ms, no cloud dependency, and models that fit 
+          in under 200MB of memory.
+        </p>
+
+        <h2>The Architecture</h2>
+        <div class="mermaid">
+graph TB
+    A[Camera Input] --> B[YOLO Detection]
+    B --> C{Object Crops}
+    C --> D[Stage 1: Coarse Classifier]
+    D --> E{Category Group}
+    E -->|Group A| F[Fine Classifier A]
+    E -->|Group B| G[Fine Classifier B]
+    E -->|Group C| H[Fine Classifier C]
+    F --> I[Results Aggregation]
+    G --> I
+    H --> I
+    I --> J[JSON Output]
+    style B fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style D fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+    style F fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+    style G fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+    style H fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+        </div>
+
+        <h2>Why It's Hard</h2>
+        <ul>
+          <li>
+            <strong>Detect-then-classify reduces combinatorial complexity.</strong> 
+            Instead of one model handling N categories, the detector handles 
+            localization and the classifiers each handle a manageable subset. 
+            This makes training faster and accuracy higher.
+          </li>
+          <li>
+            <strong>Edge deployment constraints are real.</strong> ONNX export, 
+            model quantization (INT8), and careful memory management were essential. 
+            The full pipeline including pre/post-processing had to fit within a 
+            tight latency budget.
+          </li>
+          <li>
+            <strong>Data imbalance across categories.</strong> Some product types 
+            appeared 100x more frequently than others. Custom loss weighting, 
+            data augmentation, and occasional synthetic data generation were needed.
+          </li>
+          <li>
+            <strong>Model update strategy.</strong> When new products are added, 
+            you don't want to retrain everything. The staged architecture allows 
+            adding a new fine-classifier without touching the detector or other 
+            classifier stages.
+          </li>
+        </ul>
+
+        <h2>Technical Stack</h2>
+        <ul>
+          <li><strong>YOLOv8 + SSD</strong> — object detection, trained on custom dataset with domain-specific augmentations</li>
+          <li><strong>PyTorch + TensorFlow</strong> — custom classifier training with ResNet/EfficientNet backbones across both frameworks</li>
+          <li><strong>ONNX Runtime</strong> — inference optimization for edge deployment</li>
+          <li><strong>OpenCV</strong> — image preprocessing, crop extraction, and post-processing</li>
+          <li><strong>Model quantization</strong> — INT8 quantization reducing model size by 4x with minimal accuracy loss</li>
+          <li><strong>Custom evaluation harness</strong> — per-stage metrics, confusion matrices, and latency profiling</li>
+        </ul>
+
+        <h2>What I'd Do Differently</h2>
+        <ul>
+          <li>
+            <strong>Explore YOLO-NAS or RT-DETR.</strong> Newer architectures offer 
+            better accuracy-latency tradeoffs than YOLOv8 for edge deployment.
+          </li>
+          <li>
+            <strong>Add a rejection class.</strong> When the classifier is uncertain, 
+            route to human review instead of forcing a prediction. This matters in 
+            quality inspection.
+          </li>
+          <li>
+            <strong>Implement active learning.</strong> Automatically flag low-confidence 
+            predictions for human labeling and model improvement over time.
+          </li>
+          <li>
+            <strong>Use Triton Inference Server.</strong> For multi-model orchestration 
+            on edge, Triton would simplify model loading, versioning, and batching.
+          </li>
+        </ul>
+
+        <h2>Key Takeaways</h2>
+        <blockquote>
+          The detect-then-classify pattern is underrated. Splitting the problem 
+          into stages gives you better accuracy, easier maintenance, and the 
+          flexibility to update one stage without touching others. It's now my 
+          default approach for any multi-class vision problem.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../projects/" class="btn btn-secondary">← Back to Projects</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2024 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magic Chess — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Varian catur berbasis AI yang mengeksplorasi sistem pengambilan keputusan dan teori permainan. Dibangun dengan Python, Minimax, dan Alpha-Beta pruning.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/projects/magic-chess-id.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Studi Kasus</span>
+      <h1>Magic Chess</h1>
+      <p>
+        Varian catur berbasis AI yang mengeksplorasi sistem pengambilan keputusan, teori permainan (game theory), dan algoritma pencarian heuristik.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:800px;">
+
+      <div class="blog-post" style="padding-top:0;">
+
+        <div class="tag-row" style="margin-bottom:2rem;">
+          <span class="tag">Python</span>
+          <span class="tag">Game AI</span>
+          <span class="tag">Minimax</span>
+          <span class="tag">Alpha-Beta Pruning</span>
+          <span class="tag">2024</span>
+        </div>
+
+        <h2>Masalah</h2>
+        <p>
+          Engine catur sudah sangat banyak dipelajari, tetapi <strong>varian catur dengan aturan yang dimodifikasi</strong> masih jarang dieksplorasi. Saya ingin membangun AI untuk varian catur kustom — "Magic Chess" — di mana bidak tertentu memiliki kemampuan khusus (teleportasi, serangan area, kebal sementara). Tantangannya: <strong>fungsi evaluasi catur standar tidak berlaku di sini</strong>, dan branching factor (kemungkinan cabang keputusan) meledak karena adanya pilihan kemampuan khusus tersebut.
+        </p>
+        <p>
+          Proyek ini sebagian adalah passion project (saya suka bermain catur) dan sebagian lagi adalah eksplorasi tentang <strong>sistem pengambilan keputusan di bawah state space yang kompleks</strong> — keterampilan yang secara langsung dapat diterapkan pada reinforcement learning dan masalah teori permainan dalam ML.
+        </p>
+
+        <h2>Arsitektur</h2>
+        <div class="mermaid">
+graph TB
+    A[State Permainan] --> B[Pembuat Langkah]
+    B --> C{Punya Kemampuan Khusus?}
+    C -->|Ya| D[Penyelesai Kemampuan]
+    C -->|Tidak| E[Langkah Standar]
+    D --> F[Minimax dengan Alpha-Beta]
+    E --> F
+    F --> G[Heuristik Evaluasi]
+    G --> H[Langkah Terbaik]
+    style F fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style G fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+        </div>
+
+        <h2>Mengapa Ini Sulit</h2>
+        <ul>
+          <li>
+            <strong>Heuristik evaluasi kustom.</strong> Dalam catur standar, nilai bidak dan tabel posisi sudah sangat diketahui. Dalam Magic Chess, kemampuan khusus mengubah nilai bidak secara dinamis. Kuda yang bisa berteleportasi bernilai lebih dari kuda biasa — tapi seberapa besar bedanya? Ini membutuhkan perancangan heuristik yang baru.
+          </li>
+          <li>
+            <strong>Ledakan branching factor.</strong> Setiap bidak dengan kemampuan aktif menambah lapisan keputusan baru. Pohon pencarian tumbuh secara kombinatorial. Pemangkasan Alpha-Beta (Alpha-Beta pruning) memang membantu, tetapi pengurutan langkah (move ordering) menjadi sangat kritis — dan heuristik pengurutan standar tidak memperhitungkan langkah kemampuan khusus.
+          </li>
+          <li>
+            <strong>Iterative deepening dengan batasan waktu.</strong> AI harus membuat langkah yang masuk akal dalam batasan waktu tertentu. Mengimplementasikan iterative deepening dengan set langkah yang diperluas membutuhkan profiling performa yang hati-hati.
+          </li>
+          <li>
+            <strong>Tuning berbasis playtesting.</strong> Satu-satunya cara untuk mengetahui apakah AI ini "menyenangkan" adalah dengan bermain melawannya. Saya membangun UI Pygame sederhana dan mengulangi iterasi heuristik berdasarkan gameplay aktual — bukan hanya sekadar melihat kedalaman pencarian (search depth).
+          </li>
+        </ul>
+
+        <h2>Tech Stack</h2>
+        <ul>
+          <li><strong>Python</strong> — core engine: representasi papan, pembuatan langkah, algoritma pencarian</li>
+          <li><strong>Minimax dengan Alpha-Beta pruning</strong> — mesin pengambil keputusan dengan kedalaman pencarian yang dapat dikonfigurasi</li>
+          <li><strong>Heuristik evaluasi kustom</strong> — skor material + posisional + status kemampuan</li>
+          <li><strong>Pygame</strong> — UI interaktif sederhana untuk playtesting</li>
+          <li><strong>Optimasi move ordering</strong> — pengurutan yang menyadari langkah kemampuan khusus demi efisiensi pruning yang lebih baik</li>
+        </ul>
+
+        <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
+        <ul>
+          <li>
+            <strong>Mengeksplorasi MCTS (Monte Carlo Tree Search).</strong> Untuk permainan dengan branching factor tinggi dan evaluasi state yang kompleks, MCTS sering kali mengungguli Minimax. Pendekatan gaya AlphaZero sangat menarik untuk diterapkan pada varian catur.
+          </li>
+          <li>
+            <strong>Melatih bobot evaluasi dengan self-play.</strong> Daripada menyesuaikan heuristik secara manual (hand-tuning), gunakan kombinasi self-play + reinforcement learning untuk menemukan valuasi bidak yang optimal secara otomatis.
+          </li>
+          <li>
+            <strong>Menambahkan UI berbasis web.</strong> Pygame sudah cukup untuk pengujian, tetapi UI web (React + WebSocket) akan membuatnya bisa dibagikan dan dimainkan oleh orang lain.
+          </li>
+          <li>
+            <strong>Mengimplementasikan tingkat kesulitan.</strong> Membatasi kedalaman pencarian dan menambahkan sedikit elemen acak yang terkontrol akan membuat AI lebih ramah untuk pemain kasual namun tetap menantang bagi pemain berpengalaman.
+          </li>
+        </ul>
+
+        <h2>Pelajaran Utama</h2>
+        <blockquote>
+          Membangun game AI mengajarkan Anda tentang pencarian di bawah berbagai batasan, desain heuristik, dan kompromi antara akurasi vs komputasi — masalah yang sama yang akan Anda hadapi dalam sistem ML di production, hanya saja dalam domain yang lebih menyenangkan.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../projects/" class="btn btn-secondary">← Kembali ke Proyek</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2026 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

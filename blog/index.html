@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Technical writing on ML engineering, MLOps, computer vision, and building production AI systems.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/blog/">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label" data-i18n="blog-label">Writing</span>
+      <h1 data-i18n="blog-page-title">Technical Blog</h1>
+      <p data-i18n="blog-desc">
+        Deep dives on ML engineering, MLOps, computer vision, and the craft of 
+        building production AI systems.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:720px;">
+      
+      <div class="fade-in" style="margin-bottom:3rem;">
+        <article class="card">
+          <span style="color:var(--text-muted);font-size:0.82rem;"><span data-i18n="blog-date-june">June 2024</span> · <span data-i18n="blog-6min">6 min read</span></span>
+          <h3 style="margin:0.5rem 0;"><a href="why-i-measure-my-rag.html" data-i18n="blog-rag-title">Why I Measure My RAG (And You Should Too)</a></h3>
+          <p style="color:var(--text-secondary);font-size:0.93rem;margin-bottom:0.75rem;" data-i18n="blog-rag-desc-list">
+            RAGAS evaluation, retrieval metrics, and why "it works on my machine" 
+            isn't enough for production LLM systems. How I built an evaluation 
+            pipeline for my CV chatbot and what the metrics taught me.
+          </p>
+          <div class="tag-row">
+            <span class="tag">RAG</span><span class="tag">RAGAS</span><span class="tag">LLM</span><span class="tag">Evaluation</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="fade-in" style="margin-bottom:3rem;">
+        <article class="card">
+          <span style="color:var(--text-muted);font-size:0.82rem;"><span data-i18n="blog-date-may">May 2024</span> · <span data-i18n="blog-8min">8 min read</span></span>
+          <h3 style="margin:0.5rem 0;"><a href="detect-then-classify.html" data-i18n="blog-cv-title">The Detect-Then-Classify Pattern</a></h3>
+          <p style="color:var(--text-secondary);font-size:0.93rem;margin-bottom:0.75rem;" data-i18n="blog-cv-desc-list">
+            Why splitting object detection and classification into separate stages 
+            gives you better accuracy, easier maintenance, and deployment flexibility. 
+            Lessons from a multi-stage CV pipeline in production.
+          </p>
+          <div class="tag-row">
+            <span class="tag">Computer Vision</span><span class="tag">YOLO</span><span class="tag">Architecture</span><span class="tag">PyTorch</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="fade-in" style="margin-bottom:3rem;">
+        <article class="card">
+          <span style="color:var(--text-muted);font-size:0.82rem;"><span data-i18n="blog-date-april">April 2024</span> · <span data-i18n="blog-7min">7 min read</span></span>
+          <h3 style="margin:0.5rem 0;"><a href="mlops-without-burnout.html" data-i18n="blog-mlops-title">MLOps Without Burnout</a></h3>
+          <p style="color:var(--text-secondary);font-size:0.93rem;margin-bottom:0.75rem;" data-i18n="blog-mlops-desc-list">
+            Running MLflow, Grafana, and Docker on modest hardware. Pragmatic 
+            MLOps for solo engineers and small teams in low-resource environments 
+            — no Kubernetes required.
+          </p>
+          <div class="tag-row">
+            <span class="tag">MLOps</span><span class="tag">Docker</span><span class="tag">MLflow</span><span class="tag">Grafana</span>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2024 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

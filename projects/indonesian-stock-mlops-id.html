@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pipeline MLOps Saham Indonesia — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Pipeline ML end-to-end untuk prediksi saham Indonesia — 45 saham IDXBLUE, MLflow, Grafana, Docker, Scikit-learn dengan retraining otomatis.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/projects/indonesian-stock-mlops-id.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Studi Kasus</span>
+      <h1>Pipeline MLOps Saham Indonesia</h1>
+      <p>
+        Pipeline ML end-to-end dengan experiment tracking, monitoring, dan 
+        retraining otomatis untuk prediksi saham Indonesia.
+      </p>
+      <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
+        <span class="nda-badge">🔒 NDA · Demo Sederhana</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:800px;">
+
+      <div class="blog-post" style="padding-top:0;">
+
+        <div class="tag-row" style="margin-bottom:2rem;">
+          <span class="tag">MLflow</span>
+          <span class="tag">Grafana</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Scikit-learn</span>
+          <span class="tag">Pandas</span>
+          <span class="tag">Time Series</span>
+          <span class="tag">Python</span>
+          <span class="tag">2023–2024</span>
+        </div>
+
+        <h2>Masalah</h2>
+        <p>
+          Bursa Efek Indonesia (BEI) menghadirkan tantangan unik untuk model ML: volatilitas tinggi, efek mikrostruktur pasar, dan dampak kalender regulasi yang tidak diperhitungkan oleh model yang dilatih di pasar Barat. Klien membutuhkan pipeline prediksi yang menghasilkan sinyal BUY/SELL untuk <strong>45 saham blue-chip IDXBLUE</strong> — bukan hanya akurat, tapi <strong>dapat dimonitor, di-retrain, dan diaudit</strong>.
+        </p>
+        <p>
+          Kebutuhan utama: <strong>pipeline harus berjalan tanpa intervensi manual</strong> — mulai dari penarikan data, pelatihan, evaluasi, hingga deployment dengan observabilitas penuh. Repo publik ini adalah demonstrasi arsitektur yang disederhanakan; versi production-nya digunakan untuk keputusan trading langsung di bawah ikatan NDA.
+        </p>
+
+        <h2>Arsitektur</h2>
+        <div class="mermaid">
+graph LR
+    A[Sumber Data BEI] --> B[Penarikan Data]
+    B --> C[Feature Engineering]
+    C --> D[MLflow Tracking]
+    D --> E{Model Registry}
+    E -->|Staging| F[Docker Deploy]
+    E -->|Production| G[Prediction API]
+    F --> H[Monitoring Grafana]
+    G --> H
+    H -->|Drift Terdeteksi| I[Retrain Otomatis]
+    I --> D
+    style D fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style H fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+    style E fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+        </div>
+
+        <h2>Mengapa Ini Sulit</h2>
+        <ul>
+          <li>
+            <strong>Data deret waktu keuangan bersifat non-stasioner:</strong> Kondisi pasar selalu berubah. Model yang berhasil kuartal lalu bisa gagal kuartal ini. Pipeline membutuhkan deteksi drift dan pemicu retraining otomatis.
+          </li>
+          <li>
+            <strong>MLOps dengan budget terbatas:</strong> Tanpa AWS SageMaker atau Databricks. Semuanya berjalan di VPS standar dengan Docker Compose — MLflow, Grafana, dan infrastruktur serving model harus hidup berdampingan secara efisien.
+          </li>
+          <li>
+            <strong>Feature engineering dalam skala besar:</strong> Data pasar Indonesia membutuhkan fitur khusus — sinyal rotasi sektor, rasio aliran dana asing vs domestik, dan penyesuaian kalender (seperti efek Ramadhan pada volume perdagangan).
+          </li>
+          <li>
+            <strong>Dapat diaudit:</strong> Prediksi keuangan harus bisa dijelaskan. Setiap versi model, kumpulan fitur, dan prediksi harus bisa dilacak riwayatnya.
+          </li>
+        </ul>
+
+        <h2>Tech Stack</h2>
+        <ul>
+          <li><strong>Scikit-learn</strong> — framework ML utama untuk model prediksi pergerakan saham</li>
+          <li><strong>MLflow</strong> — experiment tracking, model registry, dan manajemen deployment</li>
+          <li><strong>Grafana</strong> — dashboard real-time untuk akurasi prediksi, data drift, distribusi fitur, dan kesehatan sistem</li>
+          <li><strong>Docker + Docker Compose</strong> — pipeline berbasis container dengan environment yang reproduktif</li>
+          <li><strong>Pandas</strong> — penarikan data, feature engineering, dan preprocessing</li>
+          <li><strong>Deteksi drift kustom</strong> — uji statistik pada distribusi fitur yang memicu workflow retraining otomatis</li>
+          <li><strong>FastAPI</strong> — serving prediksi yang ringan</li>
+        </ul>
+
+        <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
+        <ul>
+          <li>
+            <strong>Menambahkan feature store.</strong> Feast atau store sederhana berbasis Redis akan mencegah inkonsistensi fitur antara fase training dan serving.
+          </li>
+          <li>
+            <strong>Menggunakan DVC untuk data versioning.</strong> Melacak dataset mana yang menghasilkan model mana sangatlah penting. Menggunakan Git saja tidak cukup.
+          </li>
+          <li>
+            <strong>Menerapkan shadow deployment.</strong> Menjalankan model baru dalam mode shadow sebelum mempromosikannya ke live production akan mengurangi risiko kegagalan.
+          </li>
+          <li>
+            <strong>Mengeksplorasi gradient boosting.</strong> XGBoost atau LightGBM berpotensi menangkap pola non-linear lebih baik daripada model Scikit-learn — patut dicoba pada iterasi berikutnya.
+          </li>
+        </ul>
+
+        <h2>Pelajaran Utama</h2>
+        <blockquote>
+          MLOps bukan tentang tool yang mewah — ini tentang reproduktibilitas dan kepercayaan. Ketika prediksi Anda memengaruhi keputusan finansial, Anda harus tahu persis versi model mana yang membuat prediksi mana, dengan data apa, dan mengapa. Itulah standar yang harus dipenuhi.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../projects/" class="btn btn-secondary">← Kembali ke Proyek</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2026 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

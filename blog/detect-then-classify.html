@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Detect-Then-Classify Pattern — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Why splitting object detection and classification into separate stages gives better accuracy, maintainability, and deployment flexibility.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/blog/detect-then-classify.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Blog Post</span>
+      <h1>The Detect-Then-Classify Pattern</h1>
+      <div class="post-meta" style="margin-top:1rem;">
+        <span>📅 May 2024</span>
+        <span>⏱️ 8 min read</span>
+        <span>🏷️ Computer Vision · Architecture · PyTorch</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container">
+      <div class="blog-post">
+
+        <p>
+          Most computer vision tutorials teach you to build a single model that does 
+          everything: detect objects AND classify them in one forward pass. YOLO, SSD, 
+          Faster R-CNN — these are end-to-end detectors that output bounding boxes 
+          with class labels.
+        </p>
+        <p>
+          In production, this often isn't the right approach. Here's why — and what 
+          to do instead.
+        </p>
+
+        <h2>The Problem with End-to-End</h2>
+        <p>
+          When you have <strong>hundreds of fine-grained classes</strong>, the 
+          combinatorial complexity explodes. A single YOLO model trying to distinguish 
+          between 200 product SKUs will struggle because:
+        </p>
+        <ul>
+          <li>Class imbalance: some products appear 100x more than others</li>
+          <li>Feature interference: the detector's backbone learns features optimized for localization, not fine-grained discrimination</li>
+          <li>Update friction: adding a new product category means retraining the entire model</li>
+          <li>Deployment inflexibility: you can't swap just the classification logic without touching the detector</li>
+        </ul>
+
+        <h2>The Solution: Decouple Detection and Classification</h2>
+        <div class="mermaid">
+graph LR
+    A[Input Image] --> B[Stage 1: Detector]
+    B --> C[Object Crops]
+    C --> D[Stage 2: Coarse Classifier]
+    D --> E[Category Group]
+    E --> F[Stage 3: Fine Classifier]
+    F --> G[Final Label]
+    style B fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style D fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+    style F fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+        </div>
+
+        <p>
+          The detect-then-classify pattern splits the problem into independent stages:
+        </p>
+        <ol>
+          <li>
+            <strong>Detection (YOLO / EfficientDet):</strong> Find all objects, output 
+            bounding boxes. This model only needs to distinguish "object vs background" 
+            — much simpler, much more robust.
+          </li>
+          <li>
+            <strong>Coarse Classification:</strong> Assign each crop to a category group 
+            (e.g., "electronics," "clothing," "food"). A lightweight model with high recall.
+          </li>
+          <li>
+            <strong>Fine Classification:</strong> Within each group, a specialized 
+            classifier distinguishes between specific items. Each classifier only 
+            handles 20–50 classes — much easier to train and maintain.
+          </li>
+        </ol>
+
+        <h2>Why This Wins in Production</h2>
+
+        <h3>1. Better Accuracy Per Class</h3>
+        <p>
+          A classifier handling 30 classes will almost always outperform a detector 
+          handling 200 classes. The model capacity is focused on discrimination, not 
+          localization. In my production pipeline, the staged approach improved 
+          per-class F1 by 12–18% over the end-to-end YOLO baseline.
+        </p>
+
+        <h3>2. Independent Maintainability</h3>
+        <p>
+          When a client adds 5 new product SKUs, I only retrain the relevant fine 
+          classifier — not the detector, not the coarse classifier, not the other 
+          fine classifiers. Training time drops from hours to minutes. Deployment 
+          risk drops because only one component changes.
+        </p>
+
+        <h3>3. Flexible Deployment</h3>
+        <p>
+          The detector can run on-device (ONNX, quantized) while fine classifiers 
+          run on a server if needed. Or you can swap the detector from YOLOv8 to 
+          YOLO-NAS without touching classification. Each component evolves independently.
+        </p>
+
+        <h3>4. Better Debugging</h3>
+        <p>
+          When the system makes a mistake, you know exactly where: was the object not 
+          detected? Was it misrouted to the wrong coarse group? Did the fine classifier 
+          get confused? Staged architectures give you per-stage metrics that make 
+          debugging systematic rather than guesswork.
+        </p>
+
+        <h2>The Tradeoffs</h2>
+        <ul>
+          <li>
+            <strong>Latency:</strong> Multiple models mean multiple forward passes. 
+            But with ONNX and batching, the overhead is often under 10ms — acceptable 
+            for most use cases.
+          </li>
+          <li>
+            <strong>Complexity:</strong> More components to orchestrate. But the 
+            separation of concerns usually reduces overall system complexity compared 
+            to a monolithic model with thousands of edge cases.
+          </li>
+          <li>
+            <strong>Data requirements:</strong> Each fine classifier needs its own 
+            training data. But this is often already available — you're just organizing 
+            it differently.
+          </li>
+        </ul>
+
+        <h2>When NOT to Use This Pattern</h2>
+        <ul>
+          <li>You have fewer than 20 classes — end-to-end is simpler and likely sufficient</li>
+          <li>Latency is extremely tight (< 5ms) — the multi-pass overhead matters</li>
+          <li>Classes are mutually exclusive and well-separated — no fine-grained discrimination needed</li>
+          <li>You're in early prototyping — start simple, add stages as needed</li>
+        </ul>
+
+        <h2>Code Sketch</h2>
+        <pre><code># Simplified detect-then-classify pipeline
+import torch
+from detector import YOLODetector
+from classifiers import CoarseClassifier, FineClassifier
+
+class StagedPipeline:
+    def __init__(self):
+        self.detector = YOLODetector("yolov8n.pt")
+        self.coarse = CoarseClassifier("efficientnet_b0_coarse.pt")
+        self.fine = {
+            "electronics": FineClassifier("resnet18_electronics.pt"),
+            "clothing": FineClassifier("resnet18_clothing.pt"),
+            "food": FineClassifier("resnet18_food.pt"),
+        }
+    
+    def __call__(self, image):
+        crops = self.detector.detect(image)
+        results = []
+        for crop, bbox in crops:
+            coarse_label = self.coarse.classify(crop)
+            fine_label = self.fine[coarse_label].classify(crop)
+            results.append({"bbox": bbox, "label": fine_label})
+        return results</code></pre>
+
+        <h2>The Bottom Line</h2>
+        <blockquote>
+          The detect-then-classify pattern isn't flashy. It won't win benchmarks. 
+          But in production, where maintainability and accuracy on real data matter 
+          more than architectural elegance, it's often the pragmatic choice. Split 
+          the problem, solve each piece well, and keep the system evolvable.
+        </blockquote>
+
+        <p>
+          <em>See the <a href="../projects/multi-stage-cv.html">Multi-Stage CV Pipeline case study</a> 
+          for the full implementation details.</em>
+        </p>
+
+        <div style="margin-top:3rem;">
+          <a href="../blog/" class="btn btn-secondary">← Back to Blog</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2024 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

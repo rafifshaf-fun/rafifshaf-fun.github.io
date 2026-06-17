@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why I Measure My RAG — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="RAGAS evaluation, retrieval metrics, and why 'it works on my machine' isn't enough for production LLM systems.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/blog/why-i-measure-my-rag.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Blog Post</span>
+      <h1>Why I Measure My RAG (And You Should Too)</h1>
+      <div class="post-meta" style="margin-top:1rem;">
+        <span>📅 June 2024</span>
+        <span>⏱️ 6 min read</span>
+          <span>🏷️ RAG · Evaluation · RAGAS · LLM</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container">
+      <div class="blog-post">
+
+        <p>
+          When I built my <a href="../projects/cv-rag-chatbot.html">CV RAG Chatbot</a>, 
+          the first version "worked." I asked it a few questions, got reasonable answers, 
+          and felt good about shipping it. Then I showed it to a friend who asked: 
+          <em>"How do you know it's actually retrieving the right information?"</em>
+        </p>
+        <p>
+          I didn't. I had tested it on maybe 10 questions — all ones I had written myself. 
+          The retrievals "looked fine." The answers "sounded right." But I had no 
+          quantitative evidence that my RAG pipeline was working correctly.
+        </p>
+        <p>
+          This is the trap most RAG builders fall into. We test on a handful of queries, 
+          see plausible outputs, and declare success. But plausible ≠ correct. And in 
+          production, correctness matters — especially when the system is representing 
+          <em>you</em> to potential employers or clients.
+        </p>
+
+        <h2>Enter RAGAS</h2>
+        <p>
+          <a href="https://docs.ragas.io/" target="_blank" rel="noopener">RAGAS</a> 
+          (Retrieval Augmented Generation Assessment) is a framework that evaluates RAG 
+          pipelines on multiple dimensions. The key metrics I use:
+        </p>
+        <ul>
+          <li>
+            <strong>Faithfulness</strong> — Is the generated answer factually grounded 
+            in the retrieved context? (1.0 = perfectly faithful, 0.0 = hallucination)
+          </li>
+          <li>
+            <strong>Answer Relevancy</strong> — Does the answer actually address the 
+            question asked? (penalizes rambling or off-topic responses)
+          </li>
+          <li>
+            <strong>Context Precision</strong> — Of the retrieved chunks, what fraction 
+            is actually relevant to the question? (penalizes noisy retrieval)
+          </li>
+          <li>
+            <strong>Context Recall</strong> — Of all the relevant information available, 
+            what fraction was retrieved? (penalizes missing context)
+          </li>
+        </ul>
+
+        <h2>What I Measured — And What I Learned</h2>
+        <p>
+          I created a test set of 50 synthetic questions about my CV — ranging from 
+          "What is Rafif's experience with PyTorch?" to "Has he ever built a financial 
+          application?" For each question, I had a ground-truth answer (from my actual CV) 
+          to compare against.
+        </p>
+
+        <h3>Round 1: Naive Implementation</h3>
+        <ul>
+          <li>Faithfulness: 0.72 — concerning. The model was making up details.</li>
+          <li>Answer Relevancy: 0.85 — decent but not great.</li>
+          <li>Context Precision: 0.61 — nearly 40% of retrieved chunks were irrelevant.</li>
+          <li>Context Recall: 0.78 — missing about 22% of relevant information.</li>
+        </ul>
+        <p>
+          The Context Precision score was the wake-up call. My chunking strategy — 
+          splitting by character count — was breaking semantic units. A chunk might 
+          contain half a project description and half a skill list, confusing the retriever.
+        </p>
+
+        <h3>Round 2: Section-Aware Chunking</h3>
+        <p>
+          I rewrote the chunking to respect document structure: each CV section 
+          (Experience, Skills, Projects) became its own chunk, with metadata about 
+          the section type. This immediately improved context precision to 0.84.
+        </p>
+
+        <h3>Round 3: Prompt Engineering</h3>
+        <p>
+          The faithfulness issue was partly a prompting problem. I added explicit 
+          instructions: "Only use information from the provided context. If the 
+          context doesn't contain the answer, say so." Faithfulness jumped to 0.91.
+        </p>
+
+        <h2>The Evaluation Pipeline</h2>
+        <div class="mermaid">
+graph LR
+    A[Test Questions] --> B[RAG Pipeline]
+    B --> C[Answers + Contexts]
+    C --> D[RAGAS Metrics]
+    D --> E{Faithfulness ≥ 0.9?}
+    E -->|No| F[Fix & Retry]
+    E -->|Yes| G[Ship It]
+    F --> B
+    style D fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style G fill:#00d68f,stroke:#00b868,color:#0a0a0f
+        </div>
+
+        <h2>Why This Matters</h2>
+        <p>
+          If you're building a RAG system — whether it's a customer support bot, a 
+          document Q&A tool, or a CV chatbot — you need to measure it. Here's why:
+        </p>
+        <ul>
+          <li><strong>Hallucinations erode trust.</strong> One confidently wrong answer and users stop using the system.</li>
+          <li><strong>Chunking is make-or-break.</strong> Metrics tell you whether your chunking strategy works — guessing doesn't.</li>
+          <li><strong>Prompt changes have side effects.</strong> A prompt that improves one metric might hurt another. You won't know without measuring.</li>
+          <li><strong>It's not that hard.</strong> RAGAS takes about 30 lines of Python to set up. The ROI is massive.</li>
+        </ul>
+
+        <h2>The Bottom Line</h2>
+        <blockquote>
+          "It looks right" is not a metric. If you're shipping a RAG system to real 
+          users, invest the hour it takes to set up RAGAS. Your future self — and 
+          your users — will thank you.
+        </blockquote>
+
+        <p>
+          <em>See the <a href="../projects/cv-rag-chatbot.html">CV RAG Chatbot case study</a> 
+          for the full implementation details.</em>
+        </p>
+
+        <div style="margin-top:3rem;">
+          <a href="../blog/" class="btn btn-secondary">← Back to Blog</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2024 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

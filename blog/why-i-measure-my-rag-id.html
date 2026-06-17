@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mengapa Saya Mengukur RAG Saya — Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="Evaluasi RAGAS, metrik retrieval, dan mengapa 'berhasil di lokal' tidak cukup untuk sistem LLM di production.">
+  <link rel="canonical" href="https://rafifshaf-fun.github.io/blog/why-i-measure-my-rag-id.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Artikel Blog</span>
+      <h1>Mengapa Saya Mengukur RAG Saya (Dan Anda Juga Harus)</h1>
+      <div class="post-meta" style="margin-top:1rem;">
+        <span>📅 Juni 2024</span>
+        <span>⏱️ 6 menit baca</span>
+          <span>🏷️ RAG · Evaluasi · RAGAS · LLM</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container">
+      <div class="blog-post">
+
+        <p>
+          Ketika saya membangun <a href="../projects/cv-rag-chatbot.html">Chatbot RAG CV</a>, versi pertamanya "berhasil". Saya mengajukan beberapa pertanyaan, mendapat jawaban yang wajar, dan merasa puas untuk merilisnya. Kemudian saya menunjukkannya kepada seorang teman yang bertanya: <em>"Bagaimana kamu tahu chatbot itu benar-benar mengambil informasi yang tepat?"</em>
+        </p>
+        <p>
+          Saya tidak tahu. Saya hanya mengujinya pada sekitar 10 pertanyaan — yang semuanya saya tulis sendiri. Proses retrieval-nya "terlihat oke". Jawabannya "terdengar benar". Tetapi saya tidak punya bukti kuantitatif bahwa pipeline RAG saya bekerja dengan benar.
+        </p>
+        <p>
+          Inilah jebakan yang dialami sebagian besar pembuat RAG. Kita menguji pada segelintir kueri, melihat output yang masuk akal, dan menyatakan sukses. Padahal masuk akal ≠ benar. Dan di environment production, kebenaran itu sangat penting — terutama ketika sistem tersebut mewakili <em>Anda</em> di hadapan calon klien atau perusahaan.
+        </p>
+
+        <h2>Mengenal RAGAS</h2>
+        <p>
+          <a href="https://docs.ragas.io/" target="_blank" rel="noopener">RAGAS</a> (Retrieval Augmented Generation Assessment) adalah sebuah framework yang mengevaluasi pipeline RAG dari berbagai dimensi. Metrik utama yang saya gunakan:
+        </p>
+        <ul>
+          <li>
+            <strong>Faithfulness</strong> — Apakah jawaban yang dihasilkan berdasar pada fakta dari konteks yang ditarik? (1.0 = sangat sesuai fakta, 0.0 = halusinasi)
+          </li>
+          <li>
+            <strong>Answer Relevancy</strong> — Apakah jawaban tersebut benar-benar menjawab pertanyaan yang diajukan? (memberikan penalti untuk jawaban yang bertele-tele atau keluar dari topik)
+          </li>
+          <li>
+            <strong>Context Precision</strong> — Dari semua potongan teks (chunks) yang ditarik, berapa persen yang benar-benar relevan dengan pertanyaan? (memberikan penalti untuk retrieval yang bising/noisy)
+          </li>
+          <li>
+            <strong>Context Recall</strong> — Dari semua informasi relevan yang tersedia, berapa persen yang berhasil ditarik? (memberikan penalti jika ada konteks penting yang terlewat)
+          </li>
+        </ul>
+
+        <h2>Apa yang Saya Ukur — Dan Apa yang Saya Pelajari</h2>
+        <p>
+          Saya membuat kumpulan data uji berisi 50 pertanyaan sintetis tentang CV saya — mulai dari "Apa pengalaman Rafif dengan PyTorch?" hingga "Apakah dia pernah membangun aplikasi keuangan?" Untuk setiap pertanyaan, saya memiliki jawaban acuan pasti (ground-truth) yang diambil dari CV asli saya sebagai bahan perbandingan.
+        </p>
+
+        <h3>Ronde 1: Implementasi Naif</h3>
+        <ul>
+          <li>Faithfulness: 0.72 — mengkhawatirkan. Model mengarang beberapa detail.</li>
+          <li>Answer Relevancy: 0.85 — lumayan tapi tidak hebat.</li>
+          <li>Context Precision: 0.61 — hampir 40% dari chunks yang ditarik tidak relevan.</li>
+          <li>Context Recall: 0.78 — melewatkan sekitar 22% informasi yang relevan.</li>
+        </ul>
+        <p>
+          Skor Context Precision adalah pukulan telaknya. Strategi chunking saya — memotong teks berdasarkan jumlah karakter — merusak unit makna semantiknya. Sebuah chunk bisa saja berisi separuh deskripsi proyek dan separuh daftar skill, yang membuat retriever kebingungan.
+        </p>
+
+        <h3>Ronde 2: Chunking Berbasis Bagian Dokumen (Section-Aware)</h3>
+        <p>
+          Saya menulis ulang metode pemotongan agar menghormati struktur dokumen: setiap bagian CV (Pengalaman, Skill, Proyek) menjadi chunk-nya sendiri, disertai metadata tentang jenis bagian tersebut. Ini langsung meningkatkan context precision menjadi 0.84.
+        </p>
+
+        <h3>Ronde 3: Prompt Engineering</h3>
+        <p>
+          Masalah faithfulness sebagian besar berasal dari prompt. Saya menambahkan instruksi eksplisit: "Hanya gunakan informasi dari konteks yang diberikan. Jika konteks tidak berisi jawaban, katakan demikian." Angka faithfulness langsung melonjak ke 0.91.
+        </p>
+
+        <h2>Pipeline Evaluasi</h2>
+        <div class="mermaid">
+graph LR
+    A[Pertanyaan Uji] --> B[Pipeline RAG]
+    B --> C[Jawaban + Konteks]
+    C --> D[Metrik RAGAS]
+    D --> E{Faithfulness ≥ 0.9?}
+    E -->|Tidak| F[Perbaiki & Ulangi]
+    E -->|Ya| G[Rilis / Ship It]
+    F --> B
+    style D fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style G fill:#00d68f,stroke:#00b868,color:#0a0a0f
+        </div>
+
+        <h2>Mengapa Ini Penting</h2>
+        <p>
+          Jika Anda membangun sistem RAG — entah itu bot customer support, alat Q&A dokumen, atau chatbot CV — Anda harus mengukurnya. Ini alasannya:
+        </p>
+        <ul>
+          <li><strong>Halusinasi menghancurkan kepercayaan.</strong> Satu jawaban salah yang diucapkan dengan penuh keyakinan akan membuat pengguna berhenti memakai sistem Anda.</li>
+          <li><strong>Chunking adalah faktor penentu.</strong> Metrik memberi tahu Anda apakah strategi chunking Anda berhasil — menebak-nebak tidak akan membantu.</li>
+          <li><strong>Perubahan prompt punya efek samping.</strong> Prompt yang meningkatkan satu metrik bisa saja menjatuhkan metrik lain. Anda tidak akan tahu tanpa mengukurnya.</li>
+          <li><strong>Ini tidak sesulit itu.</strong> Menyiapkan RAGAS hanya butuh sekitar 30 baris kode Python. Timbal baliknya (ROI) sangat besar.</li>
+        </ul>
+
+        <h2>Kesimpulan</h2>
+        <blockquote>
+          "Kelihatannya sudah benar" bukanlah sebuah metrik. Jika Anda merilis sistem RAG ke pengguna nyata, investasikan waktu satu jam untuk menyiapkan RAGAS. Diri Anda di masa depan — dan pengguna Anda — akan berterima kasih.
+        </blockquote>
+
+        <p>
+          <em>Lihat <a href="../projects/cv-rag-chatbot.html">Studi Kasus Chatbot RAG CV</a> 
+          untuk detail implementasi selengkapnya.</em>
+        </p>
+
+        <div style="margin-top:3rem;">
+          <a href="../blog/" class="btn btn-secondary">← Kembali ke Blog</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2026 Rafif Shafwan · Garut, Indonesia · 
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
