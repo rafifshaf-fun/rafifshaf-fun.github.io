@@ -283,21 +283,23 @@ hr {
 
 @media (max-width: 768px) {
   .mobile-toggle { display: flex; }
-  .nav-links {
-    position: fixed;
-    inset: 0;
-    top: 56px;
-    background: var(--bg-primary);
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 3rem 2rem;
-    gap: 2rem;
+  .navbar .nav-links {
+    position: fixed !important;
+    inset: 0 !important;
+    top: 56px !important;
+    background: #f7f6f2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    padding: 3rem 2rem !important;
+    gap: 2rem !important;
     transform: translateX(100%);
     transition: transform var(--t-slow);
-    z-index: 999;
+    z-index: 998 !important;
+    overflow-y: auto;
   }
-  .nav-links.open { transform: translateX(0); }
-  .nav-links a { font-size: 1.15rem; }
+  .nav-links.open { transform: translateX(0) !important; }
+  .nav-links a, .nav-links button { font-size: 1.15rem !important; }
 }
 
 /* ============================================================
