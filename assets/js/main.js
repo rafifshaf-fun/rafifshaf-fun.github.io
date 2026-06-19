@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
    MOBILE NAV
    ============================================================ */
 function initMobileNav() {
-  const toggle = document.getElementById('mobileToggle');
-  const links  = document.getElementById('navLinks');
+  const toggle = document.querySelector('.mobile-toggle');
+  const links  = document.querySelector('.nav-links');
   if (!toggle || !links) return;
 
   toggle.addEventListener('click', () => {
@@ -27,8 +27,8 @@ function initMobileNav() {
     document.body.style.overflow = isOpen ? 'hidden' : '';
   });
 
-  links.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
+  links.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('click', () => {
       toggle.classList.remove('open');
       links.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
