@@ -125,7 +125,7 @@ const TRANSLATIONS_ID = {
   'nav-contact': 'Kontak',
 
   // ===== HERO (index) =====
-  'hero-badge': 'Terbuka untuk posisi ML Engineer / Data Scientist — remote & hybrid',
+  'hero-badge': 'Terbuka untuk posisi AI/ML Engineer / Data Scientist / Fullstack Engineer — tersedia segera — remote atau hybrid',
   'hero-cta-work': 'Lihat Portofolio →',
   'hero-cta-about': 'Tentang Saya',
   'hero-cta-cv': 'Unduh CV',
