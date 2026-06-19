@@ -16,32 +16,24 @@ document.addEventListener('DOMContentLoaded', () => {
    MOBILE NAV
    ============================================================ */
 function initMobileNav() {
-  const toggle = document.querySelector('.mobile-toggle');
-  const links  = document.querySelector('.nav-links');
+  const toggle = document.getElementById('mobileToggle');
+  const links  = document.getElementById('navLinks');
   if (!toggle || !links) return;
 
-  function open() {
-    toggle.classList.add('open');
-    links.classList.add('open');
-    document.body.classList.add('menu-open');
-    toggle.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function close() {
-    toggle.classList.remove('open');
-    links.classList.remove('open');
-    document.body.classList.remove('menu-open');
-    toggle.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  }
-
   toggle.addEventListener('click', () => {
-    links.classList.contains('open') ? close() : open();
+    const isOpen = toggle.classList.toggle('open');
+    links.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
   });
 
-  links.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('click', () => close());
+  links.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      toggle.classList.remove('open');
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
   });
 }
 
