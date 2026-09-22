@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,28 +13,35 @@
 </head>
 <body data-article="true">
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <nav class="navbar" role="navigation" aria-label="Main navigation">
   <div class="container">
     <a href="/" class="nav-logo" aria-label="Rafif Shafwan home"><img src="../assets/images/Logo no bg.png" alt="" class="nav-logo-img">Rafif Shafwan</a>
     <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
-    <ul class="nav-links" role="menubar">
-      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
-      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
-      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
-      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
-      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
-      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
-      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
-      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
+    <ul class="nav-links">
+      <li><a href="/" data-i18n="nav-home">Home</a></li>
+      <li><a href="../about.html" data-i18n="nav-about">About</a></li>
+      <li><a href="../projects/" class="active" data-i18n="nav-projects">Projects</a></li>
+      <li><a href="../blog/" data-i18n="nav-blog">Blog</a></li>
+      <li><a href="../uses.html" data-i18n="nav-uses">Tools</a></li>
+      <li><a href="../opensource.html" data-i18n="nav-opensource">Open Source</a></li>
+      <li><a href="../contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a></li>
+      <li><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
     </ul>
   </div>
 </nav>
 
-<main>
+<main id="main">
   <section class="page-title">
     <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../projects/">Proyek</a>
+        <span class="sep" aria-hidden="true">/</span>
+        <span aria-current="page">Sistem RAG Multi-Agent</span>
+      </nav>
       <span class="section-label">Studi Kasus</span>
       <h1>Sistem RAG Multi-Agent</h1>
       <p>
@@ -144,6 +151,14 @@ graph TB
           Komponen krusial dari sebuah sistem RAG bukanlah sekadar mekanisme retrieval, melainkan lapisan pengambilan keputusan di sekelilingnya. Membagi pipeline ke dalam agen-agen bertugas spesifik dengan kontrak data yang transparan memberikan lokasi penanganan error yang jelas. Penilaian keabsahan rujukan (faithfulness) menguji keyakinan jawaban model menjadi metrik yang dapat diuji dan dipastikan.
         </blockquote>
 
+        <div class="post-cta">
+          <div>
+            <strong data-i18n="cta-title">Interested in working together?</strong>
+            <p data-i18n="cta-text">I'm open to full-time, contract, and freelance work.</p>
+          </div>
+          <a href="../contact.html" class="btn btn-primary" data-i18n="cta-btn">Get in touch →</a>
+        </div>
+
         <div style="margin-top:3rem;">
           <a href="../projects/" class="btn btn-secondary">← Kembali ke Proyek</a>
         </div>
@@ -155,11 +170,15 @@ graph TB
 
 <footer class="footer">
   <div class="container">
-    <p data-i18n="footer-copy">
-      © 2026 Rafif Shafwan · Garut, Indonesia ·
-      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> ·
-      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
-    </p>
+    <div class="footer-inner">
+      <a href="/" class="nav-logo footer-logo" aria-label="Rafif Shafwan home"><img src="../assets/images/Logo no bg.png" alt="" class="nav-logo-img">Rafif Shafwan</a>
+      <div class="footer-links">
+        <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:rafifshaf@gmail.com">Email</a>
+      </div>
+      <p class="footer-copy" data-i18n="footer-copy">© 2026 Rafif Shafwan · Garut, Indonesia</p>
+    </div>
   </div>
 </footer>
 

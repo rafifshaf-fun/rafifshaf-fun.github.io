@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +21,8 @@
 </head>
 <body>
 
+<a class="skip-link" href="#hero">Skip to content</a>
+
 <!-- Navbar -->
 <nav class="navbar" role="navigation" aria-label="Main navigation">
   <div class="container">
@@ -28,15 +30,15 @@
     <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
-    <ul class="nav-links" id="navLinks" role="menubar">
-      <li role="none"><a href="/" class="active" role="menuitem" data-i18n="nav-home">Home</a></li>
-      <li role="none"><a href="about.html" role="menuitem" data-i18n="nav-about">About</a></li>
-      <li role="none"><a href="projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
-      <li role="none"><a href="blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
-      <li role="none"><a href="uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
-      <li role="none"><a href="opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
-      <li role="none"><a href="contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
-      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="active" data-i18n="nav-home">Home</a></li>
+      <li><a href="about.html" data-i18n="nav-about">About</a></li>
+      <li><a href="projects/" data-i18n="nav-projects">Projects</a></li>
+      <li><a href="blog/" data-i18n="nav-blog">Blog</a></li>
+      <li><a href="uses.html" data-i18n="nav-uses">Tools</a></li>
+      <li><a href="opensource.html" data-i18n="nav-opensource">Open Source</a></li>
+      <li><a href="contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a></li>
+      <li><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
     </ul>
   </div>
 </nav>
@@ -51,8 +53,8 @@
         Open to AI/ML Engineer, Data Scientist, or Fullstack Engineer roles. Available immediately, remote or hybrid.
       </div>
       <h1>
-        I build a system<br>
-        <span class="highlight" id="typedText"></span><span class="cursor-blink" aria-hidden="true">|</span>
+        I build a system <span class="sr-only">that actually ships.</span><br>
+        <span class="highlight" aria-hidden="true"><span id="typedText">that actually ships.</span><span class="cursor-blink">|</span></span>
       </h1>
       <p>
         From computer vision pipelines to RAG chatbots and MLOps infrastructure,
@@ -374,7 +376,10 @@
         </div>
         <h3><a href="blog/why-i-measure-my-rag.html">Why I Measure My RAG (And You Should Too)</a></h3>
         <p data-i18n="blog-rag-desc">RAGAS evaluation, retrieval metrics, and why "it works on my machine" isn't enough for production LLM systems.</p>
-        <span class="blog-date" data-i18n="blog-date-june">June 2024</span>
+        <div class="card-foot">
+          <span class="blog-date" data-i18n="blog-date-june">June 2024</span>
+          <a href="blog/why-i-measure-my-rag.html" class="card-link" data-i18n="read-article">Read article →</a>
+        </div>
       </article>
       <article class="card" id="blog-cv">
         <div class="blog-meta-row">
@@ -383,7 +388,10 @@
         </div>
         <h3><a href="blog/detect-then-classify.html">The Detect-Then-Classify Pattern</a></h3>
         <p data-i18n="blog-cv-desc">Why splitting detection and classification into two stages gives you better accuracy, maintainability, and deployment flexibility.</p>
-        <span class="blog-date" data-i18n="blog-date-may">May 2024</span>
+        <div class="card-foot">
+          <span class="blog-date" data-i18n="blog-date-may">May 2024</span>
+          <a href="blog/detect-then-classify.html" class="card-link" data-i18n="read-article">Read article →</a>
+        </div>
       </article>
       <article class="card" id="blog-mlops">
         <div class="blog-meta-row">
@@ -392,7 +400,10 @@
         </div>
         <h3><a href="blog/mlops-without-burnout.html">MLOps Without Burnout</a></h3>
         <p data-i18n="blog-mlops-desc">Running MLflow, Grafana, and Docker on modest hardware. Pragmatic MLOps for solo engineers and small teams.</p>
-        <span class="blog-date" data-i18n="blog-date-april">April 2024</span>
+        <div class="card-foot">
+          <span class="blog-date" data-i18n="blog-date-april">April 2024</span>
+          <a href="blog/mlops-without-burnout.html" class="card-link" data-i18n="read-article">Read article →</a>
+        </div>
       </article>
     </div>
   </div>
@@ -402,7 +413,7 @@
 <footer class="footer">
   <div class="container">
     <div class="footer-inner">
-      <a href="/" class="nav-logo footer-logo" aria-label="Rafif Shafwan home"><img src="assets/images/Logo no bg.png" alt="" class="nav-logo-img" style="height:20px;margin-right:0.4rem">Rafif Shafwan</a>
+      <a href="/" class="nav-logo footer-logo" aria-label="Rafif Shafwan home"><img src="assets/images/Logo no bg.png" alt="" class="nav-logo-img">Rafif Shafwan</a>
       <div class="footer-links">
         <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener" id="footerGithub">GitHub</a>
         <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener" id="footerLinkedin">LinkedIn</a>

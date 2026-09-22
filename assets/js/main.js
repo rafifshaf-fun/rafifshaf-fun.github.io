@@ -113,11 +113,14 @@ function initTypingAnimation() {
   const el = document.getElementById('typedText');
   if (!el) return;
 
+  // Respect reduced-motion preference: leave the static fallback text in place
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
   const phrases = [
-    'that actually ship.',
-    'for real users.',
-    'that stay running.',
-    'beyond notebooks.',
+    'that actually ships.',
+    'that stays running.',
+    'people rely on.',
+    'built for production.',
   ];
 
   let phraseIdx = 0;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,26 +13,28 @@
 </head>
 <body data-article="true">
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <nav class="navbar" role="navigation" aria-label="Main navigation">
   <div class="container">
     <a href="/" class="nav-logo" aria-label="Rafif Shafwan home">Rafif Shafwan</a>
     <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
-    <ul class="nav-links" role="menubar">
-      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
-      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
-      <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
-      <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
-      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
-      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
-      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
-      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
+    <ul class="nav-links">
+      <li><a href="/" data-i18n="nav-home">Home</a></li>
+      <li><a href="../about.html" data-i18n="nav-about">About</a></li>
+      <li><a href="../projects/" data-i18n="nav-projects">Projects</a></li>
+      <li><a href="../blog/" class="active" data-i18n="nav-blog">Blog</a></li>
+      <li><a href="../uses.html" data-i18n="nav-uses">Tools</a></li>
+      <li><a href="../opensource.html" data-i18n="nav-opensource">Open Source</a></li>
+      <li><a href="../contact.html" class="nav-cta" data-i18n="nav-contact">Contact</a></li>
+      <li><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
     </ul>
   </div>
 </nav>
 
-<main>
+<main id="main">
   <section class="page-title">
     <div class="container">
       <span class="section-label">Artikel Blog</span>
@@ -150,11 +152,15 @@ graph LR
 
 <footer class="footer">
   <div class="container">
-    <p data-i18n="footer-copy">
-      © 2026 Rafif Shafwan · Garut, Indonesia · 
-      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> · 
-      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
-    </p>
+    <div class="footer-inner">
+      <a href="/" class="nav-logo footer-logo" aria-label="Rafif Shafwan home"><img src="../assets/images/Logo no bg.png" alt="" class="nav-logo-img">Rafif Shafwan</a>
+      <div class="footer-links">
+        <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:rafifshaf@gmail.com">Email</a>
+      </div>
+      <p class="footer-copy" data-i18n="footer-copy">© 2026 Rafif Shafwan · Garut, Indonesia</p>
+    </div>
   </div>
 </footer>
 

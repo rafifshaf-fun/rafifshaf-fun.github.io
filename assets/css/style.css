@@ -15,7 +15,7 @@
   /* Text */
   --text-primary:   #1c1c28;
   --text-secondary: #52525e;
-  --text-muted:     #9898a6;
+  --text-muted:     #6b6b78;  /* 4.86:1 on --bg-primary, passes WCAG AA */
 
   /* Accent */
   --accent:       #4f46a8;
@@ -1235,6 +1235,184 @@ hr {
   margin-top: 2rem;
 }
 .oss-cta p { font-size: 0.88rem; margin: 0; }
+
+/* ============================================================
+   PROSE PAGE — About / Contact / Uses
+   ============================================================ */
+.page-body { padding: 0 0 5rem; }
+
+.prose { max-width: 720px; }
+
+.prose > h2 { margin-bottom: 1rem; }
+.prose > h3 { margin-bottom: 0.75rem; }
+
+.prose > p {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+.prose > p.tight { margin-bottom: 0.4rem; }
+
+.prose > ul,
+.prose > ol {
+  color: var(--text-secondary);
+  margin-left: 1.5rem;
+  line-height: 2;
+}
+
+.prose > blockquote { margin-bottom: 2rem; }
+
+.prose .note {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .prose > ul,
+  .prose > ol { line-height: 1.9; }
+}
+
+/* ============================================================
+   SKIP LINK & FOCUS
+   ============================================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -4rem;
+  z-index: 2000;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: top var(--t-fast);
+}
+.skip-link:focus {
+  top: 0.75rem;
+  color: var(--bg-primary);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ============================================================
+   FOOTER LOGO
+   ============================================================ */
+.footer-logo .nav-logo-img {
+  height: 20px;
+  margin-right: 0.4rem;
+}
+
+/* ============================================================
+   BREADCRUMB — direct-link visitors on article pages
+   ============================================================ */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 1.1rem;
+}
+.breadcrumb a { color: var(--text-muted); }
+.breadcrumb a:hover { color: var(--accent); }
+.breadcrumb .sep { color: var(--border-strong); }
+
+/* ============================================================
+   END-OF-ARTICLE CTA
+   ============================================================ */
+.post-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.75rem;
+  margin-top: 3rem;
+}
+.post-cta strong { display: block; font-size: 1rem; margin-bottom: 0.2rem; }
+.post-cta p { font-size: 0.87rem; margin: 0; }
+
+/* ============================================================
+   PROJECT META — role badges & card links
+   ============================================================ */
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.18rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.6rem;
+}
+
+.card-link {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color var(--t-fast);
+}
+.card-link:hover { color: var(--accent); }
+
+.card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fade-in,
+  .stagger-child { opacity: 1; transform: none; }
+  .hero-scroll-hint,
+  .hero-badge .dot,
+  .cursor-blink { animation: none; }
+}
 
 /* ============================================================
    RESPONSIVE

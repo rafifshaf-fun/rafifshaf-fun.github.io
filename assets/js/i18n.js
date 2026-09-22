@@ -218,6 +218,12 @@ const TRANSLATIONS_ID = {
   'blog-date-june': 'Jun 2024',
   'blog-date-may': 'Mei 2024',
   'blog-date-april': 'Apr 2024',
+  'read-article': 'Baca artikel →',
+
+  // ===== CTA BLOCKS =====
+  'cta-title': 'Tertarik bekerja sama?',
+  'cta-text': 'Saya terbuka untuk peran penuh waktu, kontrak, maupun proyek freelance.',
+  'cta-btn': 'Hubungi Saya →',
 
   // ===== FOOTER =====
   'footer-copy': '© 2026 Rafif Shafwan · Garut, Indonesia',
