@@ -36,7 +36,7 @@
   <section class="page-title">
     <div class="container">
       <span class="section-label">Artikel Blog</span>
-      <h1>Mengapa Saya Mengukur RAG Saya (Dan Anda Juga Harus)</h1>
+      <h1>Pentingnya Mengukur Performa Sistem RAG</h1>
       <div class="post-meta" style="margin-top:1rem;">
         <span>📅 Juni 2024</span>
         <span>⏱️ 6 menit baca</span>
@@ -50,58 +50,58 @@
       <div class="blog-post">
 
         <p>
-          Ketika saya membangun <a href="../projects/cv-rag-chatbot.html">Chatbot RAG CV</a>, versi pertamanya "berhasil". Saya mengajukan beberapa pertanyaan, mendapat jawaban yang wajar, dan merasa puas untuk merilisnya. Kemudian saya menunjukkannya kepada seorang teman yang bertanya: <em>"Bagaimana kamu tahu chatbot itu benar-benar mengambil informasi yang tepat?"</em>
+          Saat pertama kali membangun <a href="../projects/cv-rag-chatbot.html">Chatbot RAG CV</a>, versi awalnya tampak beroperasi baik. Saya menguji dengan beberapa pertanyaan sederhana, memperoleh jawaban yang relevan, lalu bersiap mempublikasikannya. Namun, seorang rekan mengajukan pertanyaan krusial: <em>"Bagaimana Anda memastikan chatbot mengambil informasi yang tepat secara konsisten?"</em>
         </p>
         <p>
-          Saya tidak tahu. Saya hanya mengujinya pada sekitar 10 pertanyaan, yang semuanya saya tulis sendiri. Proses retrieval-nya "terlihat oke". Jawabannya "terdengar benar". Tetapi saya tidak punya bukti kuantitatif bahwa pipeline RAG saya bekerja dengan benar.
+          Saat itu saya menyadari keterbatasan pengujian manual. Pengujian hanya dilakukan pada 10 kueri buatan sendiri. Alur retrieval terkesan tepat dan hasilnya pun terdengar meyakinkan, namun saya tidak memiliki bukti kuantitatif atas performa alur RAG tersebut.
         </p>
         <p>
-          Inilah jebakan yang dialami sebagian besar pembuat RAG. Kita menguji pada segelintir kueri, melihat output yang masuk akal, dan menyatakan sukses. Padahal masuk akal ≠ benar. Dan di environment production, kebenaran itu sangat penting. Terutama ketika sistem tersebut mewakili <em>Anda</em> di hadapan calon klien atau perusahaan.
+          Kondisi ini kerap menjadi jebakan dalam pengembangan RAG: menilai keberhasilan sistem hanya dari beberapa contoh kueri yang tampak wajar. Padahal jawaban yang terkesan logis belum tentu presisi. Pada lingkungan production, ketepatan informasi menjadi syarat mutlak, terutama ketika sistem tersebut merepresentasikan profil Anda di hadapan klien.
         </p>
 
         <h2>Mengenal RAGAS</h2>
         <p>
-          <a href="https://docs.ragas.io/" target="_blank" rel="noopener">RAGAS</a> (Retrieval Augmented Generation Assessment) adalah sebuah framework yang mengevaluasi pipeline RAG dari berbagai dimensi. Metrik utama yang saya gunakan:
+          <a href="https://docs.ragas.io/" target="_blank" rel="noopener">RAGAS</a> (Retrieval Augmented Generation Assessment) merupakan framework evaluasi terukur untuk menilai alur kerja RAG melalui berbagai dimensi metrik utama:
         </p>
         <ul>
           <li>
-            <strong>Faithfulness</strong>: Apakah jawaban yang dihasilkan berdasar pada fakta dari konteks yang ditarik? (1.0 = sangat sesuai fakta, 0.0 = halusinasi)
+            <strong>Faithfulness</strong>: Mengukur sejauh mana jawaban yang dihasilkan sepenuhnya berpatokan pada fakta konteks yang ditarik (1.0 = sepenuhnya faktual, 0.0 = terjadi halusinasi).
           </li>
           <li>
-            <strong>Answer Relevancy</strong>: Apakah jawaban tersebut benar-benar menjawab pertanyaan yang diajukan? (memberikan penalti untuk jawaban yang bertele-tele atau keluar dari topik)
+            <strong>Answer Relevancy</strong>: Memastikan tingkat relevansi jawaban terhadap pertanyaan yang diajukan (memberikan penalti pada jawaban bertele-tele atau di luar konteks).
           </li>
           <li>
-            <strong>Context Precision</strong>: Dari semua potongan teks (chunks) yang ditarik, berapa persen yang benar-benar relevan dengan pertanyaan? (memberikan penalti untuk retrieval yang bising/noisy)
+            <strong>Context Precision</strong>: Mengukur persentase potongan teks (chunks) ditarik yang benar-benar relevan dengan pertanyaan (memberikan penalti pada penarikan data yang tidak beralasan).
           </li>
           <li>
-            <strong>Context Recall</strong>: Dari semua informasi relevan yang tersedia, berapa persen yang berhasil ditarik? (memberikan penalti jika ada konteks penting yang terlewat)
+            <strong>Context Recall</strong>: Memastikan seluruh informasi relevan yang tersedia berhasil ditarik dengan baik (memberikan penalti jika terdapat konteks penting yang terlewat).
           </li>
         </ul>
 
-        <h2>Apa yang Saya Ukur dan Apa yang Saya Pelajari</h2>
+        <h2>Hasil Pengukuran dan Evaluasi</h2>
         <p>
-          Saya membuat kumpulan data uji berisi 50 pertanyaan sintetis tentang CV saya, mulai dari "Apa pengalaman Rafif dengan PyTorch?" hingga "Apakah dia pernah membangun aplikasi keuangan?" Untuk setiap pertanyaan, saya memiliki jawaban acuan pasti (ground-truth) yang diambil dari CV asli saya sebagai bahan perbandingan.
+          Saya menyusun dataset pengujian berisi 50 kueri sintetis seputar CV, mulai dari topik pengalaman PyTorch hingga portofolio pengembangan aplikasi keuangan. Setiap kueri dilengkapi dengan jawaban acuan (ground-truth) dari dokumen CV asli sebagai pembanding.
         </p>
 
-        <h3>Ronde 1: Implementasi Naif</h3>
+        <h3>Ronde 1: Implementasi Awal</h3>
         <ul>
-          <li>Faithfulness: 0.72, yang cukup mengkhawatirkan. Model mengarang beberapa detail.</li>
-          <li>Answer Relevancy: 0.85, lumayan tapi tidak hebat.</li>
-          <li>Context Precision: 0.61, dengan hampir 40% chunks yang ditarik tidak relevan.</li>
-          <li>Context Recall: 0.78. Sekitar 22% informasi yang relevan terlewat.</li>
+          <li>Faithfulness: 0.72 (Model berisiko mengarang detail yang tidak ada).</li>
+          <li>Answer Relevancy: 0.85 (Cukup baik namun belum optimal).</li>
+          <li>Context Precision: 0.61 (Hampir 40% potongan teks ditarik kurang relevan).</li>
+          <li>Context Recall: 0.78 (Terdapat sekitar 22% informasi relevan yang terlewat).</li>
         </ul>
         <p>
-          Skor Context Precision adalah pukulan telaknya. Strategi chunking saya, memotong teks berdasarkan jumlah karakter, merusak unit makna semantiknya. Sebuah chunk bisa saja berisi separuh deskripsi proyek dan separuh daftar skill, yang membuat retriever kebingungan.
+          Skor Context Precision yang rendah menunjukkan kelemahan strategi awal pemotongan teks berbasis jumlah karakter. Metode ini merusak koherensi semantik teks. Sebuah potongan dapat berisi sebagian deskripsi proyek sekaligus potongan daftar skill, yang membingungkan alur pencarian.
         </p>
 
-        <h3>Ronde 2: Chunking Berbasis Bagian Dokumen (Section-Aware)</h3>
+        <h3>Ronde 2: Pemotongan Berbasis Konteks Dokumen (Section-Aware)</h3>
         <p>
-          Saya menulis ulang metode pemotongan agar menghormati struktur dokumen: setiap bagian CV (Pengalaman, Skill, Proyek) menjadi chunk-nya sendiri, disertai metadata tentang jenis bagian tersebut. Ini langsung meningkatkan context precision menjadi 0.84.
+          Saya memperbarui strategi pemotongan teks dengan memperhatikan struktur asli dokumen: tiap bagian CV (Pengalaman, Keahlian, Proyek) dipisah menjadi unit konteks tersendiri dengan metadata spesifik. Langkah ini langsung meningkatkan skor Context Precision menjadi 0.84.
         </p>
 
-        <h3>Ronde 3: Prompt Engineering</h3>
+        <h3>Ronde 3: Optimasi Instruksi Prompt</h3>
         <p>
-          Masalah faithfulness sebagian besar berasal dari prompt. Saya menambahkan instruksi eksplisit: "Hanya gunakan informasi dari konteks yang diberikan. Jika konteks tidak berisi jawaban, katakan demikian." Angka faithfulness langsung melonjak ke 0.91.
+          Kelemahan tingkat kesetiaan data (faithfulness) diatasi melalui penyesuaian instruksi prompt secara tegas: "Gunakan informasi khusus dari konteks yang tersedia. Apabila konteks tidak memuat jawaban, nyatakan secara eksplisit." Hasilnya, skor Faithfulness meningkat ke angka 0.91.
         </p>
 
         <h2>Pipeline Evaluasi</h2>
@@ -118,20 +118,20 @@ graph LR
     style G fill:#00d68f,stroke:#00b868,color:#0a0a0f
         </div>
 
-        <h2>Mengapa Ini Penting</h2>
+        <h2>Signifikansi Evaluasi Terukur</h2>
         <p>
-          Jika Anda membangun sistem RAG, Anda harus mengukurnya. Baik itu bot customer support, alat Q&A dokumen, maupun chatbot CV. Ini alasannya:
+          Penerapan evaluasi terukur mutlak diperlukan dalam pengembangan sistem RAG, baik untuk asisten layanan pelanggan, sistem tanya-jawab dokumen, maupun chatbot profil:
         </p>
         <ul>
-          <li><strong>Halusinasi menghancurkan kepercayaan.</strong> Satu jawaban salah yang diucapkan dengan penuh keyakinan akan membuat pengguna berhenti memakai sistem Anda.</li>
-          <li><strong>Chunking adalah faktor penentu.</strong> Metrik memberi tahu Anda apakah strategi chunking Anda berhasil. Menebak-nebak tidak akan membantu.</li>
-          <li><strong>Perubahan prompt punya efek samping.</strong> Prompt yang meningkatkan satu metrik bisa saja menjatuhkan metrik lain. Anda tidak akan tahu tanpa mengukurnya.</li>
-          <li><strong>Prosesnya cukup mudah.</strong> Menyiapkan RAGAS hanya butuh sekitar 30 baris kode Python. Timbal baliknya (ROI) sangat besar.</li>
+          <li><strong>Halusinasi merusak kepercayaan:</strong> Satu jawaban keliru yang disampaikan dengan penuh keyakinan dapat menurunkan tingkat kepercayaan pengguna secara drastis.</li>
+          <li><strong>Strategi pemotongan teks menjadi kunci:</strong> Evaluasi kuantitatif memberikan kepastian mengenai efektivitas strategi chunking tanpa mengandalkan asumsi.</li>
+          <li><strong>Penyesuaian prompt membawa dampak turunan:</strong> Perubahan prompt yang memperbaiki satu metrik berpotensi menurunkan metrik lainnya; hal ini hanya dapat teridentifikasi melalui pengujian terukur.</li>
+          <li><strong>Implementasi yang efisien:</strong> Integrasi RAGAS memerlukan skrip yang relatif ringkas namun memberikan nilai evaluasi yang signifikan.</li>
         </ul>
 
         <h2>Kesimpulan</h2>
         <blockquote>
-          "Kelihatannya sudah benar" bukanlah sebuah metrik. Jika Anda merilis sistem RAG ke pengguna nyata, investasikan waktu satu jam untuk menyiapkan RAGAS. Diri Anda di masa depan, dan pengguna Anda, akan berterima kasih.
+          "Terdengar logis" bukanlah sebuah metrik evaluasi. Apabila Anda men-deploy sistem RAG untuk pengguna nyata, alokasikan waktu untuk menyiapkan pipeline RAGAS. Evaluasi yang terukur akan menjamin kualitas sistem Anda dalam jangka panjang.
         </blockquote>
 
         <p>

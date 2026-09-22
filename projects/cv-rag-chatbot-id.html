@@ -38,7 +38,7 @@
       <span class="section-label">Studi Kasus</span>
       <h1>Chatbot RAG CV</h1>
       <p>
-        Chatbot Retrieval-Augmented Generation interaktif yang siap menjawab pertanyaan apa pun tentang latar belakang profesional saya, didukung oleh LangChain + FAISS.
+        Chatbot Retrieval-Augmented Generation interaktif yang menjawab berbagai pertanyaan seputar latar belakang profesional saya, didukung oleh LangChain dan FAISS.
       </p>
     </div>
   </section>
@@ -66,10 +66,10 @@
 
         <h2>Masalah</h2>
         <p>
-          Profil GitHub saya tidak menceritakan semuanya. Sebagian besar karya terbaik saya terikat NDA, dan CV statis tidak bisa menjawab pertanyaan lanjutan. Saya membutuhkan cara agar recruiter dan calon klien bisa <strong>menjelajahi latar belakang saya secara interaktif</strong>, mengajukan pertanyaan spesifik, dan mendapatkan jawaban yang sesuai konteks.
+          Profil GitHub tidak menampilkan keseluruhan portofolio teknis. Sebagian besar karya utama saya terikat NDA, sedangkan CV statis memiliki keterbatasan dalam menjawab pertanyaan lanjutan secara dinamis. Saya memerlukan media interaktif bagi recruiter maupun calon klien untuk <strong>mengeksplorasi latar belakang profesional saya secara mendalam</strong> dan memperoleh jawaban presisi sesuai konteks.
         </p>
         <p>
-          Ini juga merupakan <strong>demonstrasi langsung dari arsitektur RAG</strong>. Proyek ini membuktikan bahwa saya bisa membangun, mengevaluasi, dan men-deploy aplikasi LLM.
+          Proyek ini juga berperan sebagai <strong>demonstrasi langsung arsitektur RAG</strong> yang membuktikan kapabilitas saya dalam merancang, mengevaluasi, dan men-deploy aplikasi LLM siap pakai.
         </p>
 
         <h2>Arsitektur</h2>
@@ -93,48 +93,48 @@ graph TB
         <h2>Mengapa Ini Sulit</h2>
         <ul>
           <li>
-            <strong>Kualitas retrieval adalah segalanya.</strong> Jika retriever menarik potongan teks (chunks) yang tidak relevan, LLM akan berhalusinasi. Saya menggunakan RAGAS untuk mengukur faithfulness, answer relevancy, dan context precision, lalu melakukan iterasi pada strategi chunking dan model embedding hingga mendapatkan metrik yang solid.
+            <strong>Kualitas retrieval menentukan hasil akhir:</strong> Apabila komponen retriever mengambil potongan teks (chunks) yang tidak relevan, LLM berisiko mengalami halusinasi. Oleh karena itu, saya mengadopsi RAGAS untuk mengukur tingkat kesetiaan data (faithfulness), relevansi jawaban (answer relevancy), dan presisi konteks (context precision), serta terus mengoptimalkan strategi pemotongan teks dan model embedding.
           </li>
           <li>
-            <strong>Strategi chunking sangat penting.</strong> Data CV sangat terstruktur (bagian, poin-poin). Chunking yang naif akan merusak koherensi semantik. Saya mengimplementasikan chunking berbasis bagian (section-aware) yang menghormati struktur dokumen.
+            <strong>Strategi chunking yang presisi:</strong> Format CV tersusun sangat terstruktur. Pemotongan teks secara konvensional berpotensi merusak koherensi semantik. Saya mengimplementasikan strategi chunking berbasis konteks dokumen (section-aware) yang menjaga keutuhan informasi.
           </li>
           <li>
-            <strong>Pengembangan berbasis evaluasi (Evaluation-driven development).</strong> Daripada menebak-nebak apakah chatbot ini bagus, saya membangun pipeline evaluasi RAGAS dengan pertanyaan pengujian sintetis. Setiap perubahan pada chunking, prompting, atau retrieval dapat diukur.
+            <strong>Pengembangan berbasis evaluasi (Evaluation-Driven Development):</strong> Memastikan performa chatbot tidak dilakukan dengan reka-reka, melainkan melalui penyusunan pipeline evaluasi RAGAS menggunakan kueri pengujian sintetis. Setiap penyesuaian pada alur pemotongan teks, instruksi prompt, maupun mekanisme retrieval terpantau secara terukur.
           </li>
           <li>
-            <strong>Deployment di Streamlit Cloud.</strong> Tier gratis, tanpa manajemen server. Namun tantangan cold start dan batas memori mengharuskan saya untuk mengoptimalkan ukuran indeks FAISS dan proses pemuatan model.
+            <strong>Optimasi deployment pada Streamlit Cloud:</strong> Pemanfaatan infrastruktur tanpa biaya memerlukan penanganan khusus terhadap tantangan cold start dan batas alokasi memori, sehingga ukuran indeks FAISS dan proses pemuatan model dioptimalkan sepenuhnya.
           </li>
         </ul>
 
         <h2>Tech Stack</h2>
         <ul>
-          <li><strong>LangChain LCEL</strong>: komposisi chain secara deklaratif untuk pemuatan dokumen, pemotongan (splitting), retrieval, dan manajemen prompt</li>
-          <li><strong>FAISS</strong>: vector store untuk pencarian semantik atas dokumen CV dan proyek</li>
-          <li><strong>FastEmbed (berbasis ONNX)</strong>: embedding lokal, tanpa dependensi API luar, dan cold start yang cepat</li>
-          <li><strong>Groq + Llama 3.3</strong>: LLM untuk pembuatan jawaban melalui API inferensi Groq yang sangat cepat</li>
-          <li><strong>Streamlit</strong>: framework UI, di-deploy di Streamlit Community Cloud</li>
-          <li><strong>RAGAS</strong>: framework evaluasi untuk mengukur faithfulness, answer relevancy, dan context precision</li>
+          <li><strong>LangChain LCEL</strong>: Penyusunan alur pemuatan dokumen, pemotongan teks (splitting), retrieval, dan pengelolaan prompt secara deklaratif.</li>
+          <li><strong>FAISS</strong>: Penyimpanan vektor untuk pencarian semantik berkecepatan tinggi atas dokumen CV dan deskripsi proyek.</li>
+          <li><strong>FastEmbed (ONNX)</strong>: Model embedding lokal tanpa ketergantungan API eksternal yang mempercepat waktu boot.</li>
+          <li><strong>Groq + Llama 3.3</strong>: Eksekusi penulisan jawaban memanfaatkan API inferensi Groq yang sangat cepat.</li>
+          <li><strong>Streamlit</strong>: Framework antarmuka pengguna yang di-deploy di Streamlit Community Cloud.</li>
+          <li><strong>RAGAS</strong>: Framework evaluasi kuantitatif untuk mengukur faithfulness, answer relevancy, dan context precision.</li>
         </ul>
 
         <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
         <ul>
           <li>
-            <strong>Menambahkan hybrid search (BM25 + semantik).</strong> Pencarian semantik murni terkadang melewatkan kecocokan kata kunci yang persis (exact match). Pendekatan hybrid akan meningkatkan recall untuk kueri skill/teknologi yang spesifik.
+            <strong>Menerapkan hybrid search (BM25 + semantik):</strong> Pencarian berbasis semantik murni terkadang melewatkan kecocokan kata kunci yang spesifik (exact match). Kombinasi hybrid search akan meningkatkan recall kueri seputar istilah teknologi.
           </li>
           <li>
-            <strong>Mengimplementasikan query rewriting.</strong> Pertanyaan pengguna sering kali ambigu. Menulis ulang (rewriting) pertanyaan tersebut menjadi kueri yang lebih spesifik sebelum proses retrieval akan meningkatkan context precision.
+            <strong>Mengimplementasikan kueri otomatis (query rewriting):</strong> Pertanyaan dari pengguna kerap kali bersifat umum. Mengubah format pertanyaan menjadi kueri yang lebih spesifik sebelum proses pencarian akan meningkatkan presisi konteks.
           </li>
           <li>
-            <strong>Menambahkan kutipan sumber di UI.</strong> Menunjukkan dari bagian CV mana setiap jawaban berasal akan membangun kepercayaan. Pengguna seharusnya bisa mengklik sumber referensinya.
+            <strong>Menampilkan referensi sumber pada antarmuka:</strong> Menyajikan rujukan asal dokumen untuk tiap jawaban akan memperkuat kredibilitas informasi yang disajikan.
           </li>
           <li>
-            <strong>Mengeksplorasi reranking.</strong> Penggunaan cross-encoder reranker setelah retrieval awal bisa lebih meningkatkan context precision, terutama untuk kueri yang ambigu.
+            <strong>Mengeksplorasi penggunaan reranking:</strong> Penerapan cross-encoder reranker setelah pencarian awal dapat meningkatkan presisi konteks, terutama pada pertanyaan yang bersifat kompleks.
           </li>
         </ul>
 
         <h2>Pelajaran Utama</h2>
         <blockquote>
-          Membangun chatbot RAG itu mudah. Membangun yang benar-benar berguna itu sulit. Perbedaannya ada pada evaluasi: mengukur kualitas retrieval, mengulangi strategi chunking, dan bersikap jujur saat sistem tidak mengetahui sesuatu. RAGAS membuat hal ini dapat diukur, bukan subjektif.
+          Membangun chatbot RAG tergolong sederhana, namun menghadirkan chatbot yang akurat dan dapat diandalkan adalah tantangan utamanya. Kuncinya terletak pada alur evaluasi: mengukur kualitas retrieval, menyempurnakan strategi chunking, dan memastikan transparansi saat sistem tidak menemukan informasi. RAGAS menjadikan alur evaluasi ini terukur secara obyektif.
         </blockquote>
 
         <div style="margin-top:3rem;">

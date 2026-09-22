@@ -38,8 +38,7 @@
       <span class="section-label">Studi Kasus</span>
       <h1>Pipeline CV Multi-Tahap</h1>
       <p>
-        Arsitektur detect-then-classify untuk pengenalan objek dengan akurasi tinggi, 
-        dioptimalkan untuk edge deployment.
+        Arsitektur detect-then-classify untuk pengenalan objek berakurasi tinggi yang dioptimalkan khusus untuk edge deployment.
       </p>
       <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
         <span class="nda-badge">🔒 NDA · Demo Sederhana</span>
@@ -65,10 +64,10 @@
 
         <h2>Masalah</h2>
         <p>
-          Klien membutuhkan sistem pengenalan objek untuk inspeksi kualitas industri. Tantangannya: <strong>ratusan kategori produk spesifik (fine-grained)</strong> yang tidak bisa ditangani secara akurat oleh detektor tunggal. Produk terlihat mirip di tingkat kategori, tetapi memiliki perbedaan halus yang sangat penting untuk keputusan kualitas.
+          Klien membutuhkan sistem pengenalan objek untuk inspeksi kualitas di lini industri. Tantangannya: <strong>ratusan kategori produk secara spesifik (fine-grained)</strong> yang sulit ditangani secara akurat oleh model detektor tunggal. Berbagai varian produk terlihat serupa pada tingkat kategori umum, namun menyimpan perbedaan detail yang krusial untuk penilaian kualitas.
         </p>
         <p>
-          Selain itu, sistem harus berjalan di <strong>perangkat edge</strong>: latensi inferensi di bawah 100ms, tanpa dependensi cloud, dan model harus cukup kecil untuk muat di memori di bawah 200MB.
+          Selain itu, sistem wajib beroperasi penuh pada <strong>perangkat edge</strong>: batasan latensi inferensi di bawah 100ms, terisolasi tanpa koneksi cloud, serta alokasi memori efisien di bawah 200MB.
         </p>
 
         <h2>Arsitektur</h2>
@@ -95,48 +94,48 @@ graph TB
         <h2>Mengapa Ini Sulit</h2>
         <ul>
           <li>
-            <strong>Pola detect-then-classify mengurangi kompleksitas kombinatorial.</strong> Daripada menggunakan satu model untuk menangani N kategori, detektor hanya mengurus lokalisasi dan masing-masing classifier menangani subset yang lebih kecil. Ini membuat proses training lebih cepat dan akurasi lebih tinggi.
+            <strong>Pola detect-then-classify mereduksi kompleksitas kombinatorial:</strong> Daripada memaksakan satu model mengklasifikasikan seluruh kategori, detektor difokuskan untuk lokalisasi objek, sementara tiap classifier mengelola subset yang lebih spesifik. Pendekatan ini mempercepat proses pelatihan dan meningkatkan akurasi akhir.
           </li>
           <li>
-            <strong>Batasan edge deployment sangat nyata.</strong> Ekspor ONNX, kuantisasi model (INT8), dan manajemen memori yang hati-hati sangatlah esensial. Seluruh pipeline termasuk pre/post-processing harus muat dalam batasan latensi yang ketat.
+            <strong>Batasan ketat pada edge deployment:</strong> Ekspor ONNX, kuantisasi model (INT8), serta manajemen memori yang efisien menjadi kebutuhan mutlak. Seluruh pipeline, termasuk alur pra dan pasca-pemrosesan, harus memenuhi toleransi latensi yang ketat.
           </li>
           <li>
-            <strong>Ketidakseimbangan data (data imbalance) antar kategori.</strong> Beberapa jenis produk muncul 100x lebih sering daripada yang lain. Pembobotan loss kustom, augmentasi data, dan pembuatan data sintetis (synthetic data generation) sering kali diperlukan.
+            <strong>Ketidakseimbangan distribusi data antar kategori:</strong> Beberapa varian produk muncul jauh lebih sering dibandingkan varian lain. Penanganan ini membutuhkan penyesuaian fungsi loss, augmentasi data spesifik, dan pembuatan data sintetis.
           </li>
           <li>
-            <strong>Strategi update model.</strong> Saat produk baru ditambahkan, Anda tentu tidak ingin melatih ulang semuanya. Arsitektur bertahap ini memungkinkan penambahan classifier halus baru tanpa menyentuh detektor atau tahap classifier lainnya.
+            <strong>Strategi pembaruan model yang fleksibel:</strong> Ketika terdapat varian produk baru, pelatihannya tidak perlu mengulang dari awal secara keseluruhan. Arsitektur bertingkat ini memungkinkan penambahan modul classifier baru tanpa menggangu komponen detektor utama.
           </li>
         </ul>
 
         <h2>Tech Stack</h2>
         <ul>
-          <li><strong>YOLOv8 + SSD</strong>: deteksi objek, dilatih pada dataset kustom dengan augmentasi spesifik domain</li>
-          <li><strong>PyTorch + TensorFlow</strong>: pelatihan classifier kustom menggunakan backbone ResNet/EfficientNet di kedua framework</li>
-          <li><strong>ONNX Runtime</strong>: optimasi inferensi untuk edge deployment</li>
-          <li><strong>OpenCV</strong>: preprocessing gambar, ekstraksi crop, dan post-processing</li>
-          <li><strong>Kuantisasi model</strong>: kuantisasi INT8 yang mengurangi ukuran model hingga 4x lipat dengan penurunan akurasi yang minimal</li>
-          <li><strong>Sistem evaluasi kustom</strong>: metrik per tahap, confusion matrix, dan profiling latensi</li>
+          <li><strong>YOLOv8 + SSD</strong>: Deteksi objek yang dilatih dengan dataset kustom dan teknik augmentasi berbasis domain.</li>
+          <li><strong>PyTorch + TensorFlow</strong>: Pelatihan modul classifier kustom menggunakan arsitektur ResNet/EfficientNet.</li>
+          <li><strong>ONNX Runtime</strong>: Optimasi eksekusi inferensi pada perangkat edge.</li>
+          <li><strong>OpenCV</strong>: Pra-pemrosesan citra, ekstraksi area objek (crop), dan pasca-pemrosesan.</li>
+          <li><strong>Kuantisasi model</strong>: Kuantisasi INT8 yang mereduksi ukuran model hingga 4x lebih kecil dengan penurunan akurasi yang minim.</li>
+          <li><strong>Sistem evaluasi kustom</strong>: Pengukuran metrik per tahap, matriks konfusi, dan pemantauan latensi.</li>
         </ul>
 
         <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
         <ul>
           <li>
-            <strong>Mengeksplorasi YOLO-NAS atau RT-DETR.</strong> Arsitektur yang lebih baru menawarkan keseimbangan akurasi-latensi yang lebih baik daripada YOLOv8 untuk edge deployment.
+            <strong>Mengeksplorasi YOLO-NAS atau RT-DETR:</strong> Arsitektur terbaru ini menawarkan rasio akurasi terhadap latensi yang lebih unggul untuk kebutuhan edge deployment.
           </li>
           <li>
-            <strong>Menambahkan kelas penolakan (rejection class).</strong> Saat classifier merasa tidak yakin, arahkan prediksi ke peninjauan manusia daripada memaksakan hasil. Ini sangat penting dalam inspeksi kualitas.
+            <strong>Menambahkan kelas penolakan (rejection class):</strong> Apabila classifier mendeteksi tingkat keyakinan yang rendah, sistem akan mengarahkan sampel tersebut ke peninjauan manual agar terhindar dari salah klasifikasi.
           </li>
           <li>
-            <strong>Menerapkan active learning.</strong> Secara otomatis menandai prediksi dengan tingkat keyakinan rendah untuk dilabeli oleh manusia guna meningkatkan model seiring waktu.
+            <strong>Menerapkan active learning:</strong> Secara otomatis mengumpulkan sampel berpemberitahuan rendah untuk dilabeli ulang oleh pakar guna meningkatkan performa model secara berkelanjutan.
           </li>
           <li>
-            <strong>Menggunakan Triton Inference Server.</strong> Untuk orkestrasi multi-model di edge, Triton akan menyederhanakan proses pemuatan model, pembuatan versi (versioning), dan batching.
+            <strong>Mengadopsi Triton Inference Server:</strong> Untuk manajemen multi-model di edge, Triton akan mempermudah penanganan pemuatan model, pembuatan versi, dan alur batching.
           </li>
         </ul>
 
         <h2>Pelajaran Utama</h2>
         <blockquote>
-          Pola detect-then-classify sering diremehkan. Memecah masalah menjadi beberapa tahap memberi Anda akurasi yang lebih baik, perawatan yang lebih mudah, dan fleksibilitas untuk memperbarui satu tahap tanpa menyentuh tahap lainnya. Sekarang ini menjadi pendekatan bawaan (default) saya untuk berbagai masalah multi-class vision.
+          Strategi membagi masalah ke dalam beberapa tahap terpisah terbukti menghadirkan tingkat akurasi yang lebih tinggi, kemudahan pemeliharaan, serta fleksibilitas pembaruan antar tahap. Pendekatan ini kini menjadi standar utama saya dalam menangani berbagai permasalahan computer vision multi-class.
         </blockquote>
 
         <div style="margin-top:3rem;">

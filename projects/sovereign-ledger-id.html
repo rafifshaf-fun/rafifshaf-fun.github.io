@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sovereign Ledger · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
-  <meta name="description" content="Platform akuntansi koperasi dengan model ML terintegrasi. Dibangun solo dengan Laravel, Livewire, dan PostgreSQL.">
+  <meta name="description" content="Sistem manajemen keuangan dan akuntansi koperasi komprehensif. Dibangun secara mandiri dengan Laravel, Livewire, dan PostgreSQL.">
   <link rel="canonical" href="https://rafifshaf.fun/projects/sovereign-ledger-id.html">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
@@ -38,7 +38,7 @@
       <span class="section-label">Studi Kasus</span>
       <h1>Sovereign Ledger</h1>
       <p>
-        Sistem manajemen keuangan komprehensif yang dibangun untuk koperasi pekerja kesehatan di Garut, Indonesia, di-deploy on-premise dan digunakan aktif setiap hari.
+        Sistem manajemen keuangan menyeluruh yang dibangun untuk koperasi tenaga kesehatan di Garut, Indonesia. Di-deploy secara on-premise dan aktif digunakan setiap hari.
       </p>
       <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
         <span class="nda-badge">🔒 NDA · KPRI Warga Kesehatan</span>
@@ -64,10 +64,10 @@
 
         <h2>Masalah</h2>
         <p>
-          <strong>KPRI Warga Kesehatan Kabupaten Garut</strong>, sebuah koperasi pekerja kesehatan, membutuhkan sistem manajemen keuangan yang lengkap. Selama bertahun-tahun mereka menggunakan Microsoft Excel, dengan seluruh riwayat transaksi terkunci di dalam file legacy tersebut. Solusi software yang ada di pasaran terlalu mahal atau tidak bisa menangani logika bisnis khusus koperasi (simpanan wajib, dana sosial, dan berbagai jenis pinjaman).
+          <strong>KPRI Warga Kesehatan Kabupaten Garut</strong>, sebuah koperasi tenaga kesehatan, membutuhkan sistem manajemen keuangan yang lengkap. Selama bertahun-tahun mereka mengandalkan Microsoft Excel, sehingga seluruh riwayat transaksi tersimpan dalam berkas lama secara terpisah. Solusi perangkat lunak yang beredar di pasaran relatif mahal dan kurang fleksibel untuk menangani logika bisnis khusus koperasi (seperti simpanan wajib, dana sosial, dan beragam skema pinjaman).
         </p>
         <p>
-          Tantangan utamanya adalah <strong>membangun dan men-deploy sistem keuangan level production sebagai solo developer</strong>: akuntansi double-entry, role-based access untuk lima jenis pengguna, pemrosesan batch bulanan otomatis, pelaporan profesional, dan migrasi data penuh dari catatan Excel lama mereka.
+          Tantangan terbesarnya adalah <strong>merancang serta men-deploy sistem keuangan skala production secara mandiri</strong>: akuntansi double-entry, role-based access control untuk lima tingkatan pengguna, pemrosesan batch bulanan otomatis, pelaporan profesional, serta migrasi penuh data historis dari berkas Excel.
         </p>
 
         <h2>Arsitektur</h2>
@@ -92,48 +92,48 @@ graph TB
         <h2>Mengapa Ini Sulit</h2>
         <ul>
           <li>
-            <strong>Akuntansi double-entry dari nol:</strong> Setiap transaksi harus seimbang (balance). Hierarki Chart of Accounts yang lengkap, jejak audit, dan penguncian periode (period locking). Membangun ini dengan benar sebagai solo developer, tanpa latar belakang akuntansi, membutuhkan pembelajaran mendalam di domain ini.
+            <strong>Akuntansi double-entry dari nol:</strong> Setiap transaksi wajib seimbang (balance). Diperlukan hierarki Chart of Accounts yang presisi, jejak audit (audit log), dan penguncian periode transaksi (period locking). Membangun sistem ini secara mandiri tanpa latar belakang akuntansi menuntut pemahaman domain yang mendalam.
           </li>
           <li>
-            <strong>Migrasi data legacy:</strong> Seluruh riwayat transaksi koperasi tersimpan di file Excel selama bertahun-tahun. Mengimpor, membersihkan, dan merekonsiliasi data ini ke dalam skema PostgreSQL yang ternormalisasi adalah tantangan data engineering tersendiri.
+            <strong>Migrasi data legacy:</strong> Seluruh riwayat transaksi koperasi tersimpan di dalam berkas Excel selama bertahun-tahun. Mengimpor, membersihkan, dan merekonsiliasi data ini ke skema PostgreSQL yang ternormalisasi menjadi tantangan data engineering tersendiri.
           </li>
           <li>
-            <strong>Lima peran pengguna yang berbeda:</strong> Admin, teller, anggota, auditor, dan super-admin, masing-masing dengan izin, tampilan, dan alur kerja yang berbeda. Role-based access control harus sangat ketat untuk sistem keuangan yang menangani uang asli.
+            <strong>Lima peran pengguna yang berbeda:</strong> Admin, teller, anggota, auditor, dan super-admin, masing-masing dengan hak akses, tampilan, dan alur kerja yang spesifik. Kontrol akses berbasis peran (RBAC) diatur sangat ketat mengingat sistem ini mengelola transaksi keuangan riil.
           </li>
           <li>
-            <strong>Deployment Docker on-premise:</strong> Sistem ini berjalan di server fisik milik koperasi, menggunakan PHP-FPM + Nginx + PostgreSQL di dalam container Docker, dengan penjadwalan berbasis Supervisor untuk batch job bulanan otomatis dan backup volume yang persisten.
+            <strong>Deployment Docker on-premise:</strong> Sistem ini beroperasi di server fisik lokal milik koperasi menggunakan PHP-FPM + Nginx + PostgreSQL dalam container Docker. Diperlengkap dengan penjadwalan berbasis Supervisor untuk batch job bulanan otomatis dan backup volume yang persisten.
           </li>
         </ul>
 
         <h2>Fitur Utama yang Diselesaikan</h2>
         <ul>
-          <li><strong>Full Chart of Accounts</strong>: struktur akun hierarkis dengan aturan ketat double-entry</li>
-          <li><strong>Pemrosesan batch bulanan otomatis</strong>: potongan simpanan wajib, kontribusi dana sosial, dan pencatatan cicilan pinjaman yang berjalan sesuai jadwal</li>
-          <li><strong>Manajemen multi-pinjaman</strong>: penjadwalan cicilan otomatis, perhitungan bunga, dan pelacakan pembayaran</li>
-          <li><strong>Role-based access control</strong>: lima peran pengguna dengan hak akses granular</li>
-          <li><strong>Pelaporan profesional</strong>: laporan PDF dengan kop surat resmi, ekspor CSV, dan buku besar (ledger) cetak menggunakan Laravel DOMPDF + PhpSpreadsheet</li>
-          <li><strong>Rekonsiliasi data legacy</strong>: impor penuh dan rekonsiliasi riwayat transaksi koperasi selama bertahun-tahun dari Excel</li>
+          <li><strong>Full Chart of Accounts</strong>: Struktur akun hierarkis dengan penegakan aturan ketat double-entry.</li>
+          <li><strong>Pemrosesan batch bulanan otomatis</strong>: Pemotongan simpanan wajib, kontribusi dana sosial, dan pencatatan cicilan pinjaman yang berjalan sesuai jadwal.</li>
+          <li><strong>Manajemen multi-pinjaman</strong>: Penjadwalan cicilan otomatis, kalkulasi bunga, dan pemantauan status pembayaran.</li>
+          <li><strong>Role-based access control</strong>: Pengaturan hak akses granular untuk lima tingkatan peran pengguna.</li>
+          <li><strong>Pelaporan profesional</strong>: Ekspor laporan PDF dengan kop resmi, file CSV, serta buku besar (ledger) siap cetak memanfaatkan Laravel DOMPDF + PhpSpreadsheet.</li>
+          <li><strong>Rekonsiliasi data legacy</strong>: Impor penuh dan rekonsiliasi riwayat transaksi koperasi selama bertahun-tahun dari berkas Excel.</li>
         </ul>
 
         <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
         <ul>
           <li>
-            <strong>Menambahkan automated testing lebih awal.</strong> Software keuangan tanpa testing itu menakutkan. Saya menambahkan pengujian PHPUnit di tengah jalan, tetapi memilikinya sejak hari pertama, terutama untuk pengecekan balance double-entry dan kalkulasi pinjaman, akan sangat menghemat waktu debugging.
+            <strong>Menyiapkan automated testing sejak awal.</strong> Menjalankan perangkat lunak keuangan tanpa pengujian otomatis sangat berisiko. Saya memang menyematkan pengujian PHPUnit di pertengahan proyek, tetapi menghadirkannya sejak hari pertama, khususnya untuk validasi keseimbangan double-entry dan kalkulasi pinjaman, akan sangat menghemat waktu debugging.
           </li>
           <li>
-            <strong>Memaksimalkan fitur bawaan Laravel.</strong> Awalnya saya kurang memanfaatkan antrean (queues), notifikasi, dan sistem event Laravel. Merefaktor pemrosesan batch menggunakan Laravel queues dengan Supervisor membuat sistem jauh lebih tangguh.
+            <strong>Memaksimalkan fitur bawaan Laravel.</strong> Pada awal pengembangan, saya belum sepenuhnya memanfaatkan antrean (queues), notifikasi, dan sistem event bawaan Laravel. Merefaktor pemrosesan batch menggunakan Laravel queues dan Supervisor terbukti membuat sistem jauh lebih tangguh.
           </li>
           <li>
-            <strong>Merancang sistem role-permission yang lebih granular.</strong> Lima peran berfungsi baik untuk rilis awal, tetapi seiring berkembangnya koperasi, izin yang lebih spesifik akan mengurangi kebutuhan custom override untuk setiap pengguna.
+            <strong>Merancang sistem role-permission yang lebih granular.</strong> Lima peran awal sudah memadai saat rilis, namun seiring pertumbuhan operasional koperasi, pengaturan izin yang lebih spesifik akan mengurangi penyesuaian khusus (custom override) pada setiap akun.
           </li>
           <li>
-            <strong>Membangun pipeline impor data khusus.</strong> Migrasi Excel legacy dilakukan secara semi-manual. Pipeline ETL yang dapat diulang akan membuat proses rekonsiliasi lebih cepat dan dapat diaudit.
+            <strong>Membangun pipeline impor data khusus.</strong> Migrasi data Excel sebelumnya dikerjakan secara semi-manual. Menyiapkan pipeline ETL yang dapat diuji ulang akan mempercepat proses rekonsiliasi data dan menjamin keterauditan.
           </li>
         </ul>
 
         <h2>Pelajaran Utama</h2>
         <blockquote>
-          Membangun sistem keuangan production untuk institusi nyata, sebagai solo developer, mengajarkan Anda lebih banyak daripada tutorial mana pun. Akuntansi double-entry adalah aturan ketat yang memengaruhi setiap keputusan desain arsitektur. Sistem ini di-deploy on-premise di koperasi dan digunakan setiap hari. Itu adalah level tanggung jawab yang sangat berbeda dibandingkan side-project biasa.
+          Membangun sistem keuangan production untuk institusi nyata secara mandiri memberikan pembelajaran yang jauh lebih berharga daripada tutorial mana pun. Aturan ketat akuntansi double-entry memandu setiap keputusan arsitektur. Sistem ini di-deploy secara on-premise di koperasi dan digunakan setiap hari, sebuah tingkat tanggung jawab yang jauh melampaui proyek sampingan biasa.
         </blockquote>
 
         <div style="margin-top:3rem;">

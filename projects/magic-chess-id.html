@@ -38,7 +38,7 @@
       <span class="section-label">Studi Kasus</span>
       <h1>Magic Chess</h1>
       <p>
-        Varian catur berbasis AI yang mengeksplorasi sistem pengambilan keputusan, teori permainan (game theory), dan algoritma pencarian heuristik.
+        Varian catur berbasis AI untuk mengeksplorasi sistem pengambilan keputusan, teori permainan (game theory), dan algoritma pencarian heuristik.
       </p>
     </div>
   </section>
@@ -58,10 +58,10 @@
 
         <h2>Masalah</h2>
         <p>
-          Engine catur sudah sangat banyak dipelajari, tetapi <strong>varian catur dengan aturan yang dimodifikasi</strong> masih jarang dieksplorasi. Saya ingin membangun AI untuk varian catur kustom, "Magic Chess", di mana bidak tertentu memiliki kemampuan khusus (teleportasi, serangan area, kebal sementara). Tantangannya: <strong>fungsi evaluasi catur standar tidak berlaku di sini</strong>, dan branching factor (kemungkinan cabang keputusan) meledak karena adanya pilihan kemampuan khusus tersebut.
+          Engine catur konvensional telah banyak dikembangkan, namun <strong>varian catur dengan aturan khusus</strong> masih jarang dieksplorasi. Proyek ini bertujuan merancang AI untuk varian catur kustom "Magic Chess", di mana beberapa bidak dibekali kemampuan khusus (seperti teleportasi, serangan area, atau kekebalan temporer). Tantangannya: <strong>fungsi evaluasi catur konvensional tidak dapat diterapkan langsung</strong>, serta tingkat pembentukan cabang keputusan (branching factor) melonjak tajam akibat ragam kombinasi kemampuan khusus.
         </p>
         <p>
-          Proyek ini sebagian adalah passion project (saya suka bermain catur) dan sebagian lagi adalah eksplorasi tentang <strong>sistem pengambilan keputusan di bawah state space yang kompleks</strong>. Keterampilan ini dapat diterapkan secara langsung pada reinforcement learning dan masalah teori permainan dalam ML.
+          Proyek ini menggabungkan minat pribadi saya pada catur dengan riset tentang <strong>sistem pengambilan keputusan dalam ruang keadaan (state space) yang kompleks</strong>. Pemahaman ini relevan untuk penerapan reinforcement learning maupun penyelesaian permasalahan teori permainan dalam Machine Learning.
         </p>
 
         <h2>Arsitektur</h2>
@@ -82,47 +82,47 @@ graph TB
         <h2>Mengapa Ini Sulit</h2>
         <ul>
           <li>
-            <strong>Heuristik evaluasi kustom.</strong> Dalam catur standar, nilai bidak dan tabel posisi sudah sangat diketahui. Dalam Magic Chess, kemampuan khusus mengubah nilai bidak secara dinamis. Kuda yang bisa berteleportasi bernilai lebih dari kuda biasa. Seberapa besar bedanya? Ini membutuhkan perancangan heuristik yang baru.
+            <strong>Perancangan heuristik evaluasi kustom:</strong> Pada catur standar, bobot nilai bidak dan preferensi posisi sudah terdefinisi jelas. Pada Magic Chess, keberadaan kemampuan khusus mengubah nilai strategis bidak secara dinamis. Perhitungan nilai efektivitas bidak memerlukan perancangan fungsi heuristik baru yang proporsional.
           </li>
           <li>
-            <strong>Ledakan branching factor.</strong> Setiap bidak dengan kemampuan aktif menambah lapisan keputusan baru. Pohon pencarian tumbuh secara kombinatorial. Pemangkasan Alpha-Beta (Alpha-Beta pruning) memang membantu, tetapi pengurutan langkah (move ordering) menjadi sangat kritis. Heuristik pengurutan standar tidak memperhitungkan langkah kemampuan khusus.
+            <strong>Eksplosivitas branching factor:</strong> Setiap kemampuan aktif yang tersedia memperluas opsi keputusan secara kombinatorial. Walaupun Alpha-Beta pruning membantu memangkas cabang pencarian, pengurutan langkah (move ordering) tetap memegang peranan krusial dalam menjaga performa pencarian.
           </li>
           <li>
-            <strong>Iterative deepening dengan batasan waktu.</strong> AI harus membuat langkah yang masuk akal dalam batasan waktu tertentu. Mengimplementasikan iterative deepening dengan set langkah yang diperluas membutuhkan profiling performa yang hati-hati.
+            <strong>Iterative deepening dengan toleransi waktu:</strong> AI harus mampu menentukan keputusan optimal dalam alokasi waktu yang terbatas. Penerapan teknik iterative deepening pada himpunan langkah yang luas memerlukan optimasi performa yang cermat.
           </li>
           <li>
-            <strong>Tuning berbasis playtesting.</strong> Satu-satunya cara untuk mengetahui apakah AI ini "menyenangkan" adalah dengan bermain melawannya. Saya membangun UI Pygame sederhana dan mengulangi iterasi heuristik berdasarkan gameplay aktual, di mana keseruan permainan lebih menentukan daripada kedalaman pencarian (search depth).
+            <strong>Penyesuaian melalui pengujian langsung (playtesting):</strong> Kualitas dan respon AI diuji melalui simulasi permainan interaktif. Menggunakan antarmuka Pygame yang sederhana, pembobotan heuristik terus disempurnakan berdasarkan alur permainan aktual.
           </li>
         </ul>
 
         <h2>Tech Stack</h2>
         <ul>
-          <li><strong>Python</strong>: core engine untuk representasi papan, pembuatan langkah, dan algoritma pencarian</li>
-          <li><strong>Minimax dengan Alpha-Beta pruning</strong>: mesin pengambil keputusan dengan kedalaman pencarian yang dapat dikonfigurasi</li>
-          <li><strong>Heuristik evaluasi kustom</strong>: skor material + posisional + status kemampuan</li>
-          <li><strong>Pygame</strong>: UI interaktif sederhana untuk playtesting</li>
-          <li><strong>Optimasi move ordering</strong>: pengurutan yang menyadari langkah kemampuan khusus demi efisiensi pruning yang lebih baik</li>
+          <li><strong>Python</strong>: Core engine untuk representasi papan, generator alur langkah, dan algoritma pencarian.</li>
+          <li><strong>Minimax dengan Alpha-Beta Pruning</strong>: Mesin penentu keputusan dengan kedalaman pencarian yang dapat disesuaikan.</li>
+          <li><strong>Heuristik evaluasi kustom</strong>: Penilaian berbasis skor material, preferensi posisi, dan status kemampuan aktif.</li>
+          <li><strong>Pygame</strong>: Antarmuka visual interaktif untuk pengujian alur permainan.</li>
+          <li><strong>Optimasi move ordering</strong>: Pengurutan langkah cerdas yang memperhitungkan kemampuan khusus demi efisiensi pruning.</li>
         </ul>
 
         <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
         <ul>
           <li>
-            <strong>Mengeksplorasi MCTS (Monte Carlo Tree Search).</strong> Untuk permainan dengan branching factor tinggi dan evaluasi state yang kompleks, MCTS sering kali mengungguli Minimax. Pendekatan gaya AlphaZero sangat menarik untuk diterapkan pada varian catur.
+            <strong>Mengeksplorasi MCTS (Monte Carlo Tree Search):</strong> Untuk domain permainan dengan branching factor tinggi, MCTS sering kali menawarkan performa yang lebih efektif dibandingkan Minimax konvensional.
           </li>
           <li>
-            <strong>Melatih bobot evaluasi dengan self-play.</strong> Daripada menyesuaikan heuristik secara manual (hand-tuning), gunakan kombinasi self-play + reinforcement learning untuk menemukan valuasi bidak yang optimal secara otomatis.
+            <strong>Melatih pembobotan evaluasi via self-play:</strong> Alih-alih melakukan penyesuaian manual (hand-tuning), pendekatan self-play berbasis reinforcement learning dapat dimanfaatkan untuk menemukan penentuan bobot bidak secara otomatis.
           </li>
           <li>
-            <strong>Menambahkan UI berbasis web.</strong> Pygame sudah cukup untuk pengujian, tetapi UI web (React + WebSocket) akan membuatnya bisa dibagikan dan dimainkan oleh orang lain.
+            <strong>Mengembangkan antarmuka berbasis web:</strong> Membangun antarmuka web (React + WebSocket) akan mempermudah aksesibilitas permainan agar dapat diuji coba oleh pengguna secara umum.
           </li>
           <li>
-            <strong>Mengimplementasikan tingkat kesulitan.</strong> Membatasi kedalaman pencarian dan menambahkan sedikit elemen acak yang terkontrol akan membuat AI lebih ramah untuk pemain kasual namun tetap menantang bagi pemain berpengalaman.
+            <strong>Menyediakan tingkat kesulitan bervariasi:</strong> Penyesuaian kedalaman pencarian serta variasi elemen terkontrol akan menjadikan AI lebih ramah bagi pemain pemula namun tetap menantang untuk pemain berpengalaman.
           </li>
         </ul>
 
         <h2>Pelajaran Utama</h2>
         <blockquote>
-          Membangun game AI mengajarkan Anda tentang pencarian di bawah berbagai batasan, desain heuristik, dan kompromi antara akurasi vs komputasi. Masalah yang sama akan Anda hadapi dalam sistem ML di production, hanya saja dalam domain yang lebih menyenangkan.
+          Pengembangan Game AI melatih pemahaman mendalam tentang teknik pencarian dengan batasan tertentu, perancangan heuristik, serta penyeimbangan antara akurasi dan beban komputasi. Tantangan serupa juga dijumpai pada sistem ML di tingkat production.
         </blockquote>
 
         <div style="margin-top:3rem;">

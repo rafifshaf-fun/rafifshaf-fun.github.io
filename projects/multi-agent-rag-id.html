@@ -38,9 +38,7 @@
       <span class="section-label">Studi Kasus</span>
       <h1>Sistem RAG Multi-Agent</h1>
       <p>
-        Sistem retrieval-augmented generation yang dibangun dari agen-agen yang
-        berkolaborasi, bukan satu prompt panjang, supaya jawaban tetap berpijak
-        pada sumber dan pipeline-nya tetap bisa di-debug.
+        Sistem Retrieval-Augmented Generation yang dibangun dari kolaborasi beberapa agen khusus, alih-alih satu prompt panjang, guna memastikan keakuratan jawaban rujukan serta kemudahan alur debugging.
       </p>
     </div>
   </section>
@@ -59,30 +57,18 @@
           <span class="tag">LLM</span>
         </div>
 
-        <h2>Masalahnya</h2>
+        <h2>Masalah</h2>
         <p>
-          Sebagian besar implementasi RAG mengikuti resep yang sama: embed
-          dokumen, ambil top-k chunk, lalu tempelkan ke prompt. Cara ini cukup
-          berhasil untuk chatbot yang menjawab pertanyaan tentang satu CV saja.
-          Tapi mulai jebol ketika sumber materinya berupa buku, manual teknis,
-          atau knowledge base internal, dan pertanyaan yang datang tidak semuanya
-          sejenis.
+          Sebagian besar implementasi RAG mengikuti alur standar: melakukan embedding dokumen, menarik top-k chunk, lalu menyertakannya pada prompt. Metode ini memadai untuk kasus sederhana seperti chatbot rujukan dokumen CV. Namun, kendala muncul ketika dokumen rujukan berformat buku, manual teknis, atau basis pengetahuan internal yang heterogen dengan ragam tipe pertanyaan.
         </p>
         <p>
-          Sebagian pertanyaan bisa dijawab langsung dari sumber. Sebagian adalah
-          lanjutan yang baru masuk akal jika ada riwayat percakapan. Sebagian lagi
-          bersifat obrolan biasa dan tidak butuh retrieval sama sekali. Dan
-          sesekali, konteks yang terambil memang tidak memuat jawabannya, dan di titik
-          inilah pipeline satu tahap akan dengan percaya diri tetap menghasilkan
-          jawaban.
+          Beberapa pertanyaan dapat dijawab langsung dari dokumen rujukan. Sebagian merupakan pertanyaan lanjutan yang membutuhkan konteks riwayat percakapan. Sebagian lainnya hanya berupa percakapan umum yang tidak memerlukan pencarian dokumen. Pada situasi tertentu, dokumen terambil tidak memuat jawaban yang dicari; pada titik inilah pipeline satu tahap berisiko memberikan jawaban yang keliru.
         </p>
         <p>
-          Tantangannya: <strong>membangun pipeline RAG yang bisa membedakan
-          kasus-kasus ini, dan menolak mengirim jawaban yang tidak bisa
-          dipertanggungjawabkan sumbernya.</strong>
+          Tantangan utamanya: <strong>merancang pipeline RAG yang mampu memilah skenario tersebut dan menolak menyajikan jawaban tanpa rujukan data yang sahih.</strong>
         </p>
 
-        <h2>Arsitekturnya</h2>
+        <h2>Arsitektur</h2>
         <div class="mermaid">
 graph TB
     Q[Pertanyaan User] --> R{Router Agent}
@@ -99,112 +85,63 @@ graph TB
     style E fill:#f7c948,stroke:#e0b830,color:#0a0a0f
         </div>
 
-        <h2>Agen-agennya</h2>
+        <h2>Komponen Agen</h2>
         <p>
-          Setiap tahap adalah agen terpisah dengan satu tugas. Mereka
-          berkomunikasi lewat typed contract, bukan melempar dictionary
-          bebas. Inilah yang membuat pipeline tetap bisa ditelusuri saat ada
-          yang gagal.
+          Setiap tahapan diampu oleh agen terpisah dengan tugas tunggal (single responsibility). Komunikasi antar agen menggunakan kontrak data bertipe (typed contract) alih-alih melempar dictionary bebas, sehingga alur eksekusi mudah ditelusuri saat terjadi kegagalan.
         </p>
         <ul>
           <li>
-            <strong>Router</strong>: membaca pertanyaan yang masuk dan memutuskan
-            bagaimana pertanyaan itu harus dijawab. Lewat retrieval, lewat riwayat
-            percakapan, atau tidak keduanya. Murah untuk dijalankan, dan mencegah
-            setiap pertanyaan membayar biaya penuh satu putaran retrieval.
+            <strong>Router Agent</strong>: Menganalisis kueri masuk untuk menentukan metode penanganan terbaik, apakah melalui retrieval dokumen, konteks riwayat percakapan, atau respons umum. Agen ini bekerja secara efisien sehingga menghemat alokasi eksekusi retrieval.
           </li>
           <li>
-            <strong>Retrieval Agent</strong>: memastikan jawaban berpijak pada
-            materi sumbernya. Meng-query FAISS vector store, menyusun konteks, dan
-            mengembalikan hasil terstruktur yang bisa dievaluasi tahap berikutnya.
+            <strong>Retrieval Agent</strong>: Memastikan jawaban berpatokan pada dokumen rujukan. Bertugas melakukan query pada FAISS vector store, menyusun konteks, dan mengembalikan struktur data yang siap dievaluasi pada tahap berikutnya.
           </li>
           <li>
-            <strong>Evaluator Agent</strong>: menilai faktualitas dan risiko
-            halusinasi <em>sebelum</em> jawaban sampai ke pengguna. Kalau tingkat
-            faithfulness terhadap sumber terlalu rendah, pipeline kembali ke tahap
-            retrieval daripada mengembalikan jawaban yang terdengar meyakinkan.
+            <strong>Evaluator Agent</strong>: Memvalidasi faktualitas serta meminimalkan risiko halusinasi <em>sebelum</em> respons disajikan kepada pengguna. Apabila tingkat kesetiaan rujukan (faithfulness) di bawah ambang batas, alur dikembalikan ke tahap retrieval daripada menyajikan respons yang menyesatkan.
           </li>
           <li>
-            <strong>Summarizer Agent</strong>: mengelola konteks percakapan.
-            Riwayat mentah tumbuh tanpa batas di sesi panjang, jadi agen ini
-            memadatkan percakapan sebelumnya menjadi ringkasan yang menjaga makna
-            tanpa menghabiskan seluruh context window.
+            <strong>Summarizer Agent</strong>: Mengelola riwayat percakapan agar tidak melampaui kapasitas context window pada sesi yang panjang. Agen ini memadatkan konteks riwayat secara berkala dengan tetap mempertahankan esensi informasi.
           </li>
         </ul>
 
-        <h2>Kenapa Susah</h2>
+        <h2>Mengapa Ini Sulit</h2>
         <ul>
           <li>
-            <strong>Salah routing itu mahal.</strong> Kirim pertanyaan obrolan ke
-            jalur retrieval, dan Anda menambah latensi sekaligus menyeret konteks
-            yang tidak relevan ke dalam jawaban. Router harus konservatif di satu
-            arah dan permisif di arah lain, padahal mode kegagalannya terlihat
-            sama persis dari luar.
+            <strong>Mekanisme penentuan rute (routing) yang presisi:</strong> Kesalahan pengarahan kueri ke jalur retrieval berakibat pada pembengkakan latensi dan pencampuran konteks yang tidak relevan. Router dituntut cermat dalam mengklasifikasikan intent pengguna.
           </li>
           <li>
-            <strong>Faithfulness harus ditegakkan, bukan diharapkan.</strong>
-            Evaluator ada karena "kata model" bukan bukti. Membatasi output dengan
-            skor faithfulness mengubah halusinasi diam-diam menjadi retry, mode
-            kegagalan yang jauh lebih baik daripada jawaban salah yang terdengar
-            percaya diri.
+            <strong>Validasi kesetiaan data (faithfulness) secara ketat:</strong> Keberadaan Evaluator Agent bertugas memastikan luaran model tidak sekadar meyakinkan secara bahasa, melainkan terverifikasi oleh data rujukan. Penilaian ini mengubah potensi halusinasi menjadi proses pelatihan ulang/pencarian ulang secara otomatis.
           </li>
           <li>
-            <strong>Typed contract antar agen.</strong> Dengan empat tahap
-            berurutan, perubahan skema di satu tahap akan diam-diam merusak semua
-            tahap setelahnya jika batasnya tidak bertipe. Mendeklarasikan bentuk
-            input dan output membuat pipeline gagal secara terang-terangan di
-            sambungannya, bukan menghasilkan output yang halus tapi keliru tiga
-            tahap kemudian.
+            <strong>Penerapan typed contract antar agen:</strong> Dalam rantai eksekusi empat tahap, perubahan struktur data tanpa tipe yang jelas akan merusak alur kerja secara tersembunyi. Penggunaan kontrak data bertipe memastikan setiap potensi ketidaksesuaian terdeteksi secara dini pada titik sambungan antarmodul.
           </li>
           <li>
-            <strong>Pertumbuhan konteks adalah pembunuh senyap.</strong> Sesi
-            panjang cepat menghabiskan context window, sementara pemotongan naif
-            justru membuang informasi yang baru saja disepakati pengguna.
-            Summarisasi harus selektif. Ini masalah kompresi, bukan penghapusan.
+            <strong>Efisiensi alokasi konteks:</strong> Sesi percakapan panjang berisiko memenuhi batas context window. Pemotongan riwayat secara serampangan dapat menghilangkan informasi penting, sehingga diperlukan strategi kompresi konteks yang selektif.
           </li>
           <li>
-            <strong>Harus bekerja di dokumen apa pun.</strong> Buku, manual, dan
-            knowledge base internal sangat berbeda struktur maupun kosakatanya.
-            Pipeline tidak boleh mengasumsikan skema tertentu untuk materi sumber.
+            <strong>Kompatibilitas lintas jenis dokumen:</strong> Buku, manual teknis, dan dokumen internal memiliki karakteristik struktur serta ragam istilah yang berbeda. Pipeline dirancang fleksibel tanpa bergantung pada satu skema data tertentu.
           </li>
         </ul>
 
-        <h2>Yang Akan Saya Lakukan Berbeda</h2>
+        <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
         <ul>
           <li>
-            <strong>Membuat threshold evaluator bisa dikonfigurasi per dokumen.</strong>
-            Manual hukum dan kumpulan artikel blog tidak pantas diberi standar
-            faithfulness yang sama. Satu threshold global memaksa Anda memilih
-            antara terlalu ketat di satu sisi dan terlalu longgar di sisi lain.
+            <strong>Pengaturan ambang batas Evaluator per dokumen:</strong> Jenis dokumen hukum dan artikel umum memerlukan tolok ukur kesetiaan rujukan yang berbeda. Fleksibilitas ambang batas khusus akan meningkatkan presisi penilaian.
           </li>
           <li>
-            <strong>Menambahkan tracing yang benar sejak awal.</strong> Men-debug
-            pipeline empat agen hanya dari file log itu benar-benar menyiksa.
-            Tracing per tahap lengkap dengan input, output, dan timing akan
-            mempersingkat hampir semua sesi debugging.
+            <strong>Penerapan alur tracing komprehensif sejak awal:</strong> Proses pengujian pipeline multi-agent akan jauh lebih efisien jika didukung pelacakan (tracing) terperinci untuk tiap tahap, mencakup masukan, luaran, serta catatan waktu eksekusi.
           </li>
           <li>
-            <strong>Meng-cache hasil retrieval.</strong> Pertanyaan yang terulang
-            atau hampir sama sering terjadi di konteks knowledge base, dan
-            meng-embed serta mencari ulang itu pekerjaan yang sia-sia.
+            <strong>Mekanisme tembolok (caching) hasil retrieval:</strong> Menyimpan hasil pencarian kueri yang sering diajukan akan menghemat alokasi proses embedding dan pencarian ulang pada vector store.
           </li>
           <li>
-            <strong>Membangun set evaluasi sebelum membangun pipeline.</strong>
-            Pelajaran yang sama dengan <a href="../blog/why-i-measure-my-rag-id.html">artikel
-            evaluasi RAG saya</a>. Set pertanyaan dengan jawaban acuan memberi tahu
-            Anda apakah perubahan pada router membantu atau justru merugikan. Tanpa
-            itu, Anda hanya menyetel berdasarkan perasaan.
+            <strong>Penyusunan dataset evaluasi sebelum pengembangan alur:</strong> Menyiapkan pasangan pertanyaan dan jawaban acuan sejak awal membantu mengukur dampak setiap penyesuaian pada router maupun retriever secara rasional dan terukur.
           </li>
         </ul>
 
         <h2>Pelajaran Utama</h2>
         <blockquote>
-          Rekayasa yang menarik dari sebuah sistem RAG bukanlah retrieval-nya,
-          melainkan lapisan keputusan di sekitarnya. Memecah pipeline menjadi
-          agen-agen dengan tanggung jawab sempit dan kontrak yang eksplisit membuat
-          setiap kegagalan punya satu tempat tinggal yang jelas, dan menambahkan
-          pengujian pada faithfulness mengubah "model terdengar yakin" menjadi
-          properti yang terukur dan bisa ditegakkan.
+          Komponen krusial dari sebuah sistem RAG bukanlah sekadar mekanisme retrieval, melainkan lapisan pengambilan keputusan di sekelilingnya. Membagi pipeline ke dalam agen-agen bertugas spesifik dengan kontrak data yang transparan memberikan lokasi penanganan error yang jelas. Penilaian keabsahan rujukan (faithfulness) menguji keyakinan jawaban model menjadi metrik yang dapat diuji dan dipastikan.
         </blockquote>
 
         <div style="margin-top:3rem;">

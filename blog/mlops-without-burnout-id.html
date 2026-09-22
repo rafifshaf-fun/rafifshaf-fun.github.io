@@ -50,13 +50,13 @@
       <div class="blog-post">
 
         <p>
-          Setiap tutorial MLOps sepertinya berasumsi bahwa Anda memiliki cluster Kubernetes, tim berisi 5 engineer DevOps, dan budget cloud yang bisa membuat seorang founder startup menangis. Inilah realitas bagi kebanyakan dari kita: sebuah VPS dengan 4 vCPU dan RAM 8GB, Docker Compose, dan tekad untuk membuatnya berhasil.
+          Sebagian besar panduan MLOps umumnya mengasumsikan keberadaan cluster Kubernetes, tim DevOps khusus, dan alokasi anggaran cloud yang besar. Padahal realitas di lapangan sering kali jauh lebih ramah: sebuah server VPS dengan 4 vCPU, RAM 8GB, Docker Compose, dan keinginan kuat untuk menghasilkan sistem yang stabil.
         </p>
         <p>
-          Saya menjalankan stack MLOps saya dari <strong>Garut, Indonesia</strong>, jauh dari region AWS us-east-1. Berikut ini adalah apa yang saya pelajari tentang membangun infrastruktur ML yang andal tanpa harus merasa kelelahan ekstrim (burnout) atau membakar uang.
+          Saya mengelola alur kerja MLOps ini dari <strong>Garut, Jawa Barat</strong>. Artikel ini merangkum strategi membangun infrastruktur Machine Learning yang stabil dan hemat biaya tanpa mengalami kelelahan kerja (burnout).
         </p>
 
-        <h2>Stack MLOps Paling Minimal</h2>
+        <h2>Arsitektur MLOps Esensial</h2>
         <div class="mermaid">
 graph TB
     A[Skrip Training] --> B[Tracking MLflow]
@@ -70,34 +70,34 @@ graph TB
     style F fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
         </div>
 
-        <p>Inilah yang benar-benar Anda butuhkan, dan apa yang bisa Anda lewati:</p>
+        <p>Berikut rincian komponen krusial yang perlu disiapkan beserta opsi yang dapat ditunda:</p>
 
-        <h3>✅ Wajib Punya</h3>
+        <h3>✅ Komponen Wajib</h3>
         <ul>
           <li>
-            <strong>Experiment tracking (MLflow).</strong> Anda PASTI akan lupa hyperparameter mana yang menghasilkan output mana. MLflow itu gratis, bisa berjalan di mana saja, dan hanya butuh 20 menit untuk disiapkan.
+            <strong>Experiment tracking (MLflow):</strong> Pengelolaan hyperparameter dan hasil eksperimen secara terpusat. MLflow bersifat open-source, fleksibel di berbagai lingkungan, dan efisien untuk diintegrasikan.
           </li>
           <li>
-            <strong>Containerisasi (Docker).</strong> Kalimat "tapi jalan kok di laptop saya" adalah musuh utama dari production ML. Docker Compose menangani seluruh stack Anda dalam satu file <code>docker-compose.yml</code>.
+            <strong>Containerisasi (Docker):</strong> Menghilangkan isu ketidaksesuaian lingkungan ("works on my machine"). Konfigurasi Docker Compose memudahkan pengelolaan alur kerja dalam satu file <code>docker-compose.yml</code>.
           </li>
           <li>
-            <strong>Monitoring (Grafana).</strong> Jika Anda tidak bisa melihat penyimpangan (drift) dari prediksi, Anda tidak tahu apakah model Anda sedang menurun performanya. Menyiapkan dashboard Grafana butuh waktu satu jam dan akan langsung memberikan keuntungan.
+            <strong>Pemantauan sistem (Grafana):</strong> Tanpa pemantauan penyimpangan (drift) hasil prediksi, penurunan performa model sulit terdeteksi. Dasbor Grafana memberikan visibilitas real-time atas kesehatan sistem.
           </li>
           <li>
-            <strong>Versioning model.</strong> MLflow Model Registry bisa menangani ini. Setiap model yang ada di production harus punya versi, status (staging/production/archived), dan asal-usul yang jelas kembali ke proses pelatihannya.
+            <strong>Manajemen versi model (Versioning):</strong> MLflow Model Registry memfasilitasi pelacakan status versi model (staging, production, archived) secara transparan dari fase pelatihan awal.
           </li>
         </ul>
 
-        <h3>❌ Bisa Dilewati (Untuk Saat Ini)</h3>
+        <h3>❌ Komponen yang Dapat Ditunda</h3>
         <ul>
-          <li>Kubernetes: Docker Compose sudah cukup untuk deployment dalam satu server (single-node)</li>
-          <li>Feature store (Feast, Tecton): sebuah tabel PostgreSQL dengan kumpulan fitur yang diberi versi sudah berfungsi dengan baik pada awalnya</li>
-          <li>Pipeline CI/CD untuk ML: retraining manual dengan MLflow API tidak masalah saat Anda satu-satunya engineer di sana</li>
-          <li>Versioning data (DVC): Git LFS atau bahkan folder data yang dinamai dengan tanggal sudah bisa digunakan untuk dataset kecil hingga menengah</li>
-          <li>Framework serving model (TorchServe, Triton): menggunakan FastAPI sebagai pembungkus model Anda jauh lebih sederhana dan lebih mudah di-debug</li>
+          <li>Kubernetes: Docker Compose sudah mencukupi untuk kebutuhan deployment pada satu server (single-node).</li>
+          <li>Feature store kompleks (Feast/Tecton): Skema tabel PostgreSQL bertipe data versi sudah memadai pada tahap awal.</li>
+          <li>Pipeline CI/CD otomatis: Eksekusi retraining manual via API MLflow tetap efektif untuk pengelolaan skala mandiri.</li>
+          <li>Versioning data tingkat lanjut (DVC): Penggunaan Git LFS atau struktur direktori terorganisir sudah mencukupi untuk dataset skala kecil hingga menengah.</li>
+          <li>Framework serving kompleks (TorchServe/Triton): Pemanfaatan FastAPI sebagai pembungkus model lebih sederhana dan mudah dianalisis.</li>
         </ul>
 
-        <h2>File docker-compose.yml Saya</h2>
+        <h2>File docker-compose.yml Utama</h2>
         <pre><code># Stack yang berjalan di atas VPS $20/bulan
 version: '3.8'
 services:
@@ -130,51 +130,45 @@ services:
 volumes:
   pgdata:</code></pre>
 
-        <h2>Prinsip MLOps untuk Solo Engineer</h2>
+        <h2>Prinsip MLOps Efisien</h2>
 
-        <h3>1. Pilih Teknologi yang Membosankan (Boring Technology)</h3>
+        <h3>1. Utamakan Teknologi Stabil (Boring Technology)</h3>
         <p>
-          Pilih PostgreSQL ketimbang database time-series khusus. FastAPI ketimbang TensorFlow Serving. Docker Compose ketimbang Kubernetes. Setiap pilihan teknologi harus bisa dipertahankan dengan alasan: "Saya bisa men-debug ini pada jam 2 pagi ketika semuanya rusak." Jika Anda tidak bisa, berarti itu terlalu rumit.
+          Gunakan PostgreSQL alih-alih database terdistribusi yang kompleks, FastAPI ketimbang framework serving rumit, serta Docker Compose alih-alih Kubernetes. Setiap keputusan teknologi hendaknya didasari pada kemudahan pemeliharaan dan analisis saat timbul kendala operasional.
         </p>
 
-        <h3>2. Monitoring Itu Harga Mati</h3>
+        <h3>2. Pemantauan Terukur</h3>
         <p>
-          Monitoring minimal yang harus ada:
+          Indikator pemantauan dasar yang disarankan:
         </p>
         <ul>
-          <li><strong>Distribusi prediksi seiring waktu</strong>: histogram yang diperbarui setiap hari. Jika bentuknya berubah, data Anda berubah.</li>
-          <li><strong>Penyimpangan fitur (Feature drift / PSI)</strong>: Population Stability Index untuk 10 fitur terpenting. Berikan peringatan jika PSI > 0.2.</li>
-          <li><strong>Latensi model p50/p95/p99</strong>, karena model yang lambat sama dengan model yang rusak.</li>
-          <li><strong>Tingkat error</strong>: kegagalan prediksi, timeout, output NaN.</li>
+          <li><strong>Distribusi prediksi historis:</strong> Visualisasi histogram harian untuk mendeteksi pergeseran pola data.</li>
+          <li><strong>Penyimpangan fitur (Feature drift / PSI):</strong> Pengukuran Population Stability Index pada fitur utama dengan batas ambang jelas (PSI > 0.2).</li>
+          <li><strong>Metrik latensi (p50/p95/p99):</strong> Menjamin kecepatan respons inferensi tetap berada dalam batas toleransi.</li>
+          <li><strong>Catatan error (Error Rate):</strong> Pemantauan kegagalan inferensi, kondisi timeout, maupun luaran tak valid (NaN).</li>
         </ul>
+
+        <h3>3. Pelatihan Ulang Berbasis Ambang Batas (Trigger-based Retraining)</h3>
         <p>
-          Semua ini muat dalam satu dashboard Grafana. Siapkan sekali, dan cukup lihat sekilas setiap hari.
+          Melatih ulang model secara berkala tanpa indikator yang jelas berpotensi melipatgandakan beban komputasi. Lebih disarankan untuk memicu alur retraining secara otomatis hanya ketika metrik drift terdeteksi melampaui batas toleransi yang ditetapkan.
         </p>
 
-        <h3>3. Otomatiskan Pemicu Retraining, Bukan Jadwalnya</h3>
+        <h3>4. Dokumentasikan Keputusan Teknis</h3>
         <p>
-          Melatih ulang model pada jadwal tetap (setiap hari Senin!) adalah pemborosan dan sering kali melewatkan momen kapan retraining sebenarnya dibutuhkan. Alih-alih begitu, piculah retraining hanya saat metrik drift melewati batas aman (threshold). Ini berarti retraining terjadi saat benar-benar dibutuhkan, bukan karena kalender yang menyuruhnya.
+          Mencatat alasan di balik pemilihan algoritma atau struktur data dalam berkas <code>DECISIONS.md</code> pada repository akan mempermudah alur pemeliharaan sistem di masa mendatang.
         </p>
 
-        <h3>4. Dokumentasikan Keputusan Arsitektur</h3>
-        <p>
-          Saat Anda adalah solo engineer, tidak ada orang yang bisa ditanya "kenapa kita memilih XGBoost dibanding LightGBM?" Enam bulan dari sekarang, Anda-lah orang yang akan menanyakan itu. Tulislah. File <code>DECISIONS.md</code> sederhana di repo Anda akan menyelamatkan Anda dari pekerjaan arkeologi yang menghabiskan waktu berjam-jam.
-        </p>
-
-        <h2>Apa yang Akan Saya Tambahkan Jika Ada Resource Lebih</h2>
+        <h2>Rencana Pengembangan Lanjutan</h2>
         <ul>
-          <li>Feature store yang proper ketika feature engineering mulai menjadi bottleneck</li>
-          <li>Shadow deployment untuk rilis model baru dengan risiko nol</li>
-          <li>Infrastruktur A/B testing untuk membandingkan performa model langsung di production</li>
-          <li>Hyperparameter tuning otomatis (Optuna) yang terintegrasi dengan MLflow</li>
+          <li>Integrasi feature store terstruktur saat pengolahan data mentah membutuhkan alur pemrosesan khusus.</li>
+          <li>Penerapan shadow deployment untuk menguji model baru secara paralel tanpa mengganggu alur production.</li>
+          <li>Penyusunan infrastruktur A/B testing untuk membandingkan performa antar model secara objektif.</li>
+          <li>Otomasi pencarian hyperparameter (Optuna) yang terhubung langsung ke dashboard MLflow.</li>
         </ul>
-        <p>
-          Tapi semua itu bukanlah pemblokir utama. Anda tetap bisa merilis sistem ML yang andal hari ini juga menggunakan stack yang dijelaskan di atas. Saya melakukannya setiap hari dari Garut, menggunakan VPS yang biayanya lebih murah daripada makan malam di luar.
-        </p>
 
         <h2>Kesimpulan</h2>
         <blockquote>
-          MLOps tidak membutuhkan gelar PhD dalam infrastruktur komputer. Mulailah dengan experiment tracking dan monitoring. Tambahkan kompleksitas hanya ketika setup yang sekarang benar-benar mulai menyusahkan. Mayoritas proyek ML tidak gagal karena infrastruktur yang tidak memadai. Mereka gagal karena tidak ada yang tahu apakah modelnya masih berfungsi dengan baik.
+          Sebagian besar proyek Machine Learning tidak mengalami kegagalan akibat keterbatasan infrastruktur, melainkan akibat minimnya visibilitas terhadap performa model yang sedang beroperasi. Mulailah dengan experiment tracking dan pemantauan dasar, lalu tingkatkan kompleksitas sistem secara bertahap sesuai kebutuhan operasional.
         </blockquote>
 
         <div style="margin-top:3rem;">
