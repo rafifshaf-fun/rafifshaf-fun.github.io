@@ -1,4 +1,4 @@
-# Rafif Shafwan — Personal Website
+# Rafif Shafwan Personal Website
 
 **AI/ML Engineer · Data Scientist · Full-Stack Developer** · Garut, Indonesia · [rafifshaf.fun](https://rafifshaf.fun)
 
@@ -6,17 +6,17 @@
 
 ## About This Site
 
-This is my personal portfolio and technical blog — a static site built with plain HTML, CSS, and JavaScript, deployed on GitHub Pages.
+This is my personal portfolio and technical blog, a static site built with plain HTML, CSS, and JavaScript, deployed on GitHub Pages.
 
 ### What's Here
 
-- **Home** — Hero, featured case studies, live RAG chatbot demo
-- **About** — My story, work history, philosophy, and what I'm looking for
-- **Projects** — Architecture case studies (the thinking behind the code)
-- **Blog** — Technical deep dives on ML engineering and MLOps
-- **Uses** — My full stack: languages, tools, frameworks, hardware
-- **Open Source** — Merged contributions to projects I don't own
-- **Contact** — How to reach me
+- **Home**: Hero, featured case studies, live RAG chatbot demo
+- **About**: My story, work history, philosophy, and what I'm looking for
+- **Projects**: Architecture case studies (the thinking behind the code)
+- **Blog**: Technical deep dives on ML engineering and MLOps
+- **Uses**: My full stack: languages, tools, frameworks, hardware
+- **Open Source**: Merged contributions to projects I don't own
+- **Contact**: How to reach me
 
 ### Bilingual (EN / ID)
 
@@ -33,17 +33,17 @@ When adding a new article, create both the English and the `-id.html` version, a
 
 | Concern | Choice |
 |---|---|
-| **Stack** | Plain HTML/CSS/JS — zero dependencies, deploys instantly |
+| **Stack** | Plain HTML/CSS/JS, zero dependencies, deploys instantly |
 | **Styling** | Custom CSS with an editorial light theme (papery, print-like) |
 | **i18n** | Inline `data-i18n` for pages, separate `-id.html` files for articles |
 | **Diagrams** | Mermaid.js (renders architecture diagrams in-browser) |
 | **Fonts** | Inter + JetBrains Mono (Google Fonts) |
-| **Deployment** | GitHub Pages via GitHub Actions (push to main → auto-deploy) |
-| **Analytics** | None yet — considering Plausible (privacy-first) |
+| **Deployment** | GitHub Pages (legacy branch build off `master`, root path). Push to `master` and it rebuilds in about 35 seconds. |
+| **Analytics** | None yet; considering Plausible (privacy-first) |
 
 ### The NDA Reality
 
-Most of my best work is under non-disclosure agreements with enterprise clients. The case studies on this site explain the **engineering thinking** behind each system — the architecture, the hard problems, and what I'd do differently.
+Most of my best work is under non-disclosure agreements with enterprise clients. The case studies on this site explain the **engineering thinking** behind each system: the architecture, the hard problems, and what I'd do differently.
 
 Look for the 🔒 **Enterprise NDA** badge on projects that had confidential production versions.
 
@@ -52,11 +52,25 @@ Look for the 🔒 **Enterprise NDA** badge on projects that had confidential pro
 ## Local Development
 
 ```bash
-# Just open index.html in a browser — no build step needed
+# Just open index.html in a browser, no build step needed
 # Or use any static file server:
 python -m http.server 8000
 # Then visit http://localhost:8000
 ```
+
+---
+
+## Deployment
+
+GitHub Pages builds this repo straight from the `master` branch (root `/`) using the legacy branch build. There is no CI workflow involved. Pushing to `master` triggers a rebuild that finishes in about 35 seconds.
+
+To confirm a push actually went live:
+
+```bash
+gh api repos/rafifshaf-fun/rafifshaf-fun.github.io/pages/builds/latest
+```
+
+Check that `commit` matches your local HEAD. A brand new file can 404 for a minute or two while the CDN catches up, so re-test with a cache-buster like `?cb=1` before assuming the deploy failed.
 
 ---
 
@@ -90,7 +104,6 @@ python -m http.server 8000
 │   ├── js/i18n.js                      # EN ↔ ID translations
 │   ├── images/
 │   └── file/                           # CV PDFs (EN + ID)
-├── .github/workflows/deploy.yml
 ├── CNAME                              # rafifshaf.fun
 └── README.md
 ```
@@ -103,7 +116,7 @@ python -m http.server 8000
 2. Add `'my-key': 'Teks Indonesia',` to `TRANSLATIONS_ID` in `assets/js/i18n.js`.
 3. Add `data-i18n` to the nav copy in **all** HTML files if it's a nav item.
 
-Missing keys are safe — `i18n.apply()` leaves the English HTML untouched when a key is absent.
+Missing keys are safe: `i18n.apply()` leaves the English HTML untouched when a key is absent.
 
 ---
 
