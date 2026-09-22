@@ -1384,6 +1384,18 @@ hr {
   margin-right: auto;
 }
 
+/* Portrait and phone-shaped screenshots: cap near native width so they stay sharp */
+.case-figure--portrait {
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.case-figure--phone {
+  max-width: 330px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ============================================================
    REDUCED MOTION
    ============================================================ */

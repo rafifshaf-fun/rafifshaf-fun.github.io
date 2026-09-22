@@ -111,6 +111,23 @@ graph TB
           <li><strong>Optimasi move ordering</strong>: Pengurutan langkah cerdas yang memperhitungkan kemampuan khusus demi efisiensi pruning.</li>
         </ul>
 
+        <h2>Di Dalam Sistem</h2>
+        <p>
+          Prediktornya berupa antarmuka Streamlit, bukan notebook, sehingga model
+          wajib bisa dipakai oleh orang yang tidak membangunnya. Pemain ditandai
+          sebagai tereliminasi, pemain aktif dan ronde berikutnya dipilih, dan
+          lawan terakhir yang dihadapi dijadikan konteks.
+        </p>
+
+        <figure class="case-figure case-figure--narrow">
+          <img src="../assets/images/magic-chess-predictor.png" alt="Antarmuka Magic Chess Predictor dengan kotak centang pemain tereliminasi, pemilih pemain dan ronde, serta tombol mulai mode kontinu.">
+          <figcaption>
+            <strong>Mode prediksi kontinu.</strong> Pemain yang tereliminasi
+            disaring dari kumpulan kandidat, dan setiap ronde diprediksi dari
+            kondisi papan saat itu, bukan dari awal.
+          </figcaption>
+        </figure>
+
         <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
         <ul>
           <li>

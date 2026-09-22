@@ -140,6 +140,31 @@ graph LR
           <li><strong>FastAPI</strong>: lightweight prediction serving</li>
         </ul>
 
+        <h2>Inside the System</h2>
+        <p>
+          Two views from the Grafana deployment. The signal distribution shows
+          how the pipeline's BUY and SELL calls divide up, and the confidence
+          panel breaks model conviction down per ticker so a weak signal is
+          visible before it reaches anyone downstream.
+        </p>
+
+        <figure class="case-figure">
+          <img src="../assets/images/stock-mlops-signal-distribution.png" alt="Grafana panel with a BUY versus SELL signal distribution donut chart beside an API prediction traffic time series.">
+          <figcaption>
+            <strong>Signal distribution and API traffic.</strong> The split
+            between BUY and SELL calls, next to request volume over the session.
+          </figcaption>
+        </figure>
+
+        <figure class="case-figure">
+          <img src="../assets/images/stock-mlops-model-confidence.png" alt="Grafana stat panels for total predictions, BUY and SELL counts, ratio and average confidence, above a per-ticker confidence bar chart.">
+          <figcaption>
+            <strong>Model confidence per ticker.</strong> Prediction counts and
+            ratio at the top, with per-ticker confidence below so low-conviction
+            calls are easy to spot.
+          </figcaption>
+        </figure>
+
         <h2>What I'd Do Differently</h2>
         <ul>
           <li>

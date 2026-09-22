@@ -122,6 +122,32 @@ graph LR
           <li><strong>FastAPI</strong>: Layanan API inferensi prediksi yang ringan dan cepat.</li>
         </ul>
 
+        <h2>Di Dalam Sistem</h2>
+        <p>
+          Dua tampilan dari deployment Grafana. Distribusi sinyal menunjukkan
+          bagaimana panggilan BUY dan SELL dari pipeline terbagi, sementara panel
+          confidence memecah keyakinan model per ticker supaya sinyal yang lemah
+          terlihat sebelum sampai ke pihak yang mengambil keputusan.
+        </p>
+
+        <figure class="case-figure">
+          <img src="../assets/images/stock-mlops-signal-distribution.png" alt="Panel Grafana berisi grafik donat distribusi sinyal BUY dan SELL di samping deret waktu trafik prediksi API.">
+          <figcaption>
+            <strong>Distribusi sinyal dan trafik API.</strong> Perbandingan
+            panggilan BUY dan SELL, bersebelahan dengan volume permintaan
+            sepanjang sesi.
+          </figcaption>
+        </figure>
+
+        <figure class="case-figure">
+          <img src="../assets/images/stock-mlops-model-confidence.png" alt="Panel statistik Grafana untuk total prediksi, jumlah BUY dan SELL, rasio, dan rata-rata confidence, di atas grafik batang confidence per ticker.">
+          <figcaption>
+            <strong>Confidence model per ticker.</strong> Jumlah prediksi dan
+            rasio di bagian atas, dengan confidence per ticker di bawahnya
+            sehingga sinyal berkeyakinan rendah mudah dikenali.
+          </figcaption>
+        </figure>
+
         <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
         <ul>
           <li>

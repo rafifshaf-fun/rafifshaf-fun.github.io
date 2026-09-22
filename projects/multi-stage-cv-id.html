@@ -124,6 +124,31 @@ graph TB
           <li><strong>Sistem evaluasi kustom</strong>: Pengukuran metrik per tahap, matriks konfusi, dan pemantauan latensi.</li>
         </ul>
 
+        <h2>Di Dalam Sistem</h2>
+        <p>
+          Dua contoh keluaran. Keduanya menunjukkan perilaku dua tahap yang sama:
+          deteksi mengusulkan area, lalu classifier menentukan isi tiap area.
+          Contoh kedua menambahkan tahap pemotongan, sehingga setiap wajah yang
+          terdeteksi diklasifikasikan sebagai input tersendiri.
+        </p>
+
+        <figure class="case-figure">
+          <img src="../assets/images/multi-stage-cv-cars.jpg" alt="Dua kendaraan di jalan dengan kotak pembatas berlabel car, hasil tahap deteksi.">
+          <figcaption>
+            <strong>Tahap deteksi.</strong> Setiap kendaraan dilokalisasi dan
+            diberi label sebelum klasifikasi dijalankan pada hasil potongannya.
+          </figcaption>
+        </figure>
+
+        <figure class="case-figure case-figure--portrait">
+          <img src="../assets/images/multi-stage-cv-faces.jpg" alt="Seorang anak dengan kotak pembatas, dua area wajah yang dikotaki, dan satu wajah hasil potongan sebagai keluaran klasifikasi.">
+          <figcaption>
+            <strong>Deteksi plus klasifikasi hasil potongan.</strong> Orangnya
+            dilokalisasi, kedua area wajah dikotaki, dan setiap potongan
+            diteruskan ke classifier sebagai input tersendiri.
+          </figcaption>
+        </figure>
+
         <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
         <ul>
           <li>

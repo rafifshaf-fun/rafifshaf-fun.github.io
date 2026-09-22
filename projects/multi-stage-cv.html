@@ -142,6 +142,31 @@ graph TB
           <li><strong>Custom evaluation harness</strong>: per-stage metrics, confusion matrices, and latency profiling</li>
         </ul>
 
+        <h2>Inside the System</h2>
+        <p>
+          Two sample outputs. Both show the same two-stage behaviour: detection
+          proposes regions, then the classifier decides what each region actually
+          is. The second example adds a cropping pass, so every detected face is
+          classified as its own input.
+        </p>
+
+        <figure class="case-figure">
+          <img src="../assets/images/multi-stage-cv-cars.jpg" alt="Two vehicles on a road with bounding boxes labelled car, produced by the detection stage.">
+          <figcaption>
+            <strong>Detection stage.</strong> Each vehicle is localised and
+            labelled before any classification runs on the crops.
+          </figcaption>
+        </figure>
+
+        <figure class="case-figure case-figure--portrait">
+          <img src="../assets/images/multi-stage-cv-faces.jpg" alt="A person with a bounding box, two boxed face regions, and one cropped face shown as classified output.">
+          <figcaption>
+            <strong>Detection plus cropped classification.</strong> The person is
+            localised, both face regions are boxed, and each crop is passed to the
+            classifier as its own input.
+          </figcaption>
+        </figure>
+
         <h2>What I'd Do Differently</h2>
         <ul>
           <li>

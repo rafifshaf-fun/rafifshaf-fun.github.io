@@ -146,6 +146,32 @@ graph TB
           <li><strong>Excel parsing</strong>: reads product catalog from .xlsx, writes image-mapped results back</li>
         </ul>
 
+        <h2>Inside the System</h2>
+        <p>
+          The storefront the scraper feeds. Every product image below was located
+          by the scraper, matched against the Excel catalogue by title similarity,
+          and dropped into place. Checkout hands off to WhatsApp instead of a
+          payment gateway, which is how a wholesale store like this actually takes
+          orders.
+        </p>
+
+        <figure class="case-figure">
+          <img src="../assets/images/makmur-grosir-storefront.jpg" alt="Makmur Grosir storefront with a searchable product grid, category filters, and per-product unit selectors.">
+          <figcaption>
+            <strong>Storefront.</strong> The catalogue is searchable and filtered
+            by category, with unit options and pricing per product.
+          </figcaption>
+        </figure>
+
+        <figure class="case-figure case-figure--phone">
+          <img src="../assets/images/makmur-grosir-cart.png" alt="Shopping cart listing three products with quantity controls, a running total, and a Checkout via WhatsApp button.">
+          <figcaption>
+            <strong>Cart and checkout.</strong> Totals are calculated in the
+            browser and the finished order is handed to WhatsApp, so the store
+            needs no payment backend to take real orders.
+          </figcaption>
+        </figure>
+
         <h2>What I'd Do Differently</h2>
         <ul>
           <li>

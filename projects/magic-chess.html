@@ -132,6 +132,23 @@ graph TB
           <li><strong>Move ordering optimizations</strong>: ability-move-aware ordering for better pruning efficiency</li>
         </ul>
 
+        <h2>Inside the System</h2>
+        <p>
+          The predictor is a Streamlit front end rather than a notebook, which
+          forces the model to be usable by someone who did not build it. Players
+          are marked as eliminated, the active player and round are chosen, and
+          the opponent faced most recently is fed in as context.
+        </p>
+
+        <figure class="case-figure case-figure--narrow">
+          <img src="../assets/images/magic-chess-predictor.png" alt="Magic Chess Predictor interface with eliminated player checkboxes, player and round selectors, and a start continuous mode button.">
+          <figcaption>
+            <strong>Continuous prediction mode.</strong> Eliminated players are
+            filtered out of the candidate set, and each round is predicted from
+            the current board state rather than a cold start.
+          </figcaption>
+        </figure>
+
         <h2>What I'd Do Differently</h2>
         <ul>
           <li>
