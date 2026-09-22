@@ -276,11 +276,13 @@ const TRANSLATIONS_ID = {
   'contact-reach': 'Sapa Saya',
   'contact-email': 'Email',
   'contact-phone': 'Telepon',
+  'contact-whatsapp': 'WhatsApp',
   'contact-location': 'Lokasi',
   'contact-availability': 'Status',
   'contact-open': 'Terbuka untuk peluang baru',
-  'contact-cta-title': 'Ingin langsung diskusi lewat email?',
-  'contact-cta-p': 'Saya biasanya membalas pesan dalam waktu 24 jam. Jangan ragu untuk menghubungi saya.',
+  'contact-cta-title': 'Lebih suka menghubungi langsung?',
+  'contact-cta-p': 'Saya biasanya membalas pesan dalam waktu 24 jam. Silakan pilih cara yang paling nyaman untuk Anda.',
+  'contact-cta-wa': '💬 Chat WhatsApp',
 
   // ===== EXPERIENCE TIMELINE (About) =====
   'about-experience': 'Pengalaman Kerja',
@@ -336,7 +338,7 @@ const TRANSLATIONS_ID = {
   // ===== MULTI-AGENT RAG =====
   'project-multiagent-title': 'Sistem RAG Multi-Agent',
   'project-multiagent-desc': 'Sistem RAG yang dikelola oleh sejumlah agen pintar: router, retrieval, evaluator, dan summarizer. Agen-agen ini berkomunikasi menggunakan standar kontrak data yang ketat. Sistem ini mampu menangani beragam jenis dokumen, mulai dari buku dan manual teknis sampai basis pengetahuan internal.',
-  'project-multiagent-meta': 'LLM · RAG · Multi-Agent Systems',
+  'project-multiagent-meta': 'LLM · RAG · Multi-Agent Systems · 2026',
 
   // ===== 404 =====
   '404-title': 'Halaman Tidak Ditemukan',

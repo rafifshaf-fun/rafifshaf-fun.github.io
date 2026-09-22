@@ -950,37 +950,6 @@ hr {
 }
 
 /* ============================================================
-   CONTACT FORM
-   ============================================================ */
-.form-group { margin-bottom: 1.25rem; }
-.form-group label {
-  display: block;
-  margin-bottom: 0.4rem;
-  font-weight: 500;
-  font-size: 0.86rem;
-  color: var(--text-secondary);
-}
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 0.7rem 1rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text-primary);
-  font-family: var(--font-sans);
-  font-size: 0.92rem;
-  transition: border-color var(--t-fast), box-shadow var(--t-fast);
-}
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--border-strong);
-  box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
-}
-.form-group textarea { min-height: 140px; resize: vertical; }
-
-/* ============================================================
    USES PAGE
    ============================================================ */
 .uses-grid {
@@ -1016,17 +985,6 @@ hr {
   display: flex;
   justify-content: center;
   overflow-x: auto;
-}
-
-/* ============================================================
-   CHATBOT EMBED
-   ============================================================ */
-.chatbot-frame {
-  width: 100%;
-  height: 600px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--bg-secondary);
 }
 
 /* ============================================================
@@ -1395,6 +1353,35 @@ hr {
   gap: 0.75rem;
   flex-wrap: wrap;
   margin-top: 1rem;
+}
+
+/* ============================================================
+   CASE STUDY FIGURES
+   ============================================================ */
+.case-figure { margin: 2rem 0; }
+
+.case-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+}
+
+.case-figure figcaption {
+  margin-top: 0.7rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+.case-figure figcaption strong { color: var(--text-secondary); }
+
+/* Near-square screenshots look oversized at full column width */
+.case-figure--narrow {
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ============================================================

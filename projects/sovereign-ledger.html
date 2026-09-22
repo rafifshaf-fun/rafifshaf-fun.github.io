@@ -143,6 +143,32 @@ graph TB
           <li><strong>Legacy data reconciliation</strong>: full import and reconciliation of years of cooperative transaction history from Excel</li>
         </ul>
 
+        <h2>Inside the System</h2>
+        <p>
+          Two screens from the deployment. The transaction form is where the
+          accounting model becomes concrete: every entry names a source and a
+          destination account from the Chart of Accounts, so the journal is
+          balanced at the point of capture rather than corrected afterwards.
+        </p>
+
+        <figure class="case-figure case-figure--narrow">
+          <img src="../assets/images/sovereign-ledger-transaction-entry.png" alt="Transaction entry form with transaction direction, category, amount, and source and destination Chart of Accounts selectors.">
+          <figcaption>
+            <strong>Transaction entry.</strong> Source and destination accounts
+            are chosen from the Chart of Accounts at capture time, and the entry
+            carries a verification flag for the auditor role.
+          </figcaption>
+        </figure>
+
+        <figure class="case-figure">
+          <img src="../assets/images/sovereign-ledger-invoice-batch.png" alt="Monthly payroll deduction invoice generator with year, month, and member category selectors above an invoice history table.">
+          <figcaption>
+            <strong>Faktur Potong Gaji.</strong> The monthly salary-deduction
+            invoice generator. A period and member category are selected to
+            produce a batch, and each batch is recorded in the history table below.
+          </figcaption>
+        </figure>
+
         <h2>What I'd Do Differently</h2>
         <ul>
           <li>
