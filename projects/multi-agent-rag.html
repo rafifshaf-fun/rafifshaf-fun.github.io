@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Agent RAG System · Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
+  <meta name="description" content="A RAG system built from collaborating agents: a router, a retrieval agent, an evaluator, and a summarizer, held together by typed contracts.">
+  <link rel="canonical" href="https://rafifshaf.fun/projects/multi-agent-rag.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body data-article="true">
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home"><img src="../assets/images/Logo no bg.png" alt="" class="nav-logo-img">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="../about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
+      <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label">Case Study</span>
+      <h1>Multi-Agent RAG System</h1>
+      <p>
+        A retrieval-augmented generation system built from collaborating agents
+        instead of one long prompt, so answers stay grounded in the source and
+        the pipeline stays debuggable.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:800px;">
+
+      <div class="blog-post" style="padding-top:0;">
+
+        <div class="tag-row" style="margin-bottom:2rem;">
+          <span class="tag">Python</span>
+          <span class="tag">FAISS</span>
+          <span class="tag">Streamlit</span>
+          <span class="tag">RAG</span>
+          <span class="tag">Multi-Agent</span>
+          <span class="tag">LLM</span>
+        </div>
+
+        <h2>The Problem</h2>
+        <p>
+          Most RAG implementations follow the same recipe: embed the documents,
+          retrieve the top-k chunks, and stuff them into a prompt. That works
+          well enough for a chatbot answering questions about a single CV. It
+          starts breaking when the source material is a book, a technical manual,
+          or an internal knowledge base, and the questions arriving are not all
+          the same <em>kind</em> of question.
+        </p>
+        <p>
+          Some questions are answered directly from the source. Some are
+          follow-ups that only make sense with conversation history. Some are
+          conversational and need no retrieval at all. And every so often, the
+          retrieved context simply doesn't contain the answer, at which point a
+          single-pass pipeline will confidently generate something anyway.
+        </p>
+        <p>
+          The challenge: <strong>build a RAG pipeline that knows the difference
+          between these cases, and refuses to ship an answer it can't ground.</strong>
+        </p>
+
+        <h2>The Architecture</h2>
+        <div class="mermaid">
+graph TB
+    Q[User Question] --> R{Router Agent}
+    R -->|answerable from source| RA[Retrieval Agent]
+    R -->|follow-up / conversational| S[Summarizer Agent]
+    RA --> V[(FAISS Vector Store)]
+    V --> RA
+    RA --> E[Evaluator Agent]
+    E -->|faithfulness passes| A[Grounded Answer]
+    E -->|faithfulness fails| RA
+    S --> A
+    style R fill:#6c5ce7,stroke:#7c6df0,color:#fff
+    style V fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
+    style E fill:#f7c948,stroke:#e0b830,color:#0a0a0f
+        </div>
+
+        <h2>The Agents</h2>
+        <p>
+          Each stage is a separate agent with one job. They communicate through
+          typed contracts rather than passing loose dictionaries around, which is
+          what makes the pipeline traceable when something goes wrong.
+        </p>
+        <ul>
+          <li>
+            <strong>Router</strong>: reads the incoming question and decides how
+            it should be answered. Retrieval, conversation history, or neither.
+            Cheap to run, and it prevents every question from paying the cost of
+            a full retrieval pass.
+          </li>
+          <li>
+            <strong>Retrieval Agent</strong>: grounds the response in the source
+            material. Queries the FAISS vector store, assembles context, and
+            returns a structured result the next stage can evaluate.
+          </li>
+          <li>
+            <strong>Evaluator Agent</strong>: scores factuality and hallucination
+            risk <em>before</em> an answer reaches the user. If faithfulness to the
+            retrieved source is too low, the pipeline loops back to retrieval
+            rather than returning a plausible-sounding guess.
+          </li>
+          <li>
+            <strong>Summarizer Agent</strong>: manages conversation context. Raw
+            history grows without bound across a long session, so it compresses
+            prior turns into a summary that preserves meaning without consuming
+            the whole context window.
+          </li>
+        </ul>
+
+        <h2>Why It's Hard</h2>
+        <ul>
+          <li>
+            <strong>Routing is cheap to get wrong.</strong> Send a conversational
+            question down the retrieval path and you add latency while dragging
+            irrelevant context into the answer. The router has to be conservative
+            in one direction and permissive in the other, and the failure modes
+            look identical from the outside.
+          </li>
+          <li>
+            <strong>Faithfulness must be enforced, not hoped for.</strong> The
+            evaluator exists because "the model said it" is not evidence. Gating
+            the output on a faithfulness score turns a silent hallucination into a
+            retry, which is a far better failure mode than a confident wrong answer.
+          </li>
+          <li>
+            <strong>Typed contracts between agents.</strong> With four stages in
+            sequence, a schema change in one will silently corrupt everything
+            downstream if the boundary is untyped. Declaring input and output
+            shapes makes the pipeline fail loudly at the seam instead of producing
+            subtly wrong output three stages later.
+          </li>
+          <li>
+            <strong>Context growth is the quiet killer.</strong> Long sessions
+            consume the context window fast, and naive truncation loses exactly the
+            information the user just established. Summarisation has to be
+            selective. It's a compression problem, not a deletion problem.
+          </li>
+          <li>
+            <strong>It has to work on any document set.</strong> Books, manuals,
+            and internal knowledge bases differ enormously in structure and
+            vocabulary. The pipeline can't assume a schema for the source material.
+          </li>
+        </ul>
+
+        <h2>What I'd Do Differently</h2>
+        <ul>
+          <li>
+            <strong>Make evaluator thresholds configurable per document set.</strong>
+            A legal manual and a collection of blog posts do not deserve the same
+            faithfulness bar. A single global threshold forces you to pick between
+            being too strict on one and too lax on the other.
+          </li>
+          <li>
+            <strong>Add proper tracing from day one.</strong> Debugging a
+            four-agent pipeline from log files alone is genuinely painful. Per-stage
+            tracing with inputs, outputs, and timing would have shortened almost
+            every debugging session.
+          </li>
+          <li>
+            <strong>Cache retrieval results.</strong> Repeated and near-duplicate
+            questions are common in a knowledge base setting, and re-embedding and
+            re-searching them is wasted work.
+          </li>
+          <li>
+            <strong>Build the evaluation set before building the pipeline.</strong>
+            This is the same lesson as my <a href="../blog/why-i-measure-my-rag.html">RAG
+            evaluation post</a>. A benchmark set of questions with ground-truth
+            answers tells you whether a change to the router helped or hurt.
+            Without it, you're tuning by vibes.
+          </li>
+        </ul>
+
+        <h2>Key Takeaways</h2>
+        <blockquote>
+          The interesting engineering in a RAG system is the decision layer
+          around the retrieval, not the retrieval itself. Splitting the pipeline
+          into agents with narrow responsibilities and explicit contracts means
+          each failure has exactly one place to live, and adding a check on
+          faithfulness turns "the model sounded confident" into a measurable,
+          enforceable property.
+        </blockquote>
+
+        <div style="margin-top:3rem;">
+          <a href="../projects/" class="btn btn-secondary">← Back to Projects</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p data-i18n="footer-copy">
+      © 2026 Rafif Shafwan · Garut, Indonesia ·
+      <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script src="../assets/js/i18n.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

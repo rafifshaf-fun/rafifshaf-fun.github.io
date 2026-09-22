@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pola Detect-Then-Classify — Rafif Shafwan</title>
+  <title>Pola Detect-Then-Classify · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
   <meta name="description" content="Mengapa memisahkan deteksi dan klasifikasi objek ke dalam tahapan yang berbeda memberikan akurasi, kemudahan perawatan, dan fleksibilitas deployment yang lebih baik.">
   <link rel="canonical" href="https://rafifshaf.fun/blog/detect-then-classify-id.html">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
     </ul>
@@ -49,10 +50,10 @@
       <div class="blog-post">
 
         <p>
-          Sebagian besar tutorial computer vision mengajarkan Anda untuk membangun satu model yang melakukan segalanya: mendeteksi objek SEKALIGUS mengklasifikasikannya dalam satu forward pass. YOLO, SSD, Faster R-CNN — ini adalah detektor end-to-end yang menghasilkan bounding box beserta label kelasnya.
+          Sebagian besar tutorial computer vision mengajarkan Anda untuk membangun satu model yang melakukan segalanya: mendeteksi objek SEKALIGUS mengklasifikasikannya dalam satu forward pass. YOLO, SSD, dan Faster R-CNN adalah detektor end-to-end yang menghasilkan bounding box beserta label kelasnya.
         </p>
         <p>
-          Di lingkungan production, pendekatan ini sering kali bukanlah pilihan yang tepat. Inilah alasannya — dan apa yang sebaiknya Anda lakukan.
+          Di lingkungan production, pendekatan ini sering kali bukanlah pilihan yang tepat. Inilah alasannya, dan apa yang sebaiknya Anda lakukan.
         </p>
 
         <h2>Masalah dengan End-to-End</h2>
@@ -85,13 +86,13 @@ graph LR
         </p>
         <ol>
           <li>
-            <strong>Deteksi (YOLO / EfficientDet):</strong> Temukan semua objek, hasilkan bounding box. Model ini hanya perlu membedakan "objek vs latar belakang" — jauh lebih sederhana, dan jauh lebih kuat.
+            <strong>Deteksi (YOLO / EfficientDet):</strong> Temukan semua objek, hasilkan bounding box. Model ini hanya perlu membedakan "objek vs latar belakang", sehingga jauh lebih sederhana dan jauh lebih kuat.
           </li>
           <li>
             <strong>Klasifikasi Kasar (Coarse Classification):</strong> Masukkan setiap potongan gambar (crop) ke dalam grup kategori (misal: "elektronik," "pakaian," "makanan"). Menggunakan model ringan dengan recall tinggi.
           </li>
           <li>
-            <strong>Klasifikasi Halus (Fine Classification):</strong> Di dalam setiap grup, classifier khusus membedakan item-item spesifik. Setiap classifier hanya menangani 20–50 kelas — jauh lebih mudah dilatih dan di-maintain.
+            <strong>Klasifikasi Halus (Fine Classification):</strong> Di dalam setiap grup, classifier khusus membedakan item-item spesifik. Setiap classifier hanya menangani 20–50 kelas, sehingga jauh lebih mudah dilatih dan di-maintain.
           </li>
         </ol>
 
@@ -104,7 +105,7 @@ graph LR
 
         <h3>2. Maintainability yang Independen</h3>
         <p>
-          Ketika klien menambahkan 5 SKU produk baru, saya hanya perlu melatih ulang classifier halus yang relevan — bukan detektornya, bukan classifier kasarnya, dan bukan classifier halus lainnya. Waktu training turun dari hitungan jam menjadi menit. Risiko deployment juga turun drastis karena hanya satu komponen yang berubah.
+          Ketika klien menambahkan 5 SKU produk baru, saya hanya perlu melatih ulang classifier halus yang relevan, tanpa menyentuh detektornya, classifier kasarnya, maupun classifier halus lainnya. Waktu training turun dari hitungan jam menjadi menit. Risiko deployment juga turun drastis karena hanya satu komponen yang berubah.
         </p>
 
         <h3>3. Deployment Fleksibel</h3>
@@ -114,28 +115,28 @@ graph LR
 
         <h3>4. Debugging yang Lebih Baik</h3>
         <p>
-          Ketika sistem membuat kesalahan, Anda tahu persis di mana letaknya: apakah objek tidak terdeteksi? Apakah salah masuk ke grup kasar? Atau classifier halus yang kebingungan? Arsitektur bertahap memberi Anda metrik per-tahap yang membuat proses debugging menjadi sistematis, bukan sekadar tebak-tebakan.
+          Ketika sistem membuat kesalahan, Anda tahu persis di mana letaknya: apakah objek tidak terdeteksi? Apakah salah masuk ke grup kasar? Atau classifier halus yang kebingungan? Arsitektur bertahap memberi Anda metrik per-tahap sehingga proses debugging menjadi sistematis dan terukur.
         </p>
 
         <h2>Kompromi (Tradeoffs)</h2>
         <ul>
           <li>
-            <strong>Latensi:</strong> Banyak model berarti banyak proses forward pass. Namun dengan ONNX dan batching, overhead-nya sering kali di bawah 10ms — sangat dapat diterima untuk sebagian besar kasus penggunaan.
+            <strong>Latensi:</strong> Banyak model berarti banyak proses forward pass. Namun dengan ONNX dan batching, overhead-nya sering kali di bawah 10ms, sehingga sangat dapat diterima untuk sebagian besar kasus penggunaan.
           </li>
           <li>
             <strong>Kompleksitas:</strong> Lebih banyak komponen yang harus diorkestrasi. Namun pemisahan tanggung jawab ini biasanya justru mengurangi kompleksitas sistem secara keseluruhan dibandingkan dengan model monolitik yang memiliki ribuan edge-case.
           </li>
           <li>
-            <strong>Kebutuhan data:</strong> Setiap classifier halus membutuhkan data pelatihannya sendiri. Tapi biasanya ini sudah tersedia — Anda hanya perlu mengaturnya secara berbeda.
+            <strong>Kebutuhan data:</strong> Setiap classifier halus membutuhkan data pelatihannya sendiri. Tapi biasanya ini sudah tersedia. Anda hanya perlu mengaturnya secara berbeda.
           </li>
         </ul>
 
         <h2>Kapan TIDAK Menggunakan Pola Ini</h2>
         <ul>
-          <li>Anda memiliki kurang dari 20 kelas — pendekatan end-to-end lebih sederhana dan mungkin sudah cukup</li>
-          <li>Latensi sangat ketat (< 5ms) — overhead dari banyak proses forward pass menjadi masalah</li>
-          <li>Kelas-kelas tersebut saling eksklusif dan terpisah dengan jelas — tidak diperlukan diskriminasi spesifik (fine-grained)</li>
-          <li>Anda masih di tahap awal prototyping — mulailah dengan yang sederhana, tambahkan tahapan saat dibutuhkan</li>
+          <li>Anda memiliki kurang dari 20 kelas; pendekatan end-to-end lebih sederhana dan mungkin sudah cukup</li>
+          <li>Latensi sangat ketat (< 5ms), sehingga overhead dari banyak proses forward pass menjadi masalah</li>
+          <li>Kelas-kelas tersebut saling eksklusif dan terpisah dengan jelas; tidak diperlukan diskriminasi spesifik (fine-grained)</li>
+          <li>Anda masih di tahap awal prototyping; mulailah dengan yang sederhana, tambahkan tahapan saat dibutuhkan</li>
         </ul>
 
         <h2>Sketsa Kode</h2>
@@ -165,7 +166,7 @@ class StagedPipeline:
 
         <h2>Kesimpulan</h2>
         <blockquote>
-          Pola detect-then-classify tidak terlihat mewah. Pola ini mungkin tidak akan memenangkan benchmark. Tapi di production, di mana maintainability dan akurasi pada data nyata lebih penting daripada keanggunan arsitektur, ini sering kali merupakan pilihan yang pragmatis. Pecah masalahnya, selesaikan setiap bagian dengan baik, dan pertahankan sistem agar tetap mudah dikembangkan.
+          Pola detect-then-classify terkesan sederhana. Pola ini mungkin tidak akan memenangkan benchmark. Tapi di production, di mana maintainability dan akurasi pada data nyata lebih penting daripada keanggunan arsitektur, ini sering kali merupakan pilihan yang pragmatis. Pecah masalahnya, selesaikan setiap bagian dengan baik, dan pertahankan sistem agar tetap mudah dikembangkan.
         </blockquote>
 
         <p>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Source · Rafif Shafwan</title>
+  <link rel="icon" type="image/png" href="assets/images/Logo no bg.png">
+  <meta name="description" content="Merged open source contributions by Rafif Shafwan: API integrations, bug fixes, and documentation work for career-ops and the Natively AI Assistant.">
+  <meta name="keywords" content="Open Source, Contributions, Pull Requests, AI/ML Engineer, Node.js, TypeScript, Rafif Shafwan">
+  <meta name="author" content="Rafif Shafwan">
+  <meta property="og:title" content="Open Source Contributions · Rafif Shafwan">
+  <meta property="og:description" content="Merged pull requests into projects I don't own: API integrations, bug fixes, and documentation work.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rafifshaf.fun/opensource.html">
+  <link rel="canonical" href="https://rafifshaf.fun/opensource.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="/" class="nav-logo" aria-label="Rafif Shafwan home"><img src="assets/images/Logo no bg.png" alt="" class="nav-logo-img">Rafif Shafwan</a>
+    <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="/" role="menuitem" data-i18n="nav-home">Home</a></li>
+      <li role="none"><a href="about.html" role="menuitem" data-i18n="nav-about">About</a></li>
+      <li role="none"><a href="projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
+      <li role="none"><a href="blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
+      <li role="none"><a href="uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="opensource.html" class="active" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
+      <li role="none"><a href="contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
+      <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="page-title">
+    <div class="container">
+      <span class="section-label" data-i18n="oss-label">Contributions</span>
+      <h1 data-i18n="oss-page-title">Open Source Contributions</h1>
+      <p data-i18n="oss-page-sub">
+        Pull requests merged into projects I don't own: bug fixes, API
+        integrations, and documentation improvements.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding:0 0 5rem;">
+    <div class="container" style="max-width:820px;">
+
+      <p style="margin-bottom:2.5rem;" data-i18n="oss-intro">
+        Most of my commercial work sits behind NDAs, so public code is how you
+        can judge how I actually work. Everything below was accepted into
+        codebases where I have no special access. Reviewers scrutinised each
+        line the same way they would any other contributor's.
+      </p>
+
+      <div class="oss-list">
+
+        <!-- career-ops -->
+        <article class="oss-card">
+          <div class="oss-header">
+            <h2 class="oss-title">
+              <a href="https://github.com/santifer/career-ops" target="_blank" rel="noopener">career-ops</a>
+            </h2>
+            <span class="oss-role" data-i18n="oss-co-role">Contributor</span>
+          </div>
+          <p class="oss-desc" data-i18n="oss-co-desc">
+            An AI-driven career management system for job hunting: offer
+            tracking, automated CV generation, and application workflows.
+          </p>
+
+          <div class="oss-stats">
+            <div class="oss-stat">
+              <strong data-i18n="oss-co-stat-offers">740+</strong>
+              <span data-i18n="oss-co-stat-offers-label">Offers evaluated</span>
+            </div>
+            <div class="oss-stat">
+              <strong data-i18n="oss-co-stat-cvs">100+</strong>
+              <span data-i18n="oss-co-stat-cvs-label">CVs generated</span>
+            </div>
+          </div>
+
+          <ul class="pr-list">
+            <li class="pr-item">
+              <div class="pr-title">
+                <span class="pr-num">#1069</span>
+                <a href="https://github.com/santifer/career-ops/pull/1069" target="_blank" rel="noopener" data-i18n="oss-co-pr1-title">Resume/CV terminology support</a>
+              </div>
+              <p class="pr-desc" data-i18n="oss-co-pr1-desc">
+                Introduced resume-specific templates and documentation, letting
+                users choose between the US/industry "resume" and academic "CV"
+                formats. Updated documentation and README translations project-wide.
+              </p>
+            </li>
+
+            <li class="pr-item">
+              <div class="pr-title">
+                <span class="pr-num">#1086</span>
+                <a href="https://github.com/santifer/career-ops/pull/1086" target="_blank" rel="noopener" data-i18n="oss-co-pr2-title">Indonesia job portal providers</a>
+              </div>
+              <p class="pr-desc" data-i18n="oss-co-pr2-desc">
+                Built the <code>jobstreet.mjs</code> and <code>glints.mjs</code>
+                provider modules, integrating public APIs to discover postings
+                from Indonesia's largest job platforms, including GraphQL
+                querying, URL validation, SSRF protection, pagination, and unit tests.
+              </p>
+            </li>
+
+            <li class="pr-item">
+              <div class="pr-title">
+                <span class="pr-num">#1173</span>
+                <a href="https://github.com/santifer/career-ops/pull/1173" target="_blank" rel="noopener" data-i18n="oss-co-pr3-title">Glints + Jobstreet API restoration</a>
+              </div>
+              <p class="pr-desc" data-i18n="oss-co-pr3-desc">
+                Migrated the Glints provider to the <code>/api/v2-alc/graphql</code>
+                endpoint and Jobstreet to its v5 REST API after upstream
+                deprecations, restoring scanner functionality. Added Arabic RTL and
+                Japanese CJK font fallback to the CV template; contributed to CI/CD
+                workflow updates and release automation.
+              </p>
+            </li>
+          </ul>
+
+          <div class="tag-row">
+            <span class="tag">Node.js</span><span class="tag">JavaScript</span>
+            <span class="tag">REST APIs</span><span class="tag">GraphQL</span>
+            <span class="tag">Playwright</span><span class="tag">YAML</span>
+          </div>
+        </article>
+
+        <!-- Natively AI Assistant -->
+        <article class="oss-card">
+          <div class="oss-header">
+            <h2 class="oss-title">
+              <a href="https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant" target="_blank" rel="noopener">Natively AI Assistant</a>
+            </h2>
+            <span class="oss-role" data-i18n="oss-na-role">Contributor</span>
+          </div>
+          <p class="oss-desc" data-i18n="oss-na-desc">
+            An open source Electron and React desktop AI assistant, with work
+            focused on credential persistence and interface usability.
+          </p>
+
+          <ul class="pr-list">
+            <li class="pr-item">
+              <div class="pr-title">
+                <span class="pr-num">#364</span>
+                <a href="https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant/pull/364" target="_blank" rel="noopener" data-i18n="oss-na-pr1-title">Settings panel close button fix</a>
+              </div>
+              <p class="pr-desc" data-i18n="oss-na-pr1-desc">
+                Resolved a layout bug where the Settings panel had no visible
+                close control because of a <code>flex-1</code> layout issue;
+                added a top-right close button with backdrop blur and hover states.
+              </p>
+            </li>
+
+            <li class="pr-item">
+              <div class="pr-title">
+                <span class="pr-num">#370</span>
+                <span class="pr-num">→ #373</span>
+                <a href="https://github.com/Natively-AI-assistant/natively-cluely-ai-assistant/pull/373" target="_blank" rel="noopener" data-i18n="oss-na-pr2-title">Credential persistence fallback fix</a>
+              </div>
+              <p class="pr-desc" data-i18n="oss-na-pr2-desc">
+                Diagnosed and fixed a bug causing silent loss of saved API keys
+                after restart, caused by the keyring and fallback writes sharing a
+                single try-catch block. The fix isolates the keyring write and falls
+                back to AES-256-GCM encryption on failure; it incorporates maintainer
+                review feedback including error message redaction and regression tests.
+              </p>
+            </li>
+          </ul>
+
+          <div class="tag-row">
+            <span class="tag">TypeScript</span><span class="tag">Electron</span>
+            <span class="tag">React</span><span class="tag">Node.js</span>
+            <span class="tag">AES-256-GCM</span><span class="tag">Tailwind CSS</span>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- CTA -->
+      <div class="oss-cta">
+        <div>
+          <strong data-i18n="oss-cta-title" style="display:block;margin-bottom:0.2rem;">Want to review my code?</strong>
+          <p data-i18n="oss-cta-p">
+            Every contribution on this page can be reviewed directly: diffs,
+            maintainer reviews, and the discussion threads.
+          </p>
+        </div>
+        <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener" class="btn btn-primary" data-i18n="oss-cta-btn">View My GitHub →</a>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <a href="/" class="nav-logo footer-logo" aria-label="Rafif Shafwan home"><img src="assets/images/Logo no bg.png" alt="" class="nav-logo-img" style="height:20px;margin-right:0.4rem">Rafif Shafwan</a>
+      <div class="footer-links">
+        <a href="https://github.com/rafifshaf-fun" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/rafif-shafwan" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:rafifshaf@gmail.com">Email</a>
+      </div>
+      <p class="footer-copy" data-i18n="footer-copy">© 2026 Rafif Shafwan · Garut, Indonesia</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

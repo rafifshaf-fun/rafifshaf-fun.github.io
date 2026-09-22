@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chatbot RAG CV — Rafif Shafwan</title>
+  <title>Chatbot RAG CV · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
   <meta name="description" content="Chatbot Retrieval-Augmented Generation untuk menjawab pertanyaan seputar CV saya. Dibangun dengan LangChain, FAISS, Streamlit, dan dievaluasi dengan RAGAS.">
   <link rel="canonical" href="https://rafifshaf.fun/projects/cv-rag-chatbot-id.html">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
     </ul>
@@ -37,7 +38,7 @@
       <span class="section-label">Studi Kasus</span>
       <h1>Chatbot RAG CV</h1>
       <p>
-        Chatbot Retrieval-Augmented Generation interaktif — tanyakan apa pun tentang latar belakang profesional saya, didukung oleh LangChain + FAISS.
+        Chatbot Retrieval-Augmented Generation interaktif yang siap menjawab pertanyaan apa pun tentang latar belakang profesional saya, didukung oleh LangChain + FAISS.
       </p>
     </div>
   </section>
@@ -65,10 +66,10 @@
 
         <h2>Masalah</h2>
         <p>
-          Profil GitHub saya tidak menceritakan semuanya. Sebagian besar karya terbaik saya terikat NDA, dan CV statis tidak bisa menjawab pertanyaan lanjutan. Saya membutuhkan cara agar recruiter dan calon klien bisa <strong>menjelajahi latar belakang saya secara interaktif</strong> — mengajukan pertanyaan spesifik dan mendapatkan jawaban yang sesuai konteks.
+          Profil GitHub saya tidak menceritakan semuanya. Sebagian besar karya terbaik saya terikat NDA, dan CV statis tidak bisa menjawab pertanyaan lanjutan. Saya membutuhkan cara agar recruiter dan calon klien bisa <strong>menjelajahi latar belakang saya secara interaktif</strong>, mengajukan pertanyaan spesifik, dan mendapatkan jawaban yang sesuai konteks.
         </p>
         <p>
-          Ini juga merupakan <strong>demonstrasi langsung dari arsitektur RAG</strong> — menunjukkan bahwa saya bisa membangun, mengevaluasi, dan men-deploy aplikasi LLM, bukan sekadar membicarakannya.
+          Ini juga merupakan <strong>demonstrasi langsung dari arsitektur RAG</strong>. Proyek ini membuktikan bahwa saya bisa membangun, mengevaluasi, dan men-deploy aplikasi LLM.
         </p>
 
         <h2>Arsitektur</h2>
@@ -92,7 +93,7 @@ graph TB
         <h2>Mengapa Ini Sulit</h2>
         <ul>
           <li>
-            <strong>Kualitas retrieval adalah segalanya.</strong> Jika retriever menarik potongan teks (chunks) yang tidak relevan, LLM akan berhalusinasi. Saya menggunakan RAGAS untuk mengukur faithfulness, answer relevancy, dan context precision — melakukan iterasi pada strategi chunking dan model embedding hingga mendapatkan metrik yang solid.
+            <strong>Kualitas retrieval adalah segalanya.</strong> Jika retriever menarik potongan teks (chunks) yang tidak relevan, LLM akan berhalusinasi. Saya menggunakan RAGAS untuk mengukur faithfulness, answer relevancy, dan context precision, lalu melakukan iterasi pada strategi chunking dan model embedding hingga mendapatkan metrik yang solid.
           </li>
           <li>
             <strong>Strategi chunking sangat penting.</strong> Data CV sangat terstruktur (bagian, poin-poin). Chunking yang naif akan merusak koherensi semantik. Saya mengimplementasikan chunking berbasis bagian (section-aware) yang menghormati struktur dokumen.
@@ -107,12 +108,12 @@ graph TB
 
         <h2>Tech Stack</h2>
         <ul>
-          <li><strong>LangChain LCEL</strong> — komposisi chain secara deklaratif: pemuatan dokumen, pemotongan (splitting), retrieval, dan manajemen prompt</li>
-          <li><strong>FAISS</strong> — vector store untuk pencarian semantik atas dokumen CV dan proyek</li>
-          <li><strong>FastEmbed (berbasis ONNX)</strong> — embedding lokal, tanpa dependensi API luar, dan cold start yang cepat</li>
-          <li><strong>Groq + Llama 3.3</strong> — LLM untuk pembuatan jawaban melalui API inferensi Groq yang sangat cepat</li>
-          <li><strong>Streamlit</strong> — framework UI, di-deploy di Streamlit Community Cloud</li>
-          <li><strong>RAGAS</strong> — framework evaluasi untuk mengukur faithfulness, answer relevancy, dan context precision</li>
+          <li><strong>LangChain LCEL</strong>: komposisi chain secara deklaratif untuk pemuatan dokumen, pemotongan (splitting), retrieval, dan manajemen prompt</li>
+          <li><strong>FAISS</strong>: vector store untuk pencarian semantik atas dokumen CV dan proyek</li>
+          <li><strong>FastEmbed (berbasis ONNX)</strong>: embedding lokal, tanpa dependensi API luar, dan cold start yang cepat</li>
+          <li><strong>Groq + Llama 3.3</strong>: LLM untuk pembuatan jawaban melalui API inferensi Groq yang sangat cepat</li>
+          <li><strong>Streamlit</strong>: framework UI, di-deploy di Streamlit Community Cloud</li>
+          <li><strong>RAGAS</strong>: framework evaluasi untuk mengukur faithfulness, answer relevancy, dan context precision</li>
         </ul>
 
         <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
@@ -133,7 +134,7 @@ graph TB
 
         <h2>Pelajaran Utama</h2>
         <blockquote>
-          Membangun chatbot RAG itu mudah. Membangun yang benar-benar berguna itu sulit. Perbedaannya ada pada evaluasi — mengukur kualitas retrieval, mengulangi strategi chunking, dan bersikap jujur saat sistem tidak mengetahui sesuatu. RAGAS membuat hal ini dapat diukur, bukan subjektif.
+          Membangun chatbot RAG itu mudah. Membangun yang benar-benar berguna itu sulit. Perbedaannya ada pada evaluasi: mengukur kualitas retrieval, mengulangi strategi chunking, dan bersikap jujur saat sistem tidak mengetahui sesuatu. RAGAS membuat hal ini dapat diukur, bukan subjektif.
         </blockquote>
 
         <div style="margin-top:3rem;">

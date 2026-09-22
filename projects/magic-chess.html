@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Magic Chess — Rafif Shafwan</title>
+  <title>Magic Chess · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
   <meta name="description" content="AI-driven chess variant exploring decision systems and game theory. Built with Python, Minimax, and Alpha-Beta pruning.">
   <link rel="canonical" href="https://rafifshaf.fun/projects/magic-chess.html">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
     </ul>
@@ -60,15 +61,15 @@
         <p>
           Chess engines are well-studied, but <strong>chess variants with modified 
           rules</strong> are underexplored. I wanted to build an AI for a custom 
-          chess variant — "Magic Chess" — where certain pieces have special abilities 
+          chess variant, "Magic Chess", where certain pieces have special abilities 
           (teleportation, area attacks, temporary invincibility). The challenge: 
           <strong>standard chess evaluation functions don't apply</strong>, and the 
           branching factor explodes with ability choices.
         </p>
         <p>
           This project was partly a passion project (I enjoy chess) and partly an 
-          exploration of <strong>decision systems under complex state spaces</strong> 
-          — skills directly applicable to reinforcement learning and game theory 
+          exploration of <strong>decision systems under complex state spaces</strong>. 
+          Those skills apply directly to reinforcement learning and game theory 
           problems in ML.
         </p>
 
@@ -93,13 +94,13 @@ graph TB
             <strong>Custom evaluation heuristics.</strong> In standard chess, piece 
             values and positional tables are well-known. In Magic Chess, special 
             abilities change piece value dynamically. A knight that can teleport is 
-            worth more than a standard knight — but how much more? This required 
+            worth more than a standard knight. How much more? This required 
             designing novel heuristics.
           </li>
           <li>
             <strong>Branching factor explosion.</strong> Each piece with an active 
             ability adds a decision layer. The search tree grows combinatorially. 
-            Alpha-Beta pruning helps, but move ordering becomes critical — and 
+            Alpha-Beta pruning helps, but move ordering becomes critical, and 
             standard ordering heuristics don't account for ability moves.
           </li>
           <li>
@@ -110,17 +111,18 @@ graph TB
           <li>
             <strong>Playtesting-driven tuning.</strong> The only way to know if the 
             AI was "fun" was to play against it. I built a simple Pygame UI and 
-            iterated on heuristics based on actual gameplay — not just search depth.
+            tuned the heuristics from real matches, where how the game felt 
+            mattered more than raw search depth.
           </li>
         </ul>
 
         <h2>Technical Stack</h2>
         <ul>
-          <li><strong>Python</strong> — core engine: board representation, move generation, search algorithms</li>
-          <li><strong>Minimax with Alpha-Beta pruning</strong> — decision engine with configurable search depth</li>
-          <li><strong>Custom evaluation heuristics</strong> — material + positional + ability-state scoring</li>
-          <li><strong>Pygame</strong> — simple interactive UI for playtesting</li>
-          <li><strong>Move ordering optimizations</strong> — ability-move-aware ordering for better pruning efficiency</li>
+          <li><strong>Python</strong>: core engine for board representation, move generation, and search algorithms</li>
+          <li><strong>Minimax with Alpha-Beta pruning</strong>: decision engine with configurable search depth</li>
+          <li><strong>Custom evaluation heuristics</strong>: material + positional + ability-state scoring</li>
+          <li><strong>Pygame</strong>: simple interactive UI for playtesting</li>
+          <li><strong>Move ordering optimizations</strong>: ability-move-aware ordering for better pruning efficiency</li>
         </ul>
 
         <h2>What I'd Do Differently</h2>
@@ -150,7 +152,7 @@ graph TB
         <h2>Key Takeaways</h2>
         <blockquote>
           Building game AI teaches you about search under constraints, heuristic 
-          design, and the tradeoff between accuracy and compute — the same problems 
+          design, and the tradeoff between accuracy and compute. Those are the same problems 
           you face in production ML systems, just in a more playful domain.
         </blockquote>
 

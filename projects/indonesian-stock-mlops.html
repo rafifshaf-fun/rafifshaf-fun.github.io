@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Indonesian Stock MLOps — Rafif Shafwan</title>
+  <title>Indonesian Stock MLOps · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
-  <meta name="description" content="End-to-end ML pipeline for Indonesian stock prediction — 45 IDXBLUE stocks, MLflow, Grafana, Docker, Scikit-learn with automated retraining.">
+  <meta name="description" content="End-to-end ML pipeline for Indonesian stock prediction: 45 IDXBLUE stocks, MLflow, Grafana, Docker, Scikit-learn with automated retraining.">
   <link rel="canonical" href="https://rafifshaf.fun/projects/indonesian-stock-mlops.html">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
     </ul>
@@ -68,12 +69,12 @@
           models: high volatility, market-microstructure effects, and regulatory 
           calendar impacts that Western-trained models don't account for. A client 
           needed a prediction pipeline generating BUY/SELL signals for <strong>45 
-          IDXBLUE blue-chip stocks</strong> — not just accurate but 
-          <strong>monitorable, retrainable, and auditable</strong>.
+          IDXBLUE blue-chip stocks</strong>. Accuracy was the baseline; the signals 
+          also had to be <strong>monitorable, retrainable, and auditable</strong>.
         </p>
         <p>
           The key requirement: <strong>the pipeline had to run without manual 
-          intervention</strong> — automated data ingestion, training, evaluation, 
+          intervention</strong>, covering automated data ingestion, training, evaluation, 
           and deployment with full observability. The public repo is a simplified 
           demonstration of the architecture; the production version served live 
           trading decisions under NDA.
@@ -106,12 +107,12 @@ graph LR
           </li>
           <li>
             <strong>MLOps on a budget:</strong> No AWS SageMaker, no Databricks. 
-            Everything runs on a modest VPS with Docker Compose — MLflow, Grafana, 
-            and the model serving infrastructure had to coexist efficiently.
+            Everything runs on a modest VPS with Docker Compose, where MLflow, 
+            Grafana, and the model serving infrastructure had to coexist efficiently.
           </li>
           <li>
             <strong>Feature engineering at scale:</strong> Indonesian market data 
-            required custom features — sector rotation signals, foreign vs domestic 
+            required custom features: sector rotation signals, foreign vs domestic 
             flow ratios, and Islamic calendar adjustments (Ramadan effects on 
             trading volume).
           </li>
@@ -123,13 +124,13 @@ graph LR
 
         <h2>Technical Stack</h2>
         <ul>
-          <li><strong>Scikit-learn</strong> — primary ML framework for stock movement prediction models</li>
-          <li><strong>MLflow</strong> — experiment tracking, model registry, and deployment management</li>
-          <li><strong>Grafana</strong> — real-time dashboards for prediction accuracy, data drift, feature distributions, and system health</li>
-          <li><strong>Docker + Docker Compose</strong> — containerized pipeline with reproducible environments</li>
-          <li><strong>Pandas</strong> — data ingestion, feature engineering, and preprocessing</li>
-          <li><strong>Custom drift detection</strong> — statistical tests on feature distributions triggering automated retrain workflows</li>
-          <li><strong>FastAPI</strong> — lightweight prediction serving</li>
+          <li><strong>Scikit-learn</strong>: primary ML framework for stock movement prediction models</li>
+          <li><strong>MLflow</strong>: experiment tracking, model registry, and deployment management</li>
+          <li><strong>Grafana</strong>: real-time dashboards for prediction accuracy, data drift, feature distributions, and system health</li>
+          <li><strong>Docker + Docker Compose</strong>: containerized pipeline with reproducible environments</li>
+          <li><strong>Pandas</strong>: data ingestion, feature engineering, and preprocessing</li>
+          <li><strong>Custom drift detection</strong>: statistical tests on feature distributions triggering automated retrain workflows</li>
+          <li><strong>FastAPI</strong>: lightweight prediction serving</li>
         </ul>
 
         <h2>What I'd Do Differently</h2>
@@ -149,13 +150,13 @@ graph LR
           <li>
             <strong>Explore gradient boosting.</strong> XGBoost or LightGBM could 
             potentially capture non-linear patterns better than the Scikit-learn 
-            models — worth benchmarking in a future iteration.
+            models, and both are worth benchmarking in a future iteration.
           </li>
         </ul>
 
         <h2>Key Takeaways</h2>
         <blockquote>
-          MLOps isn't about fancy tools — it's about reproducibility and trust. 
+          MLOps isn't about fancy tools. It's about reproducibility and trust. 
           When your predictions affect financial decisions, you need to know 
           exactly which model version made which prediction, with which data, 
           and why. That's the bar.

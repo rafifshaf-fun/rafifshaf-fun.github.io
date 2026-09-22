@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projects — Rafif Shafwan</title>
+  <title>Projects · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
-  <meta name="description" content="Architecture case studies by Rafif Shafwan — production ML systems, computer vision pipelines, RAG chatbots, and more.">
+  <meta name="description" content="Architecture case studies by Rafif Shafwan: production ML systems, computer vision pipelines, RAG chatbots, and more.">
   <link rel="canonical" href="https://rafifshaf.fun/projects/">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
@@ -24,6 +24,7 @@
       <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
     </ul>
@@ -36,8 +37,8 @@
       <span class="section-label" data-i18n="projects-label">Projects</span>
       <h1 data-i18n="projects-page-title">Architecture Case Studies</h1>
       <p data-i18n="projects-page-sub">
-        Not code dumps — narratives on the problems, architectures, and production 
-        thinking behind each system.
+        Narratives on the problems, architectures, and production thinking 
+        behind each system.
       </p>
     </div>
   </section>
@@ -55,8 +56,8 @@
             </div>
             <div class="meta">Full-Stack · Financial · Laravel · 2024</div>
             <p data-i18n="project-sovereign-desc">
-              Production financial system for a health-worker cooperative — 
-              double-entry accounting, automated batch processing, five user
+              Production financial system for a health-worker cooperative. 
+              Double-entry accounting, automated batch processing, five user
               roles, and legacy Excel data migration.
             </p>
             <div class="tag-row">
@@ -76,7 +77,7 @@
             </div>
             <div class="meta">MLOps · Time Series · Finance · 2023–2024</div>
             <p data-i18n="project-stock-desc">
-              End-to-end ML pipeline for 45 IDXBLUE stocks — MLflow experiment
+              End-to-end ML pipeline for 45 IDXBLUE stocks. MLflow experiment
               tracking, Grafana monitoring, Docker deployment, and automated retraining.
               The public repo is a simplified version of the production system.
             </p>
@@ -125,6 +126,25 @@
           </div>
         </article>
 
+        <!-- Multi-Agent RAG -->
+        <article class="case-study">
+          <div class="case-study-body">
+            <h3 style="margin:0;margin-bottom:0.5rem;"><a href="multi-agent-rag.html" data-i18n="project-multiagent-title">Multi-Agent RAG System</a></h3>
+            <div class="meta" data-i18n="project-multiagent-meta">LLM · RAG · Multi-Agent Systems</div>
+            <p data-i18n="project-multiagent-desc">
+              A RAG system built from collaborating agents: a router, a retrieval
+              agent, an evaluator, and a summarizer, held together by typed
+              contracts. Works on any document set, from books and manuals to
+              internal knowledge bases.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Python</span><span class="tag">FAISS</span>
+              <span class="tag">Streamlit</span><span class="tag">Multi-Agent</span>
+              <span class="tag">RAG</span>
+            </div>
+          </div>
+        </article>
+
         <!-- Makmur Grosir -->
         <article class="case-study">
           <div class="case-study-body">
@@ -132,7 +152,7 @@
             <div class="meta">Web Scraping · Automation · Node.js · 2025</div>
             <p>
               Playwright-based scraper that searches 2,500+ products across
-              4 Indonesian e-commerce platforms — with anti-bot evasion.
+              4 Indonesian e-commerce platforms, with anti-bot evasion.
             </p>
             <div class="tag-row">
               <span class="tag">Playwright</span><span class="tag">Node.js</span>
@@ -148,7 +168,7 @@
             <div class="meta">Game AI · Decision Systems · 2024</div>
             <p data-i18n="project-magic-desc">
               AI-driven chess variant exploring decision systems and heuristic 
-              search — Minimax with Alpha-Beta pruning for a custom rule set.
+              search, using Minimax with Alpha-Beta pruning for a custom rule set.
             </p>
             <div class="tag-row">
               <span class="tag">Python</span><span class="tag">Game AI</span>

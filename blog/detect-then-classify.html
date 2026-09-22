@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Detect-Then-Classify Pattern — Rafif Shafwan</title>
+  <title>The Detect-Then-Classify Pattern · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
   <meta name="description" content="Why splitting object detection and classification into separate stages gives better accuracy, maintainability, and deployment flexibility.">
   <link rel="canonical" href="https://rafifshaf.fun/blog/detect-then-classify.html">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
     </ul>
@@ -51,11 +52,11 @@
         <p>
           Most computer vision tutorials teach you to build a single model that does 
           everything: detect objects AND classify them in one forward pass. YOLO, SSD, 
-          Faster R-CNN — these are end-to-end detectors that output bounding boxes 
+          and Faster R-CNN are end-to-end detectors that output bounding boxes 
           with class labels.
         </p>
         <p>
-          In production, this often isn't the right approach. Here's why — and what 
+          In production, this often isn't the right approach. Here's why, and what 
           to do instead.
         </p>
 
@@ -92,8 +93,8 @@ graph LR
         <ol>
           <li>
             <strong>Detection (YOLO / EfficientDet):</strong> Find all objects, output 
-            bounding boxes. This model only needs to distinguish "object vs background" 
-            — much simpler, much more robust.
+            bounding boxes. This model only needs to distinguish "object vs background", which makes it 
+            much simpler and much more robust.
           </li>
           <li>
             <strong>Coarse Classification:</strong> Assign each crop to a category group 
@@ -102,7 +103,7 @@ graph LR
           <li>
             <strong>Fine Classification:</strong> Within each group, a specialized 
             classifier distinguishes between specific items. Each classifier only 
-            handles 20–50 classes — much easier to train and maintain.
+            handles 20–50 classes, which makes it much easier to train and maintain.
           </li>
         </ol>
 
@@ -119,8 +120,9 @@ graph LR
         <h3>2. Independent Maintainability</h3>
         <p>
           When a client adds 5 new product SKUs, I only retrain the relevant fine 
-          classifier — not the detector, not the coarse classifier, not the other 
-          fine classifiers. Training time drops from hours to minutes. Deployment 
+          classifier, leaving the detector, the coarse classifier, and the other 
+          fine classifiers untouched. Training time drops from hours to minutes. 
+          Deployment 
           risk drops because only one component changes.
         </p>
 
@@ -143,7 +145,7 @@ graph LR
         <ul>
           <li>
             <strong>Latency:</strong> Multiple models mean multiple forward passes. 
-            But with ONNX and batching, the overhead is often under 10ms — acceptable 
+            But with ONNX and batching, the overhead is often under 10ms, which is acceptable 
             for most use cases.
           </li>
           <li>
@@ -153,17 +155,17 @@ graph LR
           </li>
           <li>
             <strong>Data requirements:</strong> Each fine classifier needs its own 
-            training data. But this is often already available — you're just organizing 
+            training data. But this is often already available. You're just organizing 
             it differently.
           </li>
         </ul>
 
         <h2>When NOT to Use This Pattern</h2>
         <ul>
-          <li>You have fewer than 20 classes — end-to-end is simpler and likely sufficient</li>
-          <li>Latency is extremely tight (< 5ms) — the multi-pass overhead matters</li>
-          <li>Classes are mutually exclusive and well-separated — no fine-grained discrimination needed</li>
-          <li>You're in early prototyping — start simple, add stages as needed</li>
+          <li>You have fewer than 20 classes; end-to-end is simpler and likely sufficient</li>
+          <li>Latency is extremely tight (< 5ms), so the multi-pass overhead matters</li>
+          <li>Classes are mutually exclusive and well-separated; no fine-grained discrimination is needed</li>
+          <li>You're in early prototyping, so start simple and add stages as needed</li>
         </ul>
 
         <h2>Code Sketch</h2>
@@ -193,7 +195,7 @@ class StagedPipeline:
 
         <h2>The Bottom Line</h2>
         <blockquote>
-          The detect-then-classify pattern isn't flashy. It won't win benchmarks. 
+          The detect-then-classify pattern is unglamorous. It won't win benchmarks. 
           But in production, where maintainability and accuracy on real data matter 
           more than architectural elegance, it's often the pragmatic choice. Split 
           the problem, solve each piece well, and keep the system evolvable.

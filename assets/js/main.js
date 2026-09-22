@@ -1,4 +1,4 @@
-// === Rafif Shafwan — Personal Website JS ===
+// === Rafif Shafwan Personal Website JS ===
 // Features: Typing animation · Counter animation · Stagger reveals · Scroll effects
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -38,7 +38,7 @@ function initMobileNav() {
 }
 
 /* ============================================================
-   SCROLL EFFECTS — navbar + fade-in observer
+   SCROLL EFFECTS: navbar + fade-in observer
    ============================================================ */
 function initScrollEffects() {
   const navbar = document.querySelector('.navbar');
@@ -107,7 +107,7 @@ function initMermaid() {
 }
 
 /* ============================================================
-   TYPING ANIMATION — hero headline
+   TYPING ANIMATION: hero headline
    ============================================================ */
 function initTypingAnimation() {
   const el = document.getElementById('typedText');
@@ -161,14 +161,14 @@ function initTypingAnimation() {
 }
 
 /* ============================================================
-   PARTICLE CANVAS — disabled in papery mode
+   PARTICLE CANVAS: disabled in papery mode
    ============================================================ */
 function initParticleCanvas() {
   return; // Disabled for clean editorial aesthetic
 }
 
 /* ============================================================
-   COUNTER ANIMATION — stats bar
+   COUNTER ANIMATION: stats bar
    ============================================================ */
 function initCounterAnimation() {
   const statEls = document.querySelectorAll('.stat-number[data-target]');
@@ -203,7 +203,7 @@ function initCounterAnimation() {
 }
 
 /* ============================================================
-   STAGGER ANIMATIONS — card children
+   STAGGER ANIMATIONS: card children
    ============================================================ */
 function initStaggerAnimations() {
   const grids = document.querySelectorAll('.card-grid, .philosophy-principles, .stack-pills');

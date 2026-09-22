@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Makmur Grosir — Rafif Shafwan</title>
+  <title>Makmur Grosir · Rafif Shafwan</title>
   <meta name="description" content="Playwright-based e-commerce image scraper for wholesale store with anti-bot evasion across 4 Indonesian platforms.">
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
   <link rel="canonical" href="https://rafifshaf.fun/projects/makmur-grosir.html">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
     </ul>
@@ -35,10 +36,10 @@
   <section class="page-title">
     <div class="container">
       <span class="section-label">Case Study</span>
-      <h1>Makmur Grosir — E-Commerce Image Scraper</h1>
+      <h1>Makmur Grosir · E-Commerce Image Scraper</h1>
       <p>
         A Playwright-based scraper that automatically finds product images across 
-        4 Indonesian e-commerce platforms — with sophisticated anti-bot evasion.
+        4 Indonesian e-commerce platforms, with sophisticated anti-bot evasion.
       </p>
     </div>
   </section>
@@ -66,16 +67,16 @@
 
         <h2>The Problem</h2>
         <p>
-          <strong>Makmur Grosir</strong> — a wholesale store in Indonesia with 2,500+ 
-          products — needed to build an online storefront. The product catalog existed 
+          <strong>Makmur Grosir</strong>, a wholesale store in Indonesia with 2,500+ 
+          products, needed to build an online storefront. The product catalog existed 
           as an Excel file with names and prices, but images had to be sourced manually. 
           Hiring someone to find and download 2,500 product images would take weeks 
           and cost thousands.
         </p>
         <p>
           The challenge: <strong>automatically search for and download product images 
-          from 4 Indonesian e-commerce platforms</strong> — Lazada, Blibli, Shopee, 
-          and Tokopedia — without getting blocked, rate-limited, or CAPTCHA'd.
+          from 4 Indonesian e-commerce platforms</strong>, namely Lazada, Blibli, Shopee, 
+          and Tokopedia, without getting blocked, rate-limited, or CAPTCHA'd.
         </p>
 
         <h2>The Architecture</h2>
@@ -105,7 +106,7 @@ graph TB
             <strong>Anti-bot evasion is an arms race.</strong> Indonesian e-commerce 
             platforms actively detect and block automated browsers. I had to implement 
             browser fingerprint spoofing, stealth page scripts, randomized delays, 
-            and headless detection circumvention — each platform has different 
+            and headless detection circumvention. Each platform has different 
             detection vectors.
           </li>
           <li>
@@ -122,20 +123,20 @@ graph TB
           </li>
           <li>
             <strong>Incremental progress and resume support.</strong> If the system 
-            crashes or a batch fails, it needs to resume from where it left off — 
-            not restart from zero. With 2,500 products over 50+ batches, this was 
-            essential.
+            crashes or a batch fails, it needs to resume from where it left off, 
+            preserving all completed work. With 2,500 products over 50+ batches, 
+            this was essential.
           </li>
         </ul>
 
         <h2>Technical Stack</h2>
         <ul>
-          <li><strong>Node.js + Playwright</strong> — browser automation with stealth enhancements</li>
-          <li><strong>GitHub Actions</strong> — scheduled workflow runs (50 products per batch, every 3 hours)</li>
-          <li><strong>Anti-bot evasion</strong> — browser fingerprint spoofing, stealth scripts, randomized delays, headless detection circumvention</li>
-          <li><strong>Title similarity matching</strong> — fuzzy string comparison to pick the best image match</li>
-          <li><strong>Resume & checkpoint system</strong> — failed items logged and retried; progress saved between runs</li>
-          <li><strong>Excel parsing</strong> — reads product catalog from .xlsx, writes image-mapped results back</li>
+          <li><strong>Node.js + Playwright</strong>: browser automation with stealth enhancements</li>
+          <li><strong>GitHub Actions</strong>: scheduled workflow runs (50 products per batch, every 3 hours)</li>
+          <li><strong>Anti-bot evasion</strong>: browser fingerprint spoofing, stealth scripts, randomized delays, headless detection circumvention</li>
+          <li><strong>Title similarity matching</strong>: fuzzy string comparison to pick the best image match</li>
+          <li><strong>Resume & checkpoint system</strong>: failed items logged and retried; progress saved between runs</li>
+          <li><strong>Excel parsing</strong>: reads product catalog from .xlsx, writes image-mapped results back</li>
         </ul>
 
         <h2>What I'd Do Differently</h2>
@@ -152,8 +153,8 @@ graph TB
           </li>
           <li>
             <strong>Explore LLM-based matching.</strong> Instead of fuzzy title matching, 
-            a small LLM could determine if an image result actually matches the product 
-            — especially useful for ambiguous product names.
+            a small LLM could determine if an image result actually matches the product, 
+            especially when product names are ambiguous.
           </li>
           <li>
             <strong>Build a simple monitoring dashboard.</strong> A Grafana dashboard 
@@ -164,10 +165,10 @@ graph TB
 
         <h2>Key Takeaways</h2>
         <blockquote>
-          Web scraping at scale isn't just about writing selectors — it's about 
-          building a system that adapts to each platform's anti-bot evolution, 
-          handles failures gracefully, and makes progress even in the face of 
-          CAPTCHAs and rate limits. The same principles apply to any system that 
+          Web scraping at scale means building a system that adapts to each 
+          platform's anti-bot evolution, handles failures gracefully, and makes 
+          progress even in the face of CAPTCHAs and rate limits. Writing selectors 
+          is where the work begins. The same principles apply to any system that 
           interacts with external APIs beyond your control.
         </blockquote>
 

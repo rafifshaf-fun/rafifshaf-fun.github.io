@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sovereign Ledger — Rafif Shafwan</title>
+  <title>Sovereign Ledger · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
   <meta name="description" content="Cooperative accounting platform with integrated ML forecasting. Built solo with Laravel, Livewire, PostgreSQL, and predictive models.">
   <link rel="canonical" href="https://rafifshaf.fun/projects/sovereign-ledger.html">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
     </ul>
@@ -38,7 +39,7 @@
       <h1>Sovereign Ledger</h1>
       <p>
         A comprehensive financial management system built for a health-worker
-        cooperative in Garut, Indonesia — deployed on-premise and in active use.
+        cooperative in Garut, Indonesia, deployed on-premise and in active use.
       </p>
       <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
         <span class="nda-badge">🔒 NDA · KPRI Warga Kesehatan</span>
@@ -64,16 +65,16 @@
 
         <h2>The Problem</h2>
         <p>
-          <strong>KPRI Warga Kesehatan Kabupaten Garut</strong> — a health-worker 
-          cooperative in Garut, Indonesia — needed a complete financial management 
+          <strong>KPRI Warga Kesehatan Kabupaten Garut</strong>, a health-worker 
+          cooperative in Garut, Indonesia, needed a complete financial management 
           system. They had been running on Excel spreadsheets for years, with their 
           full transaction history locked in legacy files. Off-the-shelf solutions 
           were either too expensive or couldn't handle the cooperative-specific 
           business logic (compulsory savings, social funds, multi-type loans).
         </p>
         <p>
-          The core challenge: <strong>build and deploy a production-grade financial 
-          system as a solo developer</strong> — double-entry accounting, role-based 
+          The core challenge was to <strong>build and deploy a production-grade 
+          financial system as a solo developer</strong>: double-entry accounting, role-based 
           access for five user roles, automated monthly batch processing, professional 
           reporting, and a full data migration from their existing Excel records.
         </p>
@@ -102,8 +103,8 @@ graph TB
           <li>
             <strong>Double-entry accounting from scratch:</strong> Every transaction 
             must balance. A full Chart of Accounts hierarchy, audit trails, and 
-            period locking. Getting this right as a solo developer — without an 
-            accounting background — required deep domain learning.
+            period locking. Getting this right as a solo developer, without an 
+            accounting background, required deep domain learning.
           </li>
           <li>
             <strong>Legacy data migration:</strong> The cooperative's complete 
@@ -113,13 +114,13 @@ graph TB
           </li>
           <li>
             <strong>Five distinct user roles:</strong> Admin, teller, member, 
-            auditor, and super-admin — each with different permissions, views, 
+            auditor, and super-admin, each with different permissions, views, 
             and workflows. Role-based access control had to be airtight for a 
             financial system handling real money.
           </li>
           <li>
             <strong>On-premise Docker deployment:</strong> The system runs on the 
-            cooperative's own hardware — PHP-FPM + Nginx + PostgreSQL in Docker 
+            cooperative's own hardware: PHP-FPM + Nginx + PostgreSQL in Docker 
             containers, with Supervisor-managed scheduling for automated monthly 
             batch jobs and persistent volume backups.
           </li>
@@ -127,12 +128,12 @@ graph TB
 
         <h2>Key Features Delivered</h2>
         <ul>
-          <li><strong>Full Chart of Accounts</strong> — hierarchical account structure with double-entry enforcement</li>
-          <li><strong>Automated monthly batch processing</strong> — compulsory savings deductions, social fund contributions, and loan installment postings run on schedule</li>
-          <li><strong>Multi-type loan management</strong> — with automatic installment scheduling, interest calculation, and repayment tracking</li>
-          <li><strong>Role-based access control</strong> — five user roles with granular permissions</li>
-          <li><strong>Professional reporting</strong> — PDF reports with KOP letterhead branding, CSV exports, and printable ledgers via Laravel DOMPDF + PhpSpreadsheet</li>
-          <li><strong>Legacy data reconciliation</strong> — full import and reconciliation of years of cooperative transaction history from Excel</li>
+          <li><strong>Full Chart of Accounts</strong>: hierarchical account structure with double-entry enforcement</li>
+          <li><strong>Automated monthly batch processing</strong>: compulsory savings deductions, social fund contributions, and loan installment postings run on schedule</li>
+          <li><strong>Multi-type loan management</strong>: automatic installment scheduling, interest calculation, and repayment tracking</li>
+          <li><strong>Role-based access control</strong>: five user roles with granular permissions</li>
+          <li><strong>Professional reporting</strong>: PDF reports with KOP letterhead branding, CSV exports, and printable ledgers via Laravel DOMPDF + PhpSpreadsheet</li>
+          <li><strong>Legacy data reconciliation</strong>: full import and reconciliation of years of cooperative transaction history from Excel</li>
         </ul>
 
         <h2>What I'd Do Differently</h2>
@@ -140,8 +141,8 @@ graph TB
           <li>
             <strong>Add automated testing earlier.</strong> Financial software without 
             tests is terrifying. I added PHPUnit tests partway through, but having 
-            them from day one — especially for the double-entry balance checks and 
-            loan calculations — would have saved debugging time.
+            them from day one, especially for the double-entry balance checks and 
+            loan calculations, would have saved debugging time.
           </li>
           <li>
             <strong>Use Laravel's built-in features more aggressively.</strong> I 
@@ -164,9 +165,9 @@ graph TB
 
         <h2>Key Takeaways</h2>
         <blockquote>
-          Building a production financial system for a real institution — as a solo 
-          developer — teaches you more than any tutorial. Double-entry accounting 
-          isn't just a feature, it's a constraint that shapes every design decision. 
+          Building a production financial system for a real institution, as a solo 
+          developer, teaches you more than any tutorial. Double-entry accounting 
+          is a constraint that shapes every design decision. 
           The system is deployed on-premise at the cooperative and used daily. That's 
           a different level of accountability than a side project.
         </blockquote>

@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Why I Measure My RAG — Rafif Shafwan</title>
+  <title>Why I Measure My RAG · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
-  <meta name="description" content="RAGAS evaluation, retrieval metrics, and why 'it works on my machine' isn't enough for production LLM systems.">
+  <meta name="description" content="RAGAS evaluation, retrieval metrics, and why 'it works on my machine' is too low a bar for production LLM systems.">
   <link rel="canonical" href="https://rafifshaf.fun/blog/why-i-measure-my-rag.html">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
     </ul>
@@ -55,14 +56,14 @@
           <em>"How do you know it's actually retrieving the right information?"</em>
         </p>
         <p>
-          I didn't. I had tested it on maybe 10 questions — all ones I had written myself. 
+          I didn't. I had tested it on maybe 10 questions, all ones I had written myself. 
           The retrievals "looked fine." The answers "sounded right." But I had no 
           quantitative evidence that my RAG pipeline was working correctly.
         </p>
         <p>
           This is the trap most RAG builders fall into. We test on a handful of queries, 
           see plausible outputs, and declare success. But plausible ≠ correct. And in 
-          production, correctness matters — especially when the system is representing 
+          production, correctness matters. All the more so when the system represents 
           <em>you</em> to potential employers or clients.
         </p>
 
@@ -74,26 +75,26 @@
         </p>
         <ul>
           <li>
-            <strong>Faithfulness</strong> — Is the generated answer factually grounded 
+            <strong>Faithfulness</strong>: Is the generated answer factually grounded 
             in the retrieved context? (1.0 = perfectly faithful, 0.0 = hallucination)
           </li>
           <li>
-            <strong>Answer Relevancy</strong> — Does the answer actually address the 
+            <strong>Answer Relevancy</strong>: Does the answer actually address the 
             question asked? (penalizes rambling or off-topic responses)
           </li>
           <li>
-            <strong>Context Precision</strong> — Of the retrieved chunks, what fraction 
+            <strong>Context Precision</strong>: Of the retrieved chunks, what fraction 
             is actually relevant to the question? (penalizes noisy retrieval)
           </li>
           <li>
-            <strong>Context Recall</strong> — Of all the relevant information available, 
+            <strong>Context Recall</strong>: Of all the relevant information available, 
             what fraction was retrieved? (penalizes missing context)
           </li>
         </ul>
 
-        <h2>What I Measured — And What I Learned</h2>
+        <h2>What I Measured and What I Learned</h2>
         <p>
-          I created a test set of 50 synthetic questions about my CV — ranging from 
+          I created a test set of 50 synthetic questions about my CV, ranging from 
           "What is Rafif's experience with PyTorch?" to "Has he ever built a financial 
           application?" For each question, I had a ground-truth answer (from my actual CV) 
           to compare against.
@@ -101,14 +102,14 @@
 
         <h3>Round 1: Naive Implementation</h3>
         <ul>
-          <li>Faithfulness: 0.72 — concerning. The model was making up details.</li>
-          <li>Answer Relevancy: 0.85 — decent but not great.</li>
-          <li>Context Precision: 0.61 — nearly 40% of retrieved chunks were irrelevant.</li>
-          <li>Context Recall: 0.78 — missing about 22% of relevant information.</li>
+          <li>Faithfulness: 0.72, which was concerning. The model was making up details.</li>
+          <li>Answer Relevancy: 0.85. Decent, but not great.</li>
+          <li>Context Precision: 0.61, with nearly 40% of retrieved chunks irrelevant.</li>
+          <li>Context Recall: 0.78, missing about 22% of relevant information.</li>
         </ul>
         <p>
-          The Context Precision score was the wake-up call. My chunking strategy — 
-          splitting by character count — was breaking semantic units. A chunk might 
+          The Context Precision score was the wake-up call. My chunking strategy, 
+          splitting by character count, was breaking semantic units. A chunk might 
           contain half a project description and half a skill list, confusing the retriever.
         </p>
 
@@ -142,21 +143,21 @@ graph LR
 
         <h2>Why This Matters</h2>
         <p>
-          If you're building a RAG system — whether it's a customer support bot, a 
-          document Q&A tool, or a CV chatbot — you need to measure it. Here's why:
+          If you're building a RAG system, you need to measure it. That holds for a 
+          customer support bot, a document Q&A tool, or a CV chatbot. Here's why:
         </p>
         <ul>
           <li><strong>Hallucinations erode trust.</strong> One confidently wrong answer and users stop using the system.</li>
-          <li><strong>Chunking is make-or-break.</strong> Metrics tell you whether your chunking strategy works — guessing doesn't.</li>
+          <li><strong>Chunking is make-or-break.</strong> Metrics tell you whether your chunking strategy works. Guessing doesn't.</li>
           <li><strong>Prompt changes have side effects.</strong> A prompt that improves one metric might hurt another. You won't know without measuring.</li>
-          <li><strong>It's not that hard.</strong> RAGAS takes about 30 lines of Python to set up. The ROI is massive.</li>
+          <li><strong>Setup is straightforward.</strong> RAGAS takes about 30 lines of Python to set up. The ROI is massive.</li>
         </ul>
 
         <h2>The Bottom Line</h2>
         <blockquote>
           "It looks right" is not a metric. If you're shipping a RAG system to real 
-          users, invest the hour it takes to set up RAGAS. Your future self — and 
-          your users — will thank you.
+          users, invest the hour it takes to set up RAGAS. Your future self, and 
+          your users, will thank you.
         </blockquote>
 
         <p>

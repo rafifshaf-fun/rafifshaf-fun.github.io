@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CV RAG Chatbot — Rafif Shafwan</title>
+  <title>CV RAG Chatbot · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
   <meta name="description" content="Retrieval-Augmented Generation chatbot answering questions about my CV. Built with LangChain, FAISS, Streamlit, and evaluated with RAGAS.">
   <link rel="canonical" href="https://rafifshaf.fun/projects/cv-rag-chatbot.html">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
     </ul>
@@ -37,7 +38,7 @@
       <span class="section-label">Case Study</span>
       <h1>CV RAG Chatbot</h1>
       <p>
-        A live Retrieval-Augmented Generation chatbot — ask questions about my 
+        A live Retrieval-Augmented Generation chatbot that answers questions about my 
         professional background, powered by LangChain + FAISS.
       </p>
     </div>
@@ -69,12 +70,11 @@
           My GitHub profile doesn't tell the full story. Most of my best work is 
           under NDA, and a static CV can't answer follow-up questions. I needed a 
           way for recruiters and potential clients to <strong>interactively explore 
-          my background</strong> — ask specific questions and get context-aware answers.
+          my background</strong>, ask specific questions, and get context-aware answers.
         </p>
         <p>
-          This is also a <strong>live demonstration of RAG architecture</strong> — 
-          showing that I can build, evaluate, and deploy LLM applications, not just 
-          talk about them.
+          This is also a <strong>live demonstration of RAG architecture</strong>. It 
+          shows that I can build, evaluate, and deploy LLM applications.
         </p>
 
         <h2>The Architecture</h2>
@@ -100,7 +100,7 @@ graph TB
           <li>
             <strong>Retrieval quality is everything.</strong> If the retriever pulls 
             irrelevant chunks, the LLM hallucinates. I used RAGAS to measure 
-            faithfulness, answer relevancy, and context precision — iterating on 
+            faithfulness, answer relevancy, and context precision, then iterated on 
             chunking strategy and embedding models until metrics were solid.
           </li>
           <li>
@@ -123,12 +123,12 @@ graph TB
 
         <h2>Technical Stack</h2>
         <ul>
-          <li><strong>LangChain LCEL</strong> — declarative chain composition: document loading, splitting, retrieval, and prompt management</li>
-          <li><strong>FAISS</strong> — vector store for semantic search over CV and project documents</li>
-          <li><strong>FastEmbed (ONNX-based)</strong> — local embeddings, no API dependency, fast cold starts</li>
-          <li><strong>Groq + Llama 3.3</strong> — LLM for answer generation via Groq's high-throughput inference API</li>
-          <li><strong>Streamlit</strong> — UI framework, deployed on Streamlit Community Cloud</li>
-          <li><strong>RAGAS</strong> — evaluation framework measuring faithfulness, answer relevancy, and context precision</li>
+          <li><strong>LangChain LCEL</strong>: declarative chain composition for document loading, splitting, retrieval, and prompt management</li>
+          <li><strong>FAISS</strong>: vector store for semantic search over CV and project documents</li>
+          <li><strong>FastEmbed (ONNX-based)</strong>: local embeddings with no API dependency and fast cold starts</li>
+          <li><strong>Groq + Llama 3.3</strong>: LLM for answer generation via Groq's high-throughput inference API</li>
+          <li><strong>Streamlit</strong>: UI framework, deployed on Streamlit Community Cloud</li>
+          <li><strong>RAGAS</strong>: evaluation framework measuring faithfulness, answer relevancy, and context precision</li>
         </ul>
 
         <h2>What I'd Do Differently</h2>
@@ -158,7 +158,7 @@ graph TB
         <h2>Key Takeaways</h2>
         <blockquote>
           Building a RAG chatbot is easy. Building one that's actually useful is hard. 
-          The difference is evaluation — measuring retrieval quality, iterating on 
+          The difference is evaluation: measuring retrieval quality, iterating on 
           chunking, and being honest about when the system doesn't know something. 
           RAGAS made this measurable instead of subjective.
         </blockquote>

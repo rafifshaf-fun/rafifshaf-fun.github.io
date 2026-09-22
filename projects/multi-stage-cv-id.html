@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pipeline CV Multi-Tahap — Rafif Shafwan</title>
+  <title>Pipeline CV Multi-Tahap · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
   <meta name="description" content="Arsitektur detect-then-classify untuk pengenalan objek dengan akurasi tinggi. Deteksi YOLO + classifier kustom yang dioptimalkan untuk edge deployment.">
   <link rel="canonical" href="https://rafifshaf.fun/projects/multi-stage-cv-id.html">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
     </ul>
@@ -37,8 +38,8 @@
       <span class="section-label">Studi Kasus</span>
       <h1>Pipeline CV Multi-Tahap</h1>
       <p>
-        Arsitektur detect-then-classify untuk pengenalan objek dengan akurasi tinggi 
-        — dioptimalkan untuk edge deployment.
+        Arsitektur detect-then-classify untuk pengenalan objek dengan akurasi tinggi, 
+        dioptimalkan untuk edge deployment.
       </p>
       <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
         <span class="nda-badge">🔒 NDA · Demo Sederhana</span>
@@ -67,7 +68,7 @@
           Klien membutuhkan sistem pengenalan objek untuk inspeksi kualitas industri. Tantangannya: <strong>ratusan kategori produk spesifik (fine-grained)</strong> yang tidak bisa ditangani secara akurat oleh detektor tunggal. Produk terlihat mirip di tingkat kategori, tetapi memiliki perbedaan halus yang sangat penting untuk keputusan kualitas.
         </p>
         <p>
-          Selain itu, sistem harus berjalan di <strong>perangkat edge</strong> — latensi inferensi di bawah 100ms, tanpa dependensi cloud, dan model harus cukup kecil untuk muat di memori di bawah 200MB.
+          Selain itu, sistem harus berjalan di <strong>perangkat edge</strong>: latensi inferensi di bawah 100ms, tanpa dependensi cloud, dan model harus cukup kecil untuk muat di memori di bawah 200MB.
         </p>
 
         <h2>Arsitektur</h2>
@@ -109,12 +110,12 @@ graph TB
 
         <h2>Tech Stack</h2>
         <ul>
-          <li><strong>YOLOv8 + SSD</strong> — deteksi objek, dilatih pada dataset kustom dengan augmentasi spesifik domain</li>
-          <li><strong>PyTorch + TensorFlow</strong> — pelatihan classifier kustom menggunakan backbone ResNet/EfficientNet di kedua framework</li>
-          <li><strong>ONNX Runtime</strong> — optimasi inferensi untuk edge deployment</li>
-          <li><strong>OpenCV</strong> — preprocessing gambar, ekstraksi crop, dan post-processing</li>
-          <li><strong>Kuantisasi model</strong> — kuantisasi INT8 yang mengurangi ukuran model hingga 4x lipat dengan penurunan akurasi yang minimal</li>
-          <li><strong>Sistem evaluasi kustom</strong> — metrik per tahap, confusion matrix, dan profiling latensi</li>
+          <li><strong>YOLOv8 + SSD</strong>: deteksi objek, dilatih pada dataset kustom dengan augmentasi spesifik domain</li>
+          <li><strong>PyTorch + TensorFlow</strong>: pelatihan classifier kustom menggunakan backbone ResNet/EfficientNet di kedua framework</li>
+          <li><strong>ONNX Runtime</strong>: optimasi inferensi untuk edge deployment</li>
+          <li><strong>OpenCV</strong>: preprocessing gambar, ekstraksi crop, dan post-processing</li>
+          <li><strong>Kuantisasi model</strong>: kuantisasi INT8 yang mengurangi ukuran model hingga 4x lipat dengan penurunan akurasi yang minimal</li>
+          <li><strong>Sistem evaluasi kustom</strong>: metrik per tahap, confusion matrix, dan profiling latensi</li>
         </ul>
 
         <h2>Apa yang Akan Saya Lakukan Berbeda</h2>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MLOps Without Burnout — Rafif Shafwan</title>
+  <title>MLOps Without Burnout · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
   <meta name="description" content="Running MLflow, Grafana, and Docker on modest hardware. Pragmatic MLOps for solo engineers and small teams.">
   <link rel="canonical" href="https://rafifshaf.fun/blog/mlops-without-burnout.html">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" class="active" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to Indonesian" data-i18n="lang-btn">ID</button></li>
     </ul>
@@ -55,7 +56,7 @@
           Docker Compose, and the determination to make it work.
         </p>
         <p>
-          I run my MLOps stack in <strong>Garut, Indonesia</strong> — not exactly 
+          I run my MLOps stack in <strong>Garut, Indonesia</strong>, far from 
           AWS us-east-1. Here's what I've learned about building reliable ML 
           infrastructure without burning out (or burning cash).
         </p>
@@ -74,7 +75,7 @@ graph TB
     style F fill:#00d2ff,stroke:#00b8e6,color:#0a0a0f
         </div>
 
-        <p>Here's what you actually need — and what you can skip:</p>
+        <p>Here's what you actually need, and what you can skip:</p>
 
         <h3>✅ Must-Have</h3>
         <ul>
@@ -102,11 +103,11 @@ graph TB
 
         <h3>❌ Can Skip (For Now)</h3>
         <ul>
-          <li>Kubernetes — Docker Compose is sufficient for single-node deployments</li>
-          <li>Feature stores (Feast, Tecton) — a PostgreSQL table with versioned feature sets works fine initially</li>
-          <li>CI/CD pipelines for ML — manual retraining with MLflow API is OK when you're the only engineer</li>
-          <li>Data versioning (DVC) — Git LFS or even dated data folders work for small-to-medium datasets</li>
-          <li>Model serving frameworks (TorchServe, Triton) — a FastAPI wrapper around your model is simpler and more debuggable</li>
+          <li>Kubernetes: Docker Compose is sufficient for single-node deployments</li>
+          <li>Feature stores (Feast, Tecton): a PostgreSQL table with versioned feature sets works fine initially</li>
+          <li>CI/CD pipelines for ML: manual retraining with MLflow API is OK when you're the only engineer</li>
+          <li>Data versioning (DVC): Git LFS or even dated data folders work for small-to-medium datasets</li>
+          <li>Model serving frameworks (TorchServe, Triton): a FastAPI wrapper around your model is simpler and more debuggable</li>
         </ul>
 
         <h2>My docker-compose.yml</h2>
@@ -156,10 +157,10 @@ volumes:
           The minimum viable monitoring:
         </p>
         <ul>
-          <li><strong>Prediction distribution over time</strong> — a histogram that updates daily. If the shape changes, your data changed.</li>
-          <li><strong>Feature drift (PSI)</strong> — Population Stability Index for top 10 features. Alert if PSI > 0.2.</li>
-          <li><strong>Model latency p50/p95/p99</strong> — because a slow model is a broken model.</li>
-          <li><strong>Error rate</strong> — prediction failures, timeouts, NaN outputs.</li>
+          <li><strong>Prediction distribution over time</strong>: a histogram that updates daily. If the shape changes, your data changed.</li>
+          <li><strong>Feature drift (PSI)</strong>: Population Stability Index for top 10 features. Alert if PSI > 0.2.</li>
+          <li><strong>Model latency p50/p95/p99</strong>, because a slow model is a broken model.</li>
+          <li><strong>Error rate</strong>: prediction failures, timeouts, NaN outputs.</li>
         </ul>
         <p>
           All of this fits in a single Grafana dashboard. Set it up once, glance at it daily.
@@ -170,7 +171,7 @@ volumes:
           Retraining on a fixed schedule (every Monday!) is wasteful and often misses 
           the moment when retraining is actually needed. Instead, trigger retraining 
           when drift metrics cross thresholds. This means retraining happens when it 
-          matters — not when the calendar says so.
+          matters, not when the calendar says so.
         </p>
 
         <h3>4. Document Architecture Decisions</h3>
@@ -190,7 +191,7 @@ volumes:
         </ul>
         <p>
           But none of these are blockers. You can ship reliable ML systems today with 
-          the stack described above. I do it every day — from Garut, on a VPS that 
+          the stack described above. I do it every day from Garut, on a VPS that 
           costs less than a dinner out.
         </p>
 
@@ -198,7 +199,7 @@ volumes:
         <blockquote>
           MLOps doesn't require a PhD in infrastructure. Start with experiment tracking 
           and monitoring. Add complexity only when the current setup actually hurts. 
-          Most ML projects don't fail because of inadequate infrastructure — they fail 
+          Most ML projects don't fail because of inadequate infrastructure. They fail 
           because nobody knows if the model is still working.
         </blockquote>
 

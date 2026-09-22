@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Magic Chess — Rafif Shafwan</title>
+  <title>Magic Chess · Rafif Shafwan</title>
   <link rel="icon" type="image/png" href="../assets/images/Logo no bg.png">
   <meta name="description" content="Varian catur berbasis AI yang mengeksplorasi sistem pengambilan keputusan dan teori permainan. Dibangun dengan Python, Minimax, dan Alpha-Beta pruning.">
   <link rel="canonical" href="https://rafifshaf.fun/projects/magic-chess-id.html">
@@ -25,6 +25,7 @@
       <li role="none"><a href="../projects/" class="active" role="menuitem" data-i18n="nav-projects">Projects</a></li>
       <li role="none"><a href="../blog/" role="menuitem" data-i18n="nav-blog">Blog</a></li>
       <li role="none"><a href="../uses.html" role="menuitem" data-i18n="nav-uses">Tools</a></li>
+      <li role="none"><a href="../opensource.html" role="menuitem" data-i18n="nav-opensource">Open Source</a></li>
       <li role="none"><a href="../contact.html" class="nav-cta" role="menuitem" data-i18n="nav-contact">Contact</a></li>
       <li role="none"><button class="lang-toggle" onclick="if(typeof i18n!=='undefined')i18n.toggle()" aria-label="Switch to English" data-i18n="lang-btn">EN</button></li>
     </ul>
@@ -57,10 +58,10 @@
 
         <h2>Masalah</h2>
         <p>
-          Engine catur sudah sangat banyak dipelajari, tetapi <strong>varian catur dengan aturan yang dimodifikasi</strong> masih jarang dieksplorasi. Saya ingin membangun AI untuk varian catur kustom — "Magic Chess" — di mana bidak tertentu memiliki kemampuan khusus (teleportasi, serangan area, kebal sementara). Tantangannya: <strong>fungsi evaluasi catur standar tidak berlaku di sini</strong>, dan branching factor (kemungkinan cabang keputusan) meledak karena adanya pilihan kemampuan khusus tersebut.
+          Engine catur sudah sangat banyak dipelajari, tetapi <strong>varian catur dengan aturan yang dimodifikasi</strong> masih jarang dieksplorasi. Saya ingin membangun AI untuk varian catur kustom, "Magic Chess", di mana bidak tertentu memiliki kemampuan khusus (teleportasi, serangan area, kebal sementara). Tantangannya: <strong>fungsi evaluasi catur standar tidak berlaku di sini</strong>, dan branching factor (kemungkinan cabang keputusan) meledak karena adanya pilihan kemampuan khusus tersebut.
         </p>
         <p>
-          Proyek ini sebagian adalah passion project (saya suka bermain catur) dan sebagian lagi adalah eksplorasi tentang <strong>sistem pengambilan keputusan di bawah state space yang kompleks</strong> — keterampilan yang secara langsung dapat diterapkan pada reinforcement learning dan masalah teori permainan dalam ML.
+          Proyek ini sebagian adalah passion project (saya suka bermain catur) dan sebagian lagi adalah eksplorasi tentang <strong>sistem pengambilan keputusan di bawah state space yang kompleks</strong>. Keterampilan ini dapat diterapkan secara langsung pada reinforcement learning dan masalah teori permainan dalam ML.
         </p>
 
         <h2>Arsitektur</h2>
@@ -81,26 +82,26 @@ graph TB
         <h2>Mengapa Ini Sulit</h2>
         <ul>
           <li>
-            <strong>Heuristik evaluasi kustom.</strong> Dalam catur standar, nilai bidak dan tabel posisi sudah sangat diketahui. Dalam Magic Chess, kemampuan khusus mengubah nilai bidak secara dinamis. Kuda yang bisa berteleportasi bernilai lebih dari kuda biasa — tapi seberapa besar bedanya? Ini membutuhkan perancangan heuristik yang baru.
+            <strong>Heuristik evaluasi kustom.</strong> Dalam catur standar, nilai bidak dan tabel posisi sudah sangat diketahui. Dalam Magic Chess, kemampuan khusus mengubah nilai bidak secara dinamis. Kuda yang bisa berteleportasi bernilai lebih dari kuda biasa. Seberapa besar bedanya? Ini membutuhkan perancangan heuristik yang baru.
           </li>
           <li>
-            <strong>Ledakan branching factor.</strong> Setiap bidak dengan kemampuan aktif menambah lapisan keputusan baru. Pohon pencarian tumbuh secara kombinatorial. Pemangkasan Alpha-Beta (Alpha-Beta pruning) memang membantu, tetapi pengurutan langkah (move ordering) menjadi sangat kritis — dan heuristik pengurutan standar tidak memperhitungkan langkah kemampuan khusus.
+            <strong>Ledakan branching factor.</strong> Setiap bidak dengan kemampuan aktif menambah lapisan keputusan baru. Pohon pencarian tumbuh secara kombinatorial. Pemangkasan Alpha-Beta (Alpha-Beta pruning) memang membantu, tetapi pengurutan langkah (move ordering) menjadi sangat kritis. Heuristik pengurutan standar tidak memperhitungkan langkah kemampuan khusus.
           </li>
           <li>
             <strong>Iterative deepening dengan batasan waktu.</strong> AI harus membuat langkah yang masuk akal dalam batasan waktu tertentu. Mengimplementasikan iterative deepening dengan set langkah yang diperluas membutuhkan profiling performa yang hati-hati.
           </li>
           <li>
-            <strong>Tuning berbasis playtesting.</strong> Satu-satunya cara untuk mengetahui apakah AI ini "menyenangkan" adalah dengan bermain melawannya. Saya membangun UI Pygame sederhana dan mengulangi iterasi heuristik berdasarkan gameplay aktual — bukan hanya sekadar melihat kedalaman pencarian (search depth).
+            <strong>Tuning berbasis playtesting.</strong> Satu-satunya cara untuk mengetahui apakah AI ini "menyenangkan" adalah dengan bermain melawannya. Saya membangun UI Pygame sederhana dan mengulangi iterasi heuristik berdasarkan gameplay aktual, di mana keseruan permainan lebih menentukan daripada kedalaman pencarian (search depth).
           </li>
         </ul>
 
         <h2>Tech Stack</h2>
         <ul>
-          <li><strong>Python</strong> — core engine: representasi papan, pembuatan langkah, algoritma pencarian</li>
-          <li><strong>Minimax dengan Alpha-Beta pruning</strong> — mesin pengambil keputusan dengan kedalaman pencarian yang dapat dikonfigurasi</li>
-          <li><strong>Heuristik evaluasi kustom</strong> — skor material + posisional + status kemampuan</li>
-          <li><strong>Pygame</strong> — UI interaktif sederhana untuk playtesting</li>
-          <li><strong>Optimasi move ordering</strong> — pengurutan yang menyadari langkah kemampuan khusus demi efisiensi pruning yang lebih baik</li>
+          <li><strong>Python</strong>: core engine untuk representasi papan, pembuatan langkah, dan algoritma pencarian</li>
+          <li><strong>Minimax dengan Alpha-Beta pruning</strong>: mesin pengambil keputusan dengan kedalaman pencarian yang dapat dikonfigurasi</li>
+          <li><strong>Heuristik evaluasi kustom</strong>: skor material + posisional + status kemampuan</li>
+          <li><strong>Pygame</strong>: UI interaktif sederhana untuk playtesting</li>
+          <li><strong>Optimasi move ordering</strong>: pengurutan yang menyadari langkah kemampuan khusus demi efisiensi pruning yang lebih baik</li>
         </ul>
 
         <h2>Apa yang Akan Saya Lakukan Berbeda</h2>
@@ -121,7 +122,7 @@ graph TB
 
         <h2>Pelajaran Utama</h2>
         <blockquote>
-          Membangun game AI mengajarkan Anda tentang pencarian di bawah berbagai batasan, desain heuristik, dan kompromi antara akurasi vs komputasi — masalah yang sama yang akan Anda hadapi dalam sistem ML di production, hanya saja dalam domain yang lebih menyenangkan.
+          Membangun game AI mengajarkan Anda tentang pencarian di bawah berbagai batasan, desain heuristik, dan kompromi antara akurasi vs komputasi. Masalah yang sama akan Anda hadapi dalam sistem ML di production, hanya saja dalam domain yang lebih menyenangkan.
         </blockquote>
 
         <div style="margin-top:3rem;">
